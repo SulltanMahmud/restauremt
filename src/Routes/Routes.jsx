@@ -1,4 +1,4 @@
-import { createBrowserRouter, useNavigate, Navigate } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard.jsx";
 import EmployeeList from '../components/EmployeeList.jsx'
 import TableList from "../components/TableList.jsx";
@@ -8,22 +8,26 @@ import AllOrdersList from "../components/AllOrdersList.jsx";
 import Login from "../pages/Login.jsx";
 import ProtectedRoute from "../components/protectedRoute/ProtectedRoute.jsx";
 import ErrorePage from "../pages/ErrorePage.jsx";
-import App from './../App';
-
-const token = localStorage.getItem("token");
-
+import App from '../App.jsx'
+import AlreadyLoggedInRoute from "../components/protectedRoute/AlreadyLoggedInRoute.jsx";
 
 const routes = createBrowserRouter([
     {
         path: "/",
-        element: (token ? <Navigate to="/admin" /> : <Login />),
-        errorElement: <ErrorePage/>,
+        element: <ProtectedRoute><App /></ProtectedRoute>,
+        loader: () => {
+            return redirect("/admin")
+        },
+        errorElement: <ErrorePage />,
 
+    },
+    {
+        path: "/login",
+        element: <AlreadyLoggedInRoute><Login/></AlreadyLoggedInRoute>
     },
     {
         path: "/admin",
         element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
-        
         children: [
             {
                 // path: "",

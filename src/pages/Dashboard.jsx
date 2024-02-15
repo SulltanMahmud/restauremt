@@ -23,11 +23,11 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Swal from "sweetalert2";
 import LoggedinUserInfo from '../components/userinfo/LoggedinUserInfo';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link, Outlet, useNavigate  } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../pages/Dashboard.css';
+import UseLoader from '../components/loader/UseLoader.jsx';
 
 
 const drawerWidth = 240;
@@ -72,36 +72,31 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
 
 export default function Dashboard() {
-    const navigate = useNavigate();
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
-
+    const [loader, showLoader, hideLoader] = UseLoader();
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-
+    
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
+    
     const logout = () => {
-
+        showLoader();
         localStorage.removeItem("isAuth");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-
-        Swal.fire({
-            icon: "success",
-            title: "Logout Successful",
-            text: "",
-        });
-        navigate("/");
+        const navigate = useNavigate();
+        hideLoader();
+        navigate("/login");
 
     };
 
@@ -240,6 +235,7 @@ export default function Dashboard() {
                     <Outlet />
                 </Main>
             </Box>
+            {loader}
         </>
     );
 }

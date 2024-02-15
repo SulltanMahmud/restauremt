@@ -10,8 +10,6 @@ export default function ErrorePage() {
             <Grid >
                 <SentimentVeryDissatisfiedIcon />
             </Grid>
-            {/* <Avatar alt="Admin Image" src={<SentimentVeryDissatisfiedIcon />} /> */}
-            {/* <SentimentVeryDissatisfiedIcon/> */}
             <h1>404 - Page Not Found</h1>
             <p>Sorry, the page you are looking for could not be found.</p>
         </main>

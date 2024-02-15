@@ -4,7 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import AdminPictrure from 'D:/office/bss_Restaurant/Restaurant-project/src/assets/img/admin.jpg'
+import AdminPictrure from '../../assets/img/admin.jpg';
 
 
 export default function LoggedinUserInfo() {

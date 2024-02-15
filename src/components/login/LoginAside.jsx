@@ -9,12 +9,13 @@ export default function LoginAside() {
                     backgroundImage: "url('../src/assets/img/food-bg2.png')",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
+                    // backgroundSize: "cover"
                 }}
             >
                 <div>
                     <img
                         src="../src/assets/img/login-bg.png"
-                        className="max-w-[600px] max-h-[600px] animate-spin-slow"
+                        className="max-w-[550px] max-h-[600px] animate-spin-slow"
                         alt=""
                     />
                 </div>
