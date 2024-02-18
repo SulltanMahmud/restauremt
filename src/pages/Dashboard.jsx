@@ -80,15 +80,15 @@ export default function Dashboard() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const [loader, showLoader, hideLoader] = UseLoader();
-    
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-    
+
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    
+
     const logout = () => {
         showLoader();
         localStorage.removeItem("isAuth");
@@ -100,140 +100,147 @@ export default function Dashboard() {
 
     };
 
-  
+
 
     return (
 
         <>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar position="fixed" open={open} >
-                    <Toolbar sx={{background: '#CC080B'}}>
+            <div className='main-body'>
+                <Box sx={{ display: 'flex' }}>
+                    <CssBaseline />
+                    <AppBar position="fixed" open={open} >
+                        <Toolbar sx={{ background: '#CC080B' }}>
 
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                        >
-                            <MenuIcon />
-
-
-                        </IconButton>
-
-                        <span className='appBarTitle'>
-                            BSS RESTAURANT
-                        </span>
-
-                        <Button endIcon={<AccountCircleIcon />} style={{ color: 'white', marginLeft: "auto" }}>
-                            Profile
-                        </Button>
-                    </Toolbar>
-
-                </AppBar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                            >
+                                <MenuIcon />
 
 
-                <Drawer
-                    sx={{
-                        width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
+                            </IconButton>
+
+                            <span className='appBarTitle'>
+                                BSS RESTAURANT
+                            </span>
+
+                            <Button endIcon={<AccountCircleIcon />} style={{ color: 'white', marginLeft: "auto" }}>
+                                Profile
+                            </Button>
+                        </Toolbar>
+
+                    </AppBar>
+
+
+                    <Drawer
+                        sx={{
                             width: drawerWidth,
-                            boxSizing: 'border-box',
-                        },
-                    }}
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                >
-                    <DrawerHeader>
-                    <LoggedinUserInfo />
-                        
-                        {/* <IconButton onClick={handleDrawerClose}>
+                            flexShrink: 0,
+                            '& .MuiDrawer-paper': {
+                                width: drawerWidth,
+                                boxSizing: 'border-box',
+                            },
+                        }}
+                        variant="persistent"
+                        anchor="left"
+                        open={open}
+                    >
+                        <DrawerHeader>
+                            <LoggedinUserInfo />
+
+                            {/* <IconButton onClick={handleDrawerClose}>
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton> */}
-                    </DrawerHeader>
-                    <Divider />
-                    {/* <LoggedinUserInfo />
+                        </DrawerHeader>
+                        <Divider />
+                        {/* <LoggedinUserInfo />
                     <Divider /> */}
-                    <List>
-                        <Link to={''}>
-                            <ListItem disablePadding>
+                        <List>
+                            <Link to={''}>
+                                <ListItem disablePadding>
 
-                                <ListItemButton >
-                                    <ListItemIcon>
-                                        <PeopleIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Employee List" />
-                                </ListItemButton>
-                            </ListItem>
-                        </Link>
-                        <Link to={'table-list'}>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <TableBarIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Table List" />
-                                </ListItemButton>
-                            </ListItem>
-                        </Link>
-                        <Link to={'food-list'}>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <FastfoodIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Food List" />
-                                </ListItemButton>
-                            </ListItem>
-                        </Link>
-                        <Link to={'order-list'}>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <LocalMallIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Oder Food" />
-                                </ListItemButton>
-                            </ListItem>
-                        </Link>
-                        <Link to={'all-orders-list'}>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <FormatListBulletedIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="All Orders" />
-                                </ListItemButton>
-                            </ListItem>
-                        </Link>
+                                    <ListItemButton >
+                                        <ListItemIcon>
+                                            <PeopleIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Employee List" />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
+                            <Link to={'table-list'}>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <TableBarIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Table List" />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
+                            <Link to={'food-list'}>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <FastfoodIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Food List" />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
+                            <Link to={'order-list'}>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <LocalMallIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Oder Food" />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
+                            <Link to={'all-orders-list'}>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <FormatListBulletedIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="All Orders" />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
 
-                        <Link onClick={logout}>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <Button variant="outlined" align="center" startIcon={<ExitToAppIcon />}>
-                                        Logout
-                                    </Button>
-                                    {/* <ListItemIcon>
+                            <Link onClick={logout}>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <Button variant="outlined" align="center" startIcon={<ExitToAppIcon />}>
+                                            Logout
+                                        </Button>
+                                        {/* <ListItemIcon>
                                         <ExitToAppIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Log Out" /> */}
-                                </ListItemButton>
+                                    </ListItemButton>
 
-                            </ListItem>
-                        </Link>
+                                </ListItem>
+                            </Link>
 
-                    </List>
+                        </List>
 
-                </Drawer>
-                <Main open={open}>
-                    <DrawerHeader />
-                    <Outlet />
-                </Main>
-            </Box>
-            {loader}
+                    </Drawer>
+
+                    <Main open={open} style={{ padding: 0 }}>
+                        <DrawerHeader />
+
+                        <Outlet />
+
+
+                    </Main>
+                </Box>
+                {loader}
+            </div>
+
         </>
     );
 }
