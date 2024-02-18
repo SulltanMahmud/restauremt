@@ -9,8 +9,8 @@ import AdminPictrure from '../../assets/img/admin.jpg';
 
 export default function LoggedinUserInfo() {
     return (
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <ListItem>
+        <List sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper',  paddingTop: 0, paddingBottom:0 }}>
+            <ListItem  sx={{ paddingTop: 0, paddingBottom:0}}>
                 <ListItemAvatar>
                     <Avatar alt="Admin Image" src={AdminPictrure} />
                 </ListItemAvatar>

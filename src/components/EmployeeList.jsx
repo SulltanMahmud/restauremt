@@ -1,150 +1,5 @@
-// import * as React from 'react';
-// import Paper from '@mui/material/Paper';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TablePagination from '@mui/material/TablePagination';
-// import TableRow from '@mui/material/TableRow';
-// import { Button } from '@mui/material';
-
-// const columns = [
-//     { id: 'image', label: 'Image', minWidth: 30 },
-//     { id: 'name', label: 'Name', minWidth: 170 },
-//     {
-//         id: 'email',
-//         label: 'Email',
-//         minWidth: 170,
-
-//         format: (value) => value.toLocaleString('en-US'),
-//     },
-//     {
-//         id: 'phone',
-//         label: 'Phone',
-//         minWidth: 100,
-//         // align: 'right',
-//         format: (value) => value.toLocaleString('en-US'),
-//     },
-//     {
-//         id: 'dateOfBirth',
-//         label: 'Date of Birth',
-//         minWidth: 100,
-//         // align: 'right',
-//         format: (value) => value.toFixed(2),
-//     },
-//     {
-//         id: 'joiningDate',
-//         label: 'Joining Date',
-//         minWidth: 100,
-//         // align: 'right',
-//         format: (value) => value.toFixed(2),
-//     },
-//     {
-//         id: 'designation',
-//         label: 'Designation',
-//         minWidth: 120,
-//         // align: 'right',
-//         format: (value) => value.toFixed(2),
-//     },
-//     {
-//         id: 'action',
-//         label: 'Action',
-//         minWidth: 120,
-//         // align: 'right',
-//         format: (value) => value.toFixed(2),
-//     },
-// ];
-
-// function createData(image, name, email, phone, dateOfBirth, joiningDate, designation, action) {
-    
-//     return { image, name, email, phone, dateOfBirth, joiningDate, designation, action };
-// }
-
-// const rows = [
-//     createData('img', 'Firose Munna', 'munnafirose@gmail.com', '01956431180', '15/03/2000', '15/01/2024', 'Trainee', 'Delete'),
-    
-    
-// ];
-
-// export default function EmployeeList() {
-//     const [page, setPage] = React.useState(0);
-//     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-//     const handleChangePage = (event, newPage) => {
-//         setPage(newPage);
-//     };
-
-//     const handleChangeRowsPerPage = (event) => {
-//         setRowsPerPage(+event.target.value);
-//         setPage(0);
-//     };
-
-//     return (
-//         <Paper sx={{ width: '100%' }}>
-//             <TableContainer sx={{ maxHeight: 440 }}>
-//                 <Table stickyHeader aria-label="sticky table">
-//                     <TableHead>
-//                         <TableRow>
-//                             <TableCell sx={{ fontSize: 20, fontWeight: 'bold' }} align="left" colSpan={2}>
-//                                 Employee List
-//                             </TableCell>
-
-//                             <TableCell align="right" colSpan={6}>
-//                                 <Button variant="outlined">Add Employee</Button>
-//                             </TableCell>
-
-
-//                         </TableRow>
-//                         <TableRow>
-//                             {columns.map((column) => (
-//                                 <TableCell
-//                                     key={column.id}
-//                                     align={column.align}
-//                                     style={{ top: 57, minWidth: column.minWidth }}
-//                                 >
-//                                     {column.label}
-//                                 </TableCell>
-//                             ))}
-//                         </TableRow>
-//                     </TableHead>
-//                     <TableBody>
-//                         {rows
-//                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-//                             .map((row) => {
-//                                 return (
-//                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-//                                         {columns.map((column) => {
-//                                             const value = row[column.id];
-//                                             return (
-//                                                 <TableCell key={column.id} align={column.align}>
-//                                                     {column.format && typeof value === 'number'
-//                                                         ? column.format(value)
-//                                                         : value}
-//                                                 </TableCell>
-//                                             );
-//                                         })}
-//                                     </TableRow>
-//                                 );
-//                             })}
-//                     </TableBody>
-//                 </Table>
-//             </TableContainer>
-//             <TablePagination
-//                 rowsPerPageOptions={[10, 25, 100]}
-//                 component="div"
-//                 count={rows.length}
-//                 rowsPerPage={rowsPerPage}
-//                 page={page}
-//                 onPageChange={handleChangePage}
-//                 onRowsPerPageChange={handleChangeRowsPerPage}
-//             />
-//         </Paper>
-//     );
-// }
-
-
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -153,60 +8,83 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import UseLoader from './loader/UseLoader';
 import { Button } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
+    { id: 'image', label: 'Image', minWidth: 30 },
     { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-        id: 'population',
-        label: 'Population',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'size',
-        label: 'Size\u00a0(km\u00b2)',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'density',
-        label: 'Density',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toFixed(2),
-    },
+    { id: 'email', label: 'Email', minWidth: 170 },
+    { id: 'phone', label: 'Phone', minWidth: 100 },
+    { id: 'dateOfBirth', label: 'Date of Birth', minWidth: 100 },
+    { id: 'joiningDate', label: 'Joining Date', minWidth: 100 },
+    { id: 'designation', label: 'Designation', minWidth: 120 },
+    { id: 'action', label: 'Action', minWidth: 120 },
 ];
 
-function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
+function createData(image, name, email, phone, dateOfBirth, joiningDate, designation, action) {
+    return { image, name, email, phone, dateOfBirth, joiningDate, designation, action };
 }
 
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-];
+export default function StickyHeadTable() {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loader, showLoader, hideLoader] = UseLoader();
 
-export default function EmployeeList() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const addActionButtons = (rowIndex) => (
+        <div>
+            <IconButton aria-label="edit">
+                <EditIcon />
+            </IconButton>
+            <IconButton aria-label="delete" onClick={() => handleDelete(rowIndex)}>
+                <DeleteIcon />
+            </IconButton>
+        </div>
+    );
+    const handleDelete = (rowIndex) => {
+        async function removeEmployee(rowIndex) {
+            try {
+
+                const response = await axios.get(`https://restaurantapi.bssoln.com/api/Employee/delete/${rowIndex.id}`);
+                // {console.log(rowIndex.id)}
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        removeEmployee(rowIndex);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            showLoader();
+            try {
+                const response = await axios.get('https://restaurantapi.bssoln.com/api/Employee/datatable?page=1&per_page=10');
+                const newData = response.data.data.map((item, index) => createData(
+                    <img src={item.image} alt="Employee" style={{ maxWidth: '50px', maxHeight: '50px' }} />,
+                    item.user.fullName,
+                    item.user.email,
+                    item.user.phoneNumber,
+                    item.user.dob,
+                    item.joinDate,
+                    item.designation,
+                    addActionButtons(index)
+                    
+                ));
+                hideLoader();
+                setRows(newData);
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -218,64 +96,191 @@ export default function EmployeeList() {
     };
 
     return (
-        <Paper sx={{ width: '100%' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ fontSize: 20, fontWeight: 'bold' }} align="left" colSpan={2}>
-                             Employee List
-                            </TableCell>
-
-                            <TableCell align="right" colSpan={6}>
-                                <Button variant="outlined">Add Employee</Button>
-                            </TableCell>
-
-
-                        </TableRow>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ top: 57, minWidth: column.minWidth }}
-                                >
-                                    {column.label}
+        <>
+            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ fontSize: 20, fontWeight: 'bold' }} align="left" colSpan={2}>
+                                    All Employees
                                 </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
+
+                                <TableCell align="right" colSpan={6}>
+                                    <Button variant="outlined">Add Employee</Button>
+                                </TableCell>
+
+
+                            </TableRow>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {(
+                                rows
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, rowIndex) => (
+                                        <TableRow key={rowIndex}>
+                                            {columns.map((column) => (
+                                                <TableCell key={column.id} align="left">
+                                                    {row[column.id]}
                                                 </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </Paper>
+                                            ))}
+                                        </TableRow>
+                                    ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
+            {loader}
+        </>
+
     );
 }
+
+
+
+
+
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import Paper from '@mui/material/Paper';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TablePagination from '@mui/material/TablePagination';
+// import TableRow from '@mui/material/TableRow';
+// import IconButton from '@mui/material/IconButton';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import EditIcon from '@mui/icons-material/Edit';
+
+// const columns = [
+//   { id: 'image', label: 'Image', minWidth: 100 },
+//   { id: 'name', label: 'Name', minWidth: 170 },
+//   { id: 'email', label: 'Email', minWidth: 170 },
+//   { id: 'phone', label: 'Phone', minWidth: 100 },
+//   { id: 'dateOfBirth', label: 'Date of Birth', minWidth: 100 },
+//   { id: 'joiningDate', label: 'Joining Date', minWidth: 100 },
+//   { id: 'designation', label: 'Designation', minWidth: 120 },
+//   { id: 'action', label: 'Action', minWidth: 120 },
+// ];
+
+// function createData(image, name, email, phone, dateOfBirth, joiningDate, designation) {
+//   return { image, name, email, phone, dateOfBirth, joiningDate, designation };
+// }
+
+// export default function StickyHeadTable() {
+//   const [page, setPage] = useState(0);
+//   const [rowsPerPage, setRowsPerPage] = useState(10);
+//   const [rows, setRows] = useState([]);
+//   const [loading, setLoading] = useState(false);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       setLoading(true);
+//       try {
+//         const response = await axios.get('https://restaurantapi.bssoln.com/api/Employee/datatable?page=1&per_page=10');
+//         setRows(response.data.data);
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   const handleChangePage = (event, newPage) => {
+//     setPage(newPage);
+//   };
+
+//   const handleChangeRowsPerPage = (event) => {
+//     setRowsPerPage(+event.target.value);
+//     setPage(0);
+//   };
+
+//   const handleDelete = (index) => {
+//     // Implement delete logic here
+//     // For now, let's just log the index to show which row is being deleted
+//     console.log('Deleting row:', index);
+//   };
+
+//   return (
+//     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+//       <TableContainer sx={{ maxHeight: 440 }}>
+//         <Table stickyHeader aria-label="sticky table">
+//           <TableHead>
+//             <TableRow>
+//               {columns.map((column) => (
+//                 <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
+//                   {column.label}
+//                 </TableCell>
+//               ))}
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {loading ? (
+//               <TableRow>
+//                 <TableCell colSpan={columns.length} align="center">Loading...</TableCell>
+//               </TableRow>
+//             ) : (
+//               rows
+//                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+//                 .map((row, rowIndex) => (
+//                   <TableRow key={rowIndex}>
+//                     {columns.map((column) => {
+//                       return (
+//                         <TableCell key={column.id} align="left">
+//                           {column.id === 'image' ? (
+//                             <img src={row[column.id]} alt={row.name} style={{ maxWidth: '50px', maxHeight: '50px' }} />
+//                           ) : column.id === 'action' ? (
+//                             <div>
+//                               <IconButton aria-label="edit" onClick={() => console.log('Edit clicked for row:', rowIndex)}>
+//                                 <EditIcon />
+//                               </IconButton>
+//                               <IconButton aria-label="delete" onClick={() => handleDelete(rowIndex)}>
+//                                 <DeleteIcon />
+//                               </IconButton>
+//                             </div>
+//                           ) : (
+//                             row[column.id]
+//                           )}
+//                         </TableCell>
+//                       );
+//                     })}
+//                   </TableRow>
+//                 ))
+//             )}
+//           </TableBody>
+//         </Table>
+//       </TableContainer>
+//       <TablePagination
+//         rowsPerPageOptions={[5, 10, 25]}
+//         component="div"
+//         count={rows.length}
+//         rowsPerPage={rowsPerPage}
+//         page={page}
+//         onPageChange={handleChangePage}
+//         onRowsPerPageChange={handleChangeRowsPerPage}
+//       />
+//     </Paper>
+//   );
+// }

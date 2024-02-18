@@ -108,7 +108,7 @@ export default function Dashboard() {
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar position="fixed" open={open} >
-                    <Toolbar sx={{background: '#E6683C'}}>
+                    <Toolbar sx={{background: '#CC080B'}}>
 
                         <IconButton
                             color="inherit"
@@ -148,17 +148,15 @@ export default function Dashboard() {
                     open={open}
                 >
                     <DrawerHeader>
-                        <Typography variant="h6" noWrap component="div" className='drawerTitle'>
-                            BSS Eatery
-                        </Typography>
+                    <LoggedinUserInfo />
                         
-                        <IconButton onClick={handleDrawerClose}>
+                        {/* <IconButton onClick={handleDrawerClose}>
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
+                        </IconButton> */}
                     </DrawerHeader>
                     <Divider />
-                    <LoggedinUserInfo />
-                    <Divider />
+                    {/* <LoggedinUserInfo />
+                    <Divider /> */}
                     <List>
                         <Link to={''}>
                             <ListItem disablePadding>

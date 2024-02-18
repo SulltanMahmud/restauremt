@@ -6,10 +6,10 @@ import FoodList from "../components/FoodList.jsx";
 import OrderList from "../components/OrderList.jsx";
 import AllOrdersList from "../components/AllOrdersList.jsx";
 import Login from "../pages/Login.jsx";
-import ProtectedRoute from "../components/protectedRoute/ProtectedRoute.jsx";
+import ProtectedRoute from "../components/publicProtectedRoute/ProtectedRoute.jsx";
 import ErrorePage from "../pages/ErrorePage.jsx";
 import App from '../App.jsx'
-import AlreadyLoggedInRoute from "../components/protectedRoute/AlreadyLoggedInRoute.jsx";
+import AlreadyLoggedInRoute from "../components/publicProtectedRoute/AlreadyLoggedInRoute.jsx";
 
 const routes = createBrowserRouter([
     {
