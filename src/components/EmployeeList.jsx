@@ -33,7 +33,6 @@ export default function StickyHeadTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [loader, showLoader, hideLoader] = UseLoader();
 
     const addActionButtons = (rowIndex) => (
@@ -46,17 +45,22 @@ export default function StickyHeadTable() {
             </IconButton>
         </div>
     );
-    const handleDelete = (rowIndex) => {
-        async function removeEmployee(rowIndex) {
+    const handleDelete = (employeeId) => {
+        async function removeEmployee(employeeId) {
             try {
-
-                const response = await axios.get(`https://restaurantapi.bssoln.com/api/Employee/delete/${rowIndex.id}`);
-                // {console.log(rowIndex.id)}
+                showLoader();
+                const response = await axios.delete(`https://restaurantapi.bssoln.com/api/Employee/delete/${employeeId}`);
+                if (response.status === 200) {
+                   
+                    setRows(prevRows => prevRows.filter(row => row.id !== employeeId));
+                }
+                hideLoader();
+                
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
-        removeEmployee(rowIndex);
+        removeEmployee(employeeId);
     };
 
     useEffect(() => {
@@ -64,7 +68,7 @@ export default function StickyHeadTable() {
             showLoader();
             try {
                 const response = await axios.get('https://restaurantapi.bssoln.com/api/Employee/datatable?page=1&per_page=10');
-                const newData = response.data.data.map((item, index) => createData(
+                const newData = response.data.data.map(item => createData(
                     <img src={item.image} alt="Employee" style={{ maxWidth: '50px', maxHeight: '50px' }} />,
                     item.user.fullName,
                     item.user.email,
@@ -72,7 +76,7 @@ export default function StickyHeadTable() {
                     item.user.dob,
                     item.joinDate,
                     item.designation,
-                    addActionButtons(index)
+                    addActionButtons(item.id)
                     
                 ));
                 hideLoader();
