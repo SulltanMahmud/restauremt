@@ -38,7 +38,8 @@
 
 .main-body {
     height: 100vh;
-    background-image: url("../../src/assets/img/dashboard-bg.jpg");
+    background: linear-gradient(0deg,rgba(255,255,255,.6),rgb(255,255,255)),url('../src/assets/img/dash-bg.png');
+    /* background-image: url("../../src/assets/img/dashboard-bg.jpg"); */
     background-repeat: no-repeat;
     background-size: cover;
    

@@ -13,9 +13,11 @@ import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import '../components/EmployeeList.css';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
+import ApiCall from './apiCollection/ApiCall';
+import DefaultAdminImage from '../assets/img/defaultImg.png'
+import { Link } from 'react-router-dom';
 
 const columns = [
     { id: 'image', label: 'Image', minWidth: 30 },
@@ -49,17 +51,13 @@ export default function StickyHeadTable() {
         async function removeEmployee(employeeId) {
             try {
                 showLoader();
-                const response = await axios.delete(`https://restaurantapi.bssoln.com/api/Employee/delete/${employeeId}`);
-             
+                const response = await axios.delete(`${ApiCall.baseUrl}Employee/delete/${employeeId}`);
 
                 if (response.status === 204) {
                     const updateRows = rows.filter(row => row?.id !== employeeId)
-                    console.log(updateRows)
-
                     setRows(updateRows);
                 }
                 hideLoader();
-
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -71,16 +69,13 @@ export default function StickyHeadTable() {
         const fetchData = async () => {
             showLoader();
             try {
-                const response = await axios.get('https://restaurantapi.bssoln.com/api/Employee/datatable?page=1&per_page=10');
-               
+                const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?page=1&per_page=10`);
                 setRows(response.data.data);
                 hideLoader();
-
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
     }, []);
 
@@ -95,40 +90,54 @@ export default function StickyHeadTable() {
 
     return (
         <>
-            <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'transparent' }}>
+
+            <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'transparent', boxShadow: "none" }}>
                 <div style={{ backgroundColor: 'white', maxWidth: '90%', marginLeft: 'auto', marginRight: 'auto', marginTop: 20 }}>
-                    <TableContainer sx={{ maxHeight: 440 }}>
+                    <TableContainer sx={{ maxHeight: "80%" }}>
                         <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ fontSize: 20, fontWeight: 'bold' }} align="left" colSpan={2}>
+                            <TableHead sx={{ background: "transparent" }}>
+                                <TableRow >
+                                    <TableCell sx={{ fontSize: 32, fontWeight: 'bold', borderBottom: "3px solid  #CC080B" }} align="left" colSpan={2}>
                                         All Employees
                                     </TableCell>
 
                                     <TableCell align="right" colSpan={6}>
-                                        <Button variant="outlined">Add Employee</Button>
+                                    <Link to={'add-employee'}>
+                                            <Button variant="outlined" sx={{
+                                                color: "black",
+                                                border: "2px solid #CC080B",
+                                                "&:hover": {
+                                                    border: "2px solid #CC080B",
+                                                    color: 'white',
+                                                    backgroundColor: '#CC080B'
+                                                },
+                                            }}>Add Employee</Button>
+                                        </Link>
                                     </TableCell>
 
 
                                 </TableRow>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                                        <TableCell key={column.id} style={{ minWidth: column.minWidth, color: "#CC080B", fontWeight: "bold" }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>
+
                             <TableBody>
                                 {(
                                     rows
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, rowIndex) => (
-                                            
+
                                             <TableRow key={rowIndex} >
                                                 <TableCell align="left">
                                                     <ListItemAvatar>
-                                                        <Avatar alt="Admin Image" src={`https://restaurantapi.bssoln.com/images/user/${row?.user?.image}`} />
+                                                    
+                                                        
+                                                        <Avatar alt="Admin Image" src={ !row?.user?.image ? DefaultAdminImage : `${ApiCall.getImage}${row?.user?.image}`} />
                                                     </ListItemAvatar>
                                                 </TableCell>
                                                 <TableCell align="left">

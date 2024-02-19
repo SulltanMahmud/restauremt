@@ -156,8 +156,7 @@ export default function Dashboard() {
                         </IconButton> */}
                         </DrawerHeader>
                         <Divider />
-                        {/* <LoggedinUserInfo />
-                    <Divider /> */}
+
                         <List>
                             <Link to={''}>
                                 <ListItem disablePadding>

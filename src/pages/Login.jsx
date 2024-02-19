@@ -3,6 +3,9 @@ import axios from "axios";
 import LoginAside from '../components/login/LoginAside';
 import { useNavigate } from 'react-router-dom';
 import UseLoader from '../components/loader/UseLoader';
+import ApiCall from '../components/apiCollection/ApiCall';
+import SnackMessage from '../components/SnackMessage';
+import Swal from 'sweetalert2';
 
 export default function Login() {
 
@@ -20,7 +23,7 @@ export default function Login() {
         const user = { userName, password };
 
         try {
-            const response = await axios.post("https://restaurantapi.bssoln.com/api/Auth/SignIn", user);
+            const response = await axios.post(`${ApiCall.baseUrl}Auth/SignIn`, user);
 
             if (response.data) {
 
@@ -34,7 +37,13 @@ export default function Login() {
             }
 
         } catch (error) {
-            console.error(error);
+            // <SnackMessage msg={error} isErrorOccured={true}/>
+            hideLoader();
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: "",
+            });
         }
     };
 

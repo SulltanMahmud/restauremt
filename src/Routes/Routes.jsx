@@ -10,6 +10,8 @@ import ProtectedRoute from "../components/publicProtectedRoute/ProtectedRoute.js
 import ErrorePage from "../pages/ErrorePage.jsx";
 import App from '../App.jsx'
 import AlreadyLoggedInRoute from "../components/publicProtectedRoute/AlreadyLoggedInRoute.jsx";
+import AddNewEmployee from "../components/AddNewEmployee.jsx";
+
 
 const routes = createBrowserRouter([
     {
@@ -30,14 +32,20 @@ const routes = createBrowserRouter([
         element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
         children: [
             {
-                // path: "",
+  
                 index: true,
                 element: <EmployeeList />,
+ 
+            },
+            {
+                path: "add-employee",
+                element: <AddNewEmployee />,
+              
             },
             {
                 path: "table-list",
                 element: <TableList />,
-
+                
             },
             {
                 path: "food-list",
