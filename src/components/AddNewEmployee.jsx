@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Grid, TextField, Container, TableRow, TableHead, TableCell, Paper, Button, FormControl, InputLabel, Select, MenuItem, Table } from '@mui/material';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -134,8 +133,10 @@ const AddNewEmployee = () => {
 
                 {/* Image Picker */}
                 <Grid item xs={4}>
-                  <div style={{ border: '1px dashed #ccc', padding: '20px', textAlign: 'center', height: "100%" }}>
-                    <input type="file" accept="image/*" name="image" onChange={handleChange} />
+                  <div style={{ border: '1px dashed #ccc', padding: '5px', textAlign: 'center', height: "100%", justifyContent: 'center', alignItems: 'center' }}>
+                    {formData.base64 && <img src={formData.base64} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '130px', marginTop: '10px', marginLeft: "auto", marginRight: "auto" }} />}
+                    <input style={{ maxWidth: '200px', maxHeight: '130px', marginTop: '10px', marginLeft: "auto", marginRight: "auto" }} type="file" accept="image/*" name="image" onChange={handleChange} />
+
                   </div>
                 </Grid>
 
@@ -206,7 +207,7 @@ const AddNewEmployee = () => {
                 </Grid>
                 {/* Fourth Row */}
                 <Grid item xs={3} >
-                  <FormControl fullWidth sx={{ paddingTop: '8px' }}>
+                  <FormControl fullWidth>
                     <InputLabel >Gender</InputLabel>
                     <Select
                       value={formData.genderId}
@@ -214,8 +215,6 @@ const AddNewEmployee = () => {
                       name="genderId"
                       required
                       label="Gender"
-
-
                     >
                       <MenuItem value={`1`}>Male</MenuItem>
                       <MenuItem value={`2`}>Female</MenuItem>
@@ -225,36 +224,29 @@ const AddNewEmployee = () => {
                 </Grid>
                 <Grid item xs={3}>
                   <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <DemoContainer components={['DatePicker']} >
-                      <DatePicker
-                        label="Date of Birth"
-                        value={formData.dateOfBirth}
-                        onChange={(date) => handleDateChange(date, 'dob')}
-                        textField={<TextField fullWidth />}
-                      />
-
-
-                    </DemoContainer>
+                    <DatePicker
+                      label="Date of Birth"
+                      value={formData.dateOfBirth}
+                      onChange={(date) => handleDateChange(date, 'dob')}
+                      textField={<TextField fullWidth />}
+                    />
                   </LocalizationProvider>
 
                 </Grid>
                 <Grid item xs={3}>
                   <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <DemoContainer components={['DatePicker']} >
-                      <DatePicker
-                        label="Date of Join"
-                        value={formData.joinDate}
-                        onChange={(date) => handleDateChange(date, 'joinDate')}
-                        textField={<TextField fullWidth />}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="Date of Join"
+                      value={formData.joinDate}
+                      onChange={(date) => handleDateChange(date, 'joinDate')}
+                      textField={<TextField fullWidth />}
+                    />
                   </LocalizationProvider>
 
                 </Grid>
                 <Grid item xs={3} >
                   <TextField
                     fullWidth
-                    sx={{ paddingTop: '8px' }}
                     label="NID"
                     name="nid"
                     value={formData.nid}
@@ -282,10 +274,7 @@ const AddNewEmployee = () => {
             </form>
           </Paper>
         </Container>
-
       }
-
-
     </>
 
   );

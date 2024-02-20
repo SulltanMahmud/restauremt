@@ -6,12 +6,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -71,9 +68,9 @@ const AppBar = styled(MuiAppBar, {
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(0, 1),
+    padding: theme.spacing(0, 2),
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
 }));
 
 export default function Dashboard() {
@@ -160,60 +157,60 @@ export default function Dashboard() {
                         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                             <List>
                                 <Box>
-                                <Link to={''}>
-                                    <ListItem disablePadding>
+                                    <Link to={''}>
+                                        <ListItem disablePadding>
 
-                                        <ListItemButton >
-                                            <ListItemIcon>
-                                                <PeopleIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Employee List" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
-                                <Link to={'table-list'}>
-                                    <ListItem disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                <TableBarIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Table List" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
-                                <Link to={'food-list'}>
-                                    <ListItem disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                <FastfoodIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Food List" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
-                                <Link to={'order-list'}>
-                                    <ListItem disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                <LocalMallIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Oder Food" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
-                                <Link to={'all-orders-list'}>
-                                    <ListItem disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                <FormatListBulletedIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="All Orders" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
+                                            <ListItemButton >
+                                                <ListItemIcon>
+                                                    <PeopleIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Employee List" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
+                                    <Link to={'table-list'}>
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemIcon>
+                                                    <TableBarIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Table List" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
+                                    <Link to={'food-list'}>
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemIcon>
+                                                    <FastfoodIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Food List" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
+                                    <Link to={'order-list'}>
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemIcon>
+                                                    <LocalMallIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Oder Food" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
+                                    <Link to={'all-orders-list'}>
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemIcon>
+                                                    <FormatListBulletedIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="All Orders" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
                                 </Box>
 
-                                <Box sx={{ flexGrow: 1 }} />
+                                
                                 <Box sx={{ margingTop: 'auto' }}>
                                     <Link onClick={logout}>
                                         <ListItem disablePadding>

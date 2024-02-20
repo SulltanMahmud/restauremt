@@ -19,6 +19,7 @@ import ApiCall from './apiCollection/ApiCall';
 import DefaultAdminImage from '../assets/img/defaultImg.png'
 import { Link } from 'react-router-dom';
 
+
 const columns = [
     { id: 'image', label: 'Image', minWidth: 30 },
     { id: 'name', label: 'Name', minWidth: 170 },
@@ -31,7 +32,7 @@ const columns = [
 ];
 
 
-export default function StickyHeadTable() {
+export default function EmployeeList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState([]);
@@ -40,10 +41,10 @@ export default function StickyHeadTable() {
     const addActionButtons = (rowIndex) => (
         <div>
             <IconButton aria-label="edit">
-                <EditIcon />
+                <EditIcon sx={{color:"green"}} />
             </IconButton>
             <IconButton aria-label="delete" onClick={() => handleDelete(rowIndex)}>
-                <DeleteIcon />
+                <DeleteIcon sx={{color:"red"}} />
             </IconButton>
         </div>
     );

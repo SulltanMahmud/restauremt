@@ -12,26 +12,21 @@ import UseLoader from './loader/UseLoader';
 import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import ApiCall from './apiCollection/ApiCall';
-import DefaultAdminImage from '../assets/img/defaultImg.png'
 import { Link } from 'react-router-dom';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 
 const columns = [
-    { id: 'image', label: 'Image', minWidth: 30 },
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'email', label: 'Email', minWidth: 170 },
-    { id: 'phone', label: 'Phone', minWidth: 100 },
-    { id: 'dateOfBirth', label: 'Date of Birth', minWidth: 100 },
-    { id: 'joiningDate', label: 'Joining Date', minWidth: 100 },
-    { id: 'designation', label: 'Designation', minWidth: 120 },
-    { id: 'action', label: 'Action', minWidth: 120 },
+    { id: 'tableNumber', label: 'Table Number', minWidth: '20%' },
+    { id: 'totalSeats', label: 'Total Seats', minWidth: '20%' },
+    { id: 'bookingStatus', label: 'Booking Status', minWidth: '20%' },
+    { id: 'employees', label: 'Employees', minWidth: '20%' },
+    { id: 'action', label: 'Action', minWidth: '20%' },
 ];
 
 
-export default function StickyHeadTable() {
+export default function TableList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState([]);
@@ -39,22 +34,26 @@ export default function StickyHeadTable() {
 
     const addActionButtons = (rowIndex) => (
         <div>
-            <IconButton aria-label="edit">
-                <EditIcon />
-            </IconButton>
             <IconButton aria-label="delete" onClick={() => handleDelete(rowIndex)}>
-                <DeleteIcon />
+                <DeleteIcon sx={{color:"red"}} />
             </IconButton>
         </div>
     );
-    const handleDelete = (employeeId) => {
-        async function removeEmployee(employeeId) {
+    const addEmployeesButtons = (rowIndex) => (
+        <div>
+            <IconButton aria-label="delete" >
+                <AddCircleOutlineIcon sx={{color:"green"}}/>
+            </IconButton>
+        </div>
+    );
+    const handleDelete = (tableId) => {
+        async function removeTable(tableId) {
             try {
                 showLoader();
-                const response = await axios.delete(`${ApiCall.baseUrl}Employee/delete/${employeeId}`);
+                const response = await axios.delete(`${ApiCall.baseUrl}Table/delete/${tableId}`);
 
                 if (response.status === 204) {
-                    const updateRows = rows.filter(row => row?.id !== employeeId)
+                    const updateRows = rows.filter(row => row?.id !== tableId)
                     setRows(updateRows);
                 }
                 hideLoader();
@@ -62,14 +61,14 @@ export default function StickyHeadTable() {
                 console.error('Error fetching data:', error);
             }
         }
-        removeEmployee(employeeId);
+        removeTable(tableId);
     };
 
     useEffect(() => {
         const fetchData = async () => {
             showLoader();
             try {
-                const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?page=1&per_page=10`);
+                const response = await axios.get(`${ApiCall.baseUrl}Table/datatable?page=1&per_page=100`);
                 setRows(response.data.data);
                 hideLoader();
             } catch (error) {
@@ -88,8 +87,6 @@ export default function StickyHeadTable() {
         setPage(0);
     };
 
-    
-
     return (
         <>
 
@@ -99,12 +96,12 @@ export default function StickyHeadTable() {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead sx={{ background: "transparent" }}>
                                 <TableRow >
-                                    <TableCell sx={{ fontSize: 32, fontWeight: 'bold', borderBottom: "3px solid  #CC080B" }} align="left" colSpan={2}>
-                                        All Employees
+                                    <TableCell sx={{ fontSize: 32, fontWeight: 'bold'}} align="left" colSpan={2}>
+                                        <span style={{textDecoration : "underline #CC080B"}}>All Table List</span>
                                     </TableCell>
 
                                     <TableCell align="right" colSpan={6}>
-                                    <Link to={'add-employee'}>
+                                    <Link to={'/admin/add-table'}>
                                             <Button variant="outlined" sx={{
                                                 color: "black",
                                                 border: "2px solid #CC080B",
@@ -113,7 +110,7 @@ export default function StickyHeadTable() {
                                                     color: 'white',
                                                     backgroundColor: '#CC080B'
                                                 },
-                                            }}>Add Employee</Button>
+                                            }}>Add Table</Button>
                                         </Link>
                                     </TableCell>
 
@@ -135,30 +132,19 @@ export default function StickyHeadTable() {
                                         .map((row, rowIndex) => (
 
                                             <TableRow key={rowIndex} >
+                                                
                                                 <TableCell align="left">
-                                                    <ListItemAvatar>
-                                                    
-                                                        
-                                                        <Avatar alt="Admin Image" src={ !row?.user?.image ? DefaultAdminImage : `${ApiCall.getImage}${row?.user?.image}`} />
-                                                    </ListItemAvatar>
+                                                    {row?.tableNumber}
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {row?.user?.fullName}
+                                                    {row?.numberOfSeats}
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {row?.user?.email}
+                                                    {!row?.isOccupied ? "Available": "Not Available"}
                                                 </TableCell>
+                                                
                                                 <TableCell align="left">
-                                                    {row?.user?.phoneNumber}
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    {row?.user?.dob}
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    {row?.joinDate}
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    {row?.designation}
+                                                    {addEmployeesButtons(row?.id)}
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     {addActionButtons(row?.id)}
@@ -173,7 +159,6 @@ export default function StickyHeadTable() {
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={rows.length}
-                       
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -187,4 +172,6 @@ export default function StickyHeadTable() {
 
     );
 }
+
+
 
