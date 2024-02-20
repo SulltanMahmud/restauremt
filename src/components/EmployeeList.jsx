@@ -69,7 +69,7 @@ export default function StickyHeadTable() {
         const fetchData = async () => {
             showLoader();
             try {
-                const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?page=1&per_page=10`);
+                const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?page=1&per_page=100`);
                 setRows(response.data.data);
                 hideLoader();
             } catch (error) {
@@ -184,4 +184,5 @@ export default function StickyHeadTable() {
 
     );
 }
+
 
