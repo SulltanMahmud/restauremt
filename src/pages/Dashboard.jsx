@@ -70,7 +70,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     alignItems: 'center',
     padding: theme.spacing(0, 2),
     ...theme.mixins.toolbar,
-    // justifyContent: 'flex-end',
+    justifyContent: 'flex-end',
 }));
 
 export default function Dashboard() {
@@ -211,7 +211,7 @@ export default function Dashboard() {
                                 </Box>
 
                                 
-                                <Box sx={{ margingTop: 'auto' }}>
+                                <Box sx={{ margingTop: 'auto'}}>
                                     <Link onClick={logout}>
                                         <ListItem disablePadding>
                                             <ListItemButton>
