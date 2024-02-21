@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Grid, TextField, Container, TableRow, TableHead, TableCell, Paper, Button, FormControl, InputLabel, Select, MenuItem, Table } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -8,11 +8,14 @@ import ApiCall from '../components/apiCollection/ApiCall';
 import axios from "axios";
 import Loading from './loader/Loading';
 import { useNavigate } from 'react-router-dom';
+import '../styles/AddNewEmployee.css';
 
 
-const AddNewEmployee = () => {
+export default function AddNewEmployee() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const hiddenFileInput = useRef(null);
+
   const [formData, setFormData] = useState({
     designation: '',
     joinDate: null,
@@ -30,6 +33,10 @@ const AddNewEmployee = () => {
     image: '',
     base64: ''
   });
+
+  const handleClick = () => {
+    hiddenFileInput.current.click();
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -133,10 +140,13 @@ const AddNewEmployee = () => {
 
                 {/* Image Picker */}
                 <Grid item xs={4}>
-                  <div style={{ border: '1px dashed #ccc', padding: '5px', textAlign: 'center', height: "100%", justifyContent: 'center', alignItems: 'center' }}>
-                    {formData.base64 && <img src={formData.base64} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '130px', marginTop: '10px', marginLeft: "auto", marginRight: "auto" }} />}
-                    <input style={{ maxWidth: '200px', maxHeight: '130px', marginTop: '10px', marginLeft: "auto", marginRight: "auto" }} type="file" accept="image/*" name="image" onChange={handleChange} />
-
+                  <div onClick={handleClick} className='image-picker-container'>
+                    {
+                      formData.base64 ?
+                       <img src={formData.base64} alt="Uploaded" className='image-style'/> :
+                        "Add Profile Image"
+                    }
+                    <input style={{ display: 'none'}} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput}/>
                   </div>
                 </Grid>
 
@@ -280,5 +290,5 @@ const AddNewEmployee = () => {
   );
 };
 
-export default AddNewEmployee;
+
 

@@ -23,8 +23,9 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LoggedinUserInfo from '../components/userinfo/LoggedinUserInfo';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import '../pages/Dashboard.css';
+import '../styles/Dashboard.css';
 import UseLoader from '../components/loader/UseLoader.jsx';
+
 
 
 const drawerWidth = 240;

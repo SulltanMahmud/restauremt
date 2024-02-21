@@ -1,5 +1,5 @@
 import React from 'react';
-import '../loader/Loading.css';
+import '../../styles/Loading.css';
 import LoaderImg  from '../../assets/loading-loading-forever.gif';
 
 
