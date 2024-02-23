@@ -1,17 +1,25 @@
+.appBar-logo-container{
+    display: flex !important;
+    align-items: center!important;
+    margin-bottom: none;
+    margin-left: 3%;
+}
+.appBar-logo{
+    width: 50px !important;
+    height: 50px !important;
+}
 .appBarTitle {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    font-weight: 900;
-    color: white;
-
-    -webkit-text-stroke: 1.5px red;
-
-    font-size: "32px";
-    font-weight: "bolder";
-    align-items: center;
-    margin-left: auto;
+    margin-top: 10px;
+    margin-left: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #cc080b;
+    letter-spacing: 3px;
+    text-shadow: #ffffff 2px 0px 0px, #ffffff 1.75517px 0.958851px 0px, #ffffff 1.0806px 1.68294px 0px, #ffffff 0.141474px 1.99499px 0px, #ffffff -0.832294px 1.81859px 0px, #ffffff -1.60229px 1.19694px 0px, #ffffff -1.97998px 0.28224px 0px, #ffffff -1.87291px -0.701566px 0px, #ffffff -1.30729px -1.5136px 0px, #ffffff -0.421592px -1.95506px 0px, #ffffff 0.567324px -1.91785px 0px, #ffffff 1.41734px -1.41108px 0px, #ffffff 1.92034px -0.558831px 0px;
 
 }
+
+
 
 .toolBarStyle {
     background: '#CC080B';
@@ -30,6 +38,18 @@
     justify-content: center;
 
 
+}
+.menuIcon{
+    color: #cc080b !important;
+    min-width: 10px !important;
+    
+}
+.menuItem{
+    color: #cc080b;
+    padding-left: 10px;
+}
+.itemBackground{
+    background-color: #F7D7D8 !important;
 }
 
 .main-container{
@@ -60,4 +80,11 @@
     opacity: 1;
     transition: 0.6;
    
+}
+@media (min-width: 1024px) {
+    .appBarTitle {
+        margin-left: 10px;
+        font-size: 22px;
+    
+    }
 }

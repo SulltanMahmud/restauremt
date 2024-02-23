@@ -25,6 +25,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 import UseLoader from '../components/loader/UseLoader.jsx';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useState } from 'react';
 
 
 
@@ -76,7 +79,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Dashboard() {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
     const [loader, showLoader, hideLoader] = UseLoader();
 
     const handleDrawerOpen = () => {
@@ -86,7 +89,7 @@ export default function Dashboard() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
+ 
     const logout = () => {
         showLoader();
         localStorage.removeItem("isAuth");
@@ -121,9 +124,15 @@ export default function Dashboard() {
 
                             </IconButton>
 
-                            <span className='appBarTitle'>
-                                BSS RESTAURANT
-                            </span>
+                            <div className='appBar-logo-container'>
+                                <img
+                                    src="../src/assets/logo.png"
+                                    alt="icon"
+                                    className='appBar-logo'
+                                />
+                                <p className='appBarTitle'>BSS RESTAURANT</p>
+                            </div>
+
 
                             <Button endIcon={<AccountCircleIcon />} style={{ color: 'white', marginLeft: "auto" }}>
                                 Profile
@@ -149,76 +158,86 @@ export default function Dashboard() {
                         <DrawerHeader>
                             <LoggedinUserInfo />
 
-                            {/* <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton> */}
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
                         </DrawerHeader>
                         <Divider />
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                             <List>
-                                <Box>
+                                <Box >
                                     <Link to={''}>
-                                        <ListItem disablePadding>
-
-                                            <ListItemButton >
-                                                <ListItemIcon>
+                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
+                                            <ListItemButton  >
+                                                <ListItemIcon className='menuIcon'>
                                                     <PeopleIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary="Employee List" />
+                                                <ListItemText className='menuItem' primary="Employees" />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'table-list'}>
-                                        <ListItem disablePadding>
+                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
                                             <ListItemButton>
-                                                <ListItemIcon>
+                                                <ListItemIcon className='menuIcon'>
                                                     <TableBarIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary="Table List" />
+                                                <ListItemText className='menuItem' primary="Tables" />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'food-list'}>
-                                        <ListItem disablePadding>
+                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
                                             <ListItemButton>
-                                                <ListItemIcon>
+                                                <ListItemIcon className='menuIcon'>
                                                     <FastfoodIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary="Food List" />
+                                                <ListItemText className='menuItem' primary="Foods" />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'order-list'}>
-                                        <ListItem disablePadding>
+                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
                                             <ListItemButton>
-                                                <ListItemIcon>
+                                                <ListItemIcon className='menuIcon'>
                                                     <LocalMallIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary="Oder Food" />
+                                                <ListItemText className='menuItem' primary="New Oder" />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'all-orders-list'}>
-                                        <ListItem disablePadding>
+                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
                                             <ListItemButton>
-                                                <ListItemIcon>
+                                                <ListItemIcon className='menuIcon'>
                                                     <FormatListBulletedIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary="All Orders" />
+                                                <ListItemText className='menuItem' primary="Orders" />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                 </Box>
 
-                                
-                                <Box sx={{ margingTop: 'auto'}}>
+                            </List>
+                            <List sx={{ marginTop: 'auto' }}>
+
+                                <Box >
                                     <Link onClick={logout}>
                                         <ListItem disablePadding>
                                             <ListItemButton>
-                                                <Button fullWidth variant="outlined" align="center" startIcon={<ExitToAppIcon />}>
-                                                    Logout
-                                                </Button>
+                                                
+                                                <Button startIcon={<ExitToAppIcon />} fullWidth variant="outlined" sx={{
+                                                    color: "#CC080B",
+                                                    border: "2px solid #CC080B",
+                                                    borderRadius: "20px",
+                                                    "&:hover": {
+                                                        border: "2px solid #CC080B",
+                                                        color: 'white',
+                                                        backgroundColor: '#CC080B'
+
+                                                    },
+                                                }}>Logout</Button>
 
                                             </ListItemButton>
 
