@@ -75,7 +75,7 @@ const AddNewTable = () => {
             <Table >
               <TableHead>
                 <TableRow >
-                  <TableCell sx={{ fontSize: 32, fontWeight: 'bold', borderBottom: "3px solid  #CC080B" }} align="left" colSpan={12}>
+                  <TableCell className='page-title' sx={{ borderBottom: "3px solid  #CC080B" }} align="left" colSpan={12}>
                     Add Table
                   </TableCell>
                 </TableRow>

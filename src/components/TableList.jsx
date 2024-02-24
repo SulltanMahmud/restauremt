@@ -96,8 +96,8 @@ export default function TableList() {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead sx={{ background: "transparent" }}>
                                 <TableRow >
-                                    <TableCell sx={{ fontSize: 32, fontWeight: 'bold'}} align="left" colSpan={2}>
-                                        <span style={{textDecoration : "underline #CC080B"}}>All Table List</span>
+                                    <TableCell className='page-title' align="left" colSpan={2}>
+                                        <span className='under-line'>All Table List</span>
                                     </TableCell>
 
                                     <TableCell align="right" colSpan={6}>

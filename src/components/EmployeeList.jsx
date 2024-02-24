@@ -18,6 +18,7 @@ import Avatar from '@mui/material/Avatar';
 import ApiCall from './apiCollection/ApiCall';
 import DefaultAdminImage from '../assets/img/defaultImg.png'
 import { Link } from 'react-router-dom';
+import '../styles/CommonStyle.css';
 
 
 const columns = [
@@ -96,10 +97,10 @@ export default function EmployeeList() {
                 <div style={{ backgroundColor: 'white', maxWidth: '90%', marginLeft: 'auto', marginRight: 'auto', marginTop: 20 }}>
                     <TableContainer sx={{ maxHeight: "80%" }}>
                         <Table stickyHeader aria-label="sticky table">
-                            <TableHead sx={{ background: "transparent" }}>
+                            <TableHead >
                                 <TableRow >
-                                    <TableCell sx={{ fontSize: 32, fontWeight: 'bold', borderBottom: "3px solid  #CC080B" }} align="left" colSpan={2}>
-                                        All Employees
+                                    <TableCell className='page-title' align="left" colSpan={2}>
+                                         <span className='under-line'>All Employee</span>
                                     </TableCell>
 
                                     <TableCell align="right" colSpan={6}>

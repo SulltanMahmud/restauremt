@@ -108,7 +108,7 @@ export default function Login() {
                                             endAdornment: (
                                                 <InputAdornment position="end">
                                                     <IconButton
-                                                    sx={{color: "#CC080B"}}
+                                                    sx={{ ":hover":{color: "#CC080B"}}}
                                                         aria-label="toggle password visibility"
                                                         onClick={() => setShowPassword(!showPassword)}
                                                         onMouseDown={(e) => e.preventDefault()}

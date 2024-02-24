@@ -25,9 +25,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 import UseLoader from '../components/loader/UseLoader.jsx';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 
@@ -81,18 +80,25 @@ export default function Dashboard() {
     const theme = useTheme();
     const [open, setOpen] = useState(true);
     const [loader, showLoader, hideLoader] = UseLoader();
+    const [activeItem, setActiveItem] = useState(null);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
+    const isScreenSmall = useMediaQuery('(max-width:1280px)');
+
+    useEffect(() => {
+        setOpen(!isScreenSmall);
+    }, [isScreenSmall]);
+
+
+    const handleListItemClick = (index) => {
+        setActiveItem(index);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
+    const handleDrawerOpenClose = () => {
+        open ? setOpen(false) : setOpen(true);
     };
- 
+
     const logout = () => {
         showLoader();
-        localStorage.removeItem("isAuth");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         const navigate = useNavigate();
@@ -112,17 +118,7 @@ export default function Dashboard() {
                     <AppBar position="fixed" open={open} >
                         <Toolbar sx={{ background: '#CC080B' }}>
 
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={handleDrawerOpen}
-                                edge="start"
-                                sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                            >
-                                <MenuIcon />
 
-
-                            </IconButton>
 
                             <div className='appBar-logo-container'>
                                 <img
@@ -137,6 +133,20 @@ export default function Dashboard() {
                             <Button endIcon={<AccountCircleIcon />} style={{ color: 'white', marginLeft: "auto" }}>
                                 Profile
                             </Button>
+
+                            <IconButton
+                                color="inherit"
+
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpenClose}
+                                edge="start"
+                                sx={{ mr: 2 }}
+                                className='hamburger-menu'
+                            >
+                                <MenuIcon />
+
+
+                            </IconButton>
                         </Toolbar>
 
                     </AppBar>
@@ -158,9 +168,7 @@ export default function Dashboard() {
                         <DrawerHeader>
                             <LoggedinUserInfo />
 
-                            <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                            </IconButton>
+
                         </DrawerHeader>
                         <Divider />
 
@@ -168,7 +176,9 @@ export default function Dashboard() {
                             <List>
                                 <Box >
                                     <Link to={''}>
-                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
+                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                            className={activeItem === 1 ? 'itemBackground' : ''}
+                                            onClick={() => handleListItemClick(1)}>
                                             <ListItemButton  >
                                                 <ListItemIcon className='menuIcon'>
                                                     <PeopleIcon />
@@ -178,7 +188,9 @@ export default function Dashboard() {
                                         </ListItem>
                                     </Link>
                                     <Link to={'table-list'}>
-                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
+                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' } }}
+                                            className={activeItem === 2 ? 'itemBackground' : ''}
+                                            onClick={() => handleListItemClick(2)}>
                                             <ListItemButton>
                                                 <ListItemIcon className='menuIcon'>
                                                     <TableBarIcon />
@@ -188,7 +200,9 @@ export default function Dashboard() {
                                         </ListItem>
                                     </Link>
                                     <Link to={'food-list'}>
-                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
+                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                            className={activeItem === 3 ? 'itemBackground' : ''}
+                                            onClick={() => handleListItemClick(3)}>
                                             <ListItemButton>
                                                 <ListItemIcon className='menuIcon'>
                                                     <FastfoodIcon />
@@ -198,7 +212,9 @@ export default function Dashboard() {
                                         </ListItem>
                                     </Link>
                                     <Link to={'order-list'}>
-                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
+                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                            className={activeItem === 4 ? 'itemBackground' : ''}
+                                            onClick={() => handleListItemClick(4)}>
                                             <ListItemButton>
                                                 <ListItemIcon className='menuIcon'>
                                                     <LocalMallIcon />
@@ -208,7 +224,9 @@ export default function Dashboard() {
                                         </ListItem>
                                     </Link>
                                     <Link to={'all-orders-list'}>
-                                        <ListItem disablePadding sx={{"&:hover": {backgroundColor: '#FDF5F5'},}}>
+                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                            className={activeItem === 5 ? 'itemBackground' : ''}
+                                            onClick={() => handleListItemClick(5)}>
                                             <ListItemButton>
                                                 <ListItemIcon className='menuIcon'>
                                                     <FormatListBulletedIcon />
@@ -226,7 +244,7 @@ export default function Dashboard() {
                                     <Link onClick={logout}>
                                         <ListItem disablePadding>
                                             <ListItemButton>
-                                                
+
                                                 <Button startIcon={<ExitToAppIcon />} fullWidth variant="outlined" sx={{
                                                     color: "#CC080B",
                                                     border: "2px solid #CC080B",

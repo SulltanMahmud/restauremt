@@ -8,7 +8,7 @@ import ApiCall from '../components/apiCollection/ApiCall';
 import axios from "axios";
 import Loading from './loader/Loading';
 import { useNavigate } from 'react-router-dom';
-import '../styles/AddNewEmployee.css';
+import '../styles/CommonStyle.css';
 
 
 export default function AddNewEmployee() {
@@ -93,7 +93,7 @@ export default function AddNewEmployee() {
             <Table >
               <TableHead>
                 <TableRow >
-                  <TableCell sx={{ fontSize: 32, fontWeight: 'bold', borderBottom: "3px solid  #CC080B" }} align="left" colSpan={12}>
+                  <TableCell className='page-title' sx={{ borderBottom: "3px solid  #CC080B" }} align="left" colSpan={12}>
                     Add Employee
                   </TableCell>
                 </TableRow>

@@ -97,8 +97,8 @@ export default function FoodList() {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead sx={{ background: "transparent" }}>
                                 <TableRow >
-                                    <TableCell sx={{ fontSize: 32, fontWeight: 'bold', borderBottom: "3px solid  #CC080B" }} align="left" colSpan={2}>
-                                        All Food List
+                                    <TableCell className='page-title' align="left" colSpan={2}>
+                                        <span className='under-line'>All Food List</span>
                                     </TableCell>
 
                                     <TableCell align="right" colSpan={6}>

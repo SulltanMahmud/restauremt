@@ -19,8 +19,6 @@
 
 }
 
-
-
 .toolBarStyle {
     background: '#CC080B';
 
@@ -88,3 +86,11 @@
     
     }
 }
+@media (min-width: 1280px) {
+    
+    .hamburger-menu {
+        display: none !important;
+    
+    }
+}
+
