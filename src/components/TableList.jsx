@@ -15,7 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ApiCall from './apiCollection/ApiCall';
 import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
+import AssignEmployeeToTable from '../components/AssignEmployeeToTable.jsx'
 
 const columns = [
     { id: 'tableNumber', label: 'Table Number', minWidth: '20%' },
@@ -25,29 +25,42 @@ const columns = [
     { id: 'action', label: 'Action', minWidth: '20%' },
 ];
 
-
 export default function TableList() {
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState([]);
     const [loader, showLoader, hideLoader] = UseLoader();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tableInfo, setTableInfo] = useState([]);
+    const [assignedEmployeeList, setAssignedEmployeeList] = useState([]);
 
-    const addActionButtons = (rowIndex) => (
-        <div>
-            <IconButton aria-label="delete" onClick={() => handleDelete(rowIndex)}>
-                <DeleteIcon sx={{color:"red"}} />
-            </IconButton>
-        </div>
-    );
-    const addEmployeesButtons = (rowIndex) => (
-        <div>
-            <IconButton aria-label="delete" >
-                <AddCircleOutlineIcon sx={{color:"green"}}/>
-            </IconButton>
-        </div>
-    );
+    const openModal = (row) => {
+        setTableInfo(row);
+        setIsModalOpen(true);
+
+        const fetchData = async () => {
+            showLoader();
+            try {
+                const response = await axios.get(`${ApiCall.baseUrl}Employee/non-assigned-employees/${row.id}`);
+                const employeeNames = response.data.map(employee => employee.name);
+                setAssignedEmployeeList(employeeNames);
+                hideLoader();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    };
+
+    const closeModal = (e, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setIsModalOpen(false);
+    };
+
     const handleDelete = (tableId) => {
-        async function removeTable(tableId) {
+        async function removeTable(tableId){
             try {
                 showLoader();
                 const response = await axios.delete(`${ApiCall.baseUrl}Table/delete/${tableId}`);
@@ -68,7 +81,7 @@ export default function TableList() {
         const fetchData = async () => {
             showLoader();
             try {
-                const response = await axios.get(`${ApiCall.baseUrl}Table/datatable?page=1&per_page=100`);
+                const response = await axios.get(`${ApiCall.baseUrl}Table/datatable?page=${page + 1}&per_page=${rowsPerPage}`);
                 setRows(response.data.data);
                 hideLoader();
             } catch (error) {
@@ -76,7 +89,7 @@ export default function TableList() {
             }
         };
         fetchData();
-    }, []);
+    }, [rowsPerPage]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -87,38 +100,26 @@ export default function TableList() {
         setPage(0);
     };
 
-    return (
+    return(
         <>
-
-            <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'transparent', boxShadow: "none" }}>
-                <div style={{ backgroundColor: 'white', maxWidth: '90%', marginLeft: 'auto', marginRight: 'auto', marginTop: 20 }}>
-                    <TableContainer sx={{ maxHeight: "80%" }}>
+            <Paper className='mainPaperStyle'>
+                <div className='page-top'>
+                    <div>
+                        <span className='under-line page-title'>All Table List</span>
+                    </div>
+                    <div>
+                        <Link to={'/admin/add-table'}>
+                            <Button variant="outlined" className='topButtonStyle'>Add Table</Button>
+                        </Link>
+                    </div>
+                </div>
+                <div className='mainTableContainer'>
+                    <TableContainer className='tableContainerStyle'>
                         <Table stickyHeader aria-label="sticky table">
-                            <TableHead sx={{ background: "transparent" }}>
-                                <TableRow >
-                                    <TableCell className='page-title' align="left" colSpan={2}>
-                                        <span className='under-line'>All Table List</span>
-                                    </TableCell>
-
-                                    <TableCell align="right" colSpan={6}>
-                                    <Link to={'/admin/add-table'}>
-                                            <Button variant="outlined" sx={{
-                                                color: "black",
-                                                border: "2px solid #CC080B",
-                                                "&:hover": {
-                                                    border: "2px solid #CC080B",
-                                                    color: 'white',
-                                                    backgroundColor: '#CC080B'
-                                                },
-                                            }}>Add Table</Button>
-                                        </Link>
-                                    </TableCell>
-
-
-                                </TableRow>
+                            <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} style={{ minWidth: column.minWidth, color: "#CC080B", fontWeight: "bold" }}>
+                                        <TableCell key={column.id} className='tableHeaderText' style={{ minWidth: column.minWidth }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
@@ -130,24 +131,33 @@ export default function TableList() {
                                     rows
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, rowIndex) => (
-
                                             <TableRow key={rowIndex} >
-                                                
-                                                <TableCell align="left">
+
+                                                <TableCell align="left" className='tableBodyText'>
                                                     {row?.tableNumber}
                                                 </TableCell>
-                                                <TableCell align="left">
+                                                <TableCell align="left" className='tableBodyText'>
                                                     {row?.numberOfSeats}
                                                 </TableCell>
-                                                <TableCell align="left">
-                                                    {!row?.isOccupied ? "Available": "Not Available"}
+                                                <TableCell align="left" className='tableBodyText'>
+                                                    {!row?.isOccupied ? "Available" : "Not Available"}
                                                 </TableCell>
-                                                
-                                                <TableCell align="left">
-                                                    {addEmployeesButtons(row?.id)}
+
+                                                <TableCell align="left" className='tableBodyText'>
+                                                    <div>
+                                                        <IconButton aria-label="add-employees" onClick={() => openModal(row)} >
+                                                            <AddCircleOutlineIcon sx={{ color: "#96e399", ":hover":{color: "#4CAF50"} }} />
+                                                        </IconButton>
+
+                                                    </div>
+
                                                 </TableCell>
-                                                <TableCell align="left">
-                                                    {addActionButtons(row?.id)}
+                                                <TableCell align="left" className='tableBodyText'>
+                                                    <div>
+                                                        <IconButton aria-label="delete" onClick={() => handleDelete(row?.id)}>
+                                                            <DeleteIcon className='deleteButtonStyle'/>
+                                                        </IconButton>
+                                                    </div>
                                                 </TableCell>
                                             </TableRow>
                                         ))
@@ -156,7 +166,7 @@ export default function TableList() {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPageOptions={[10, 25, 50]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
@@ -164,12 +174,14 @@ export default function TableList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                </div>
 
+                    {
+                        isModalOpen && <AssignEmployeeToTable open={isModalOpen} handleClose={closeModal} tableInfo={tableInfo} EmployeeNames={assignedEmployeeList} />
+                    }
+                </div>
             </Paper>
             {loader}
         </>
-
     );
 }
 

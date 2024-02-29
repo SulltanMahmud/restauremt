@@ -21,16 +21,16 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LoggedinUserInfo from '../components/userinfo/LoggedinUserInfo';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 import UseLoader from '../components/loader/UseLoader.jsx';
 import { useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 
 
-const drawerWidth = 240;
+const drawerWidth = 255.5;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -112,7 +112,7 @@ export default function Dashboard() {
     return (
 
         <>
-            <div className='main-body'>
+            <div >
                 <Box sx={{ display: 'flex' }}>
                     <CssBaseline />
                     <AppBar position="fixed" open={open} >
@@ -130,8 +130,12 @@ export default function Dashboard() {
                             </div>
 
 
-                            <Button endIcon={<AccountCircleIcon />} style={{ color: 'white', marginLeft: "auto" }}>
-                                Profile
+                            <Button className='appBarAdmin'>
+                                Admin
+                            </Button>
+
+                            <Button>
+                                <ShoppingBasketIcon sx={{ color: "white", marginRight: "40px", marginLeft: "16px" }} />
                             </Button>
 
                             <IconButton
@@ -174,64 +178,64 @@ export default function Dashboard() {
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                             <List>
-                                <Box >
+                                <Box sx={{padding: "0px 8px"}} >
                                     <Link to={''}>
-                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                        <ListItem disablePadding sx={{ "&:hover": { background: 'none !imporatant'}}}
                                             className={activeItem === 1 ? 'itemBackground' : ''}
                                             onClick={() => handleListItemClick(1)}>
-                                            <ListItemButton  >
+                                            <ListItemButton sx={{"&:hover": { backgroundColor: '#FDF5F5', borderRadius: "5px !important"},padding: "8px !important"}} >
                                                 <ListItemIcon className='menuIcon'>
                                                     <PeopleIcon />
                                                 </ListItemIcon>
-                                                <ListItemText className='menuItem' primary="Employees" />
+                                                <ListItemText className='menuItem' primary="Employees" primaryTypographyProps={{fontFamily: "'Josefin Sans', sans-serif !important", fontSize:"13px", fontWeight: "600 !important"}} />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'table-list'}>
-                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' } }}
+                                        <ListItem disablePadding sx={{ "&:hover": { background: 'none !imporatant'}}}
                                             className={activeItem === 2 ? 'itemBackground' : ''}
                                             onClick={() => handleListItemClick(2)}>
-                                            <ListItemButton>
+                                            <ListItemButton sx={{"&:hover": { backgroundColor: '#FDF5F5', borderRadius: "5px !important"},padding: "8px !important"}}>
                                                 <ListItemIcon className='menuIcon'>
                                                     <TableBarIcon />
                                                 </ListItemIcon>
-                                                <ListItemText className='menuItem' primary="Tables" />
+                                                <ListItemText className='menuItem' primary="Tables" primaryTypographyProps={{fontFamily: "'Josefin Sans', sans-serif !important", fontSize:"13px", fontWeight: "600 !important"}} />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'food-list'}>
-                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                        <ListItem disablePadding sx={{ "&:hover": { background: 'none !imporatant'}}}
                                             className={activeItem === 3 ? 'itemBackground' : ''}
                                             onClick={() => handleListItemClick(3)}>
-                                            <ListItemButton>
+                                            <ListItemButton sx={{"&:hover": { backgroundColor: '#FDF5F5', borderRadius: "5px !important"},padding: "8px !important"}}>
                                                 <ListItemIcon className='menuIcon'>
                                                     <FastfoodIcon />
                                                 </ListItemIcon>
-                                                <ListItemText className='menuItem' primary="Foods" />
+                                                <ListItemText className='menuItem' primary="Foods" primaryTypographyProps={{fontFamily: "'Josefin Sans', sans-serif !important", fontSize:"13px", fontWeight: "600 !important"}} />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'order-list'}>
-                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                        <ListItem disablePadding sx={{ "&:hover": { background: 'none !imporatant'}}}
                                             className={activeItem === 4 ? 'itemBackground' : ''}
                                             onClick={() => handleListItemClick(4)}>
-                                            <ListItemButton>
+                                            <ListItemButton sx={{"&:hover": { backgroundColor: '#FDF5F5', borderRadius: "5px !important"},padding: "8px !important"}}>
                                                 <ListItemIcon className='menuIcon'>
                                                     <LocalMallIcon />
                                                 </ListItemIcon>
-                                                <ListItemText className='menuItem' primary="New Oder" />
+                                                <ListItemText className='menuItem' primary="New Oder" primaryTypographyProps={{fontFamily: "'Josefin Sans', sans-serif !important", fontSize:"13px", fontWeight: "600 !important"}}/>
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
                                     <Link to={'all-orders-list'}>
-                                        <ListItem disablePadding sx={{ "&:hover": { backgroundColor: '#FDF5F5' }, }}
+                                        <ListItem disablePadding sx={{ "&:hover": { background: 'none !imporatant'}}}
                                             className={activeItem === 5 ? 'itemBackground' : ''}
                                             onClick={() => handleListItemClick(5)}>
-                                            <ListItemButton>
+                                            <ListItemButton sx={{"&:hover": { backgroundColor: '#FDF5F5', borderRadius: "5px !important"},padding: "8px !important"}}>
                                                 <ListItemIcon className='menuIcon'>
                                                     <FormatListBulletedIcon />
                                                 </ListItemIcon>
-                                                <ListItemText className='menuItem' primary="Orders" />
+                                                <ListItemText className='menuItem' primary="Orders" primaryTypographyProps={{fontFamily: "'Josefin Sans', sans-serif !important", fontSize:"13px", fontWeight: "600 !important"}} />
                                             </ListItemButton>
                                         </ListItem>
                                     </Link>
@@ -243,18 +247,23 @@ export default function Dashboard() {
                                 <Box >
                                     <Link onClick={logout}>
                                         <ListItem disablePadding>
-                                            <ListItemButton>
+                                            <ListItemButton sx={{padding : "0px 12px !important", marginBottom: "12px !important"}}>
 
                                                 <Button startIcon={<ExitToAppIcon />} fullWidth variant="outlined" sx={{
                                                     color: "#CC080B",
                                                     border: "2px solid #CC080B",
-                                                    borderRadius: "20px",
+                                                    borderRadius: "30px",
+                                                    fontSize: '14px !imporatant',
+                                                    
                                                     "&:hover": {
                                                         border: "2px solid #CC080B",
                                                         color: 'white',
                                                         backgroundColor: '#CC080B'
 
                                                     },
+                                                    textTransform: "none !important",
+                                                    fontFamily: "'Josefin Sans', sans-serif !important",
+                                                    padding: "8px 0px !important"
                                                 }}>Logout</Button>
 
                                             </ListItemButton>
@@ -272,7 +281,7 @@ export default function Dashboard() {
 
                     </Drawer>
 
-                    <Main open={open} style={{ padding: 0 }}>
+                    <Main className='main-body' open={open} style={{ padding: 0 }}>
                         <DrawerHeader />
 
                         <Outlet />

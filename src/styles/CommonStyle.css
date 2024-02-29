@@ -1,7 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Quattrocento:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
+
+
+/* This is our main paper style */
+.mainPaperStyle {
+    width: 100% !important;
+    overflow: hidden !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* This is our main paper style */
+
+
+/* this is the section of over the data table */
+.page-top {
+    background-color: transparent;
+    max-width: 90%;
+    margin: 40px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 32px !important;
+    font-weight: 600 !important;
+    font-family: 'Quattrocento', serif !important;
+}
 
 .under-line {
-
     padding-bottom: 10px;
     border-bottom-style: solid;
     border-bottom-color: #CC080B;
@@ -9,14 +37,25 @@
     width: fit-content;
 }
 
-.page-title {
-    font-size: 32px !important;
-    font-weight: 700 !important;    ;
-    /* background: transparent !important; */
-    font-family: Quattrocento,serif !important;
+.topButtonStyle {
+    color: black !important;
+    border: 2px solid #CC080B !important;
+    font-family: 'Josefin Sans', sans-serif !important;
+    padding: 6px 30px !important;
+    font-size: 14px !important;
+    background-color: white !important;
 }
 
+.topButtonStyle:hover {
+    border: 2px solid #CC080B !important;
+    color: white !important;
+    background-color: #CC080B !important;
+}
 
+/* this is the section of over the data table */
+
+
+/* this is the image picker container style */
 .image-picker-container {
     border: 1px dashed #ccc;
     padding: 20px 5px 5px 5px;
@@ -31,3 +70,73 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* this is the image picker container style */
+
+
+/* this is the data table style  */
+.mainTableContainer {
+    background-color: white;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.tableContainerStyle {
+    max-height: 80%;
+}
+
+.tableHeaderText {
+    font-family: 'Josefin Sans', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #CC080B !important;
+}
+
+.tableBodyText {
+    font-family: 'Josefin Sans', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    padding: 8px 16px !important;
+}
+
+.editButtonStyle {
+    color: #96e399;
+}
+
+.editButtonStyle:hover {
+    color: #4CAF50;
+}
+
+.deleteButtonStyle {
+    color: #d16f70;
+}
+
+.deleteButtonStyle:hover {
+    color: #CC080B;
+}
+
+/* this is the data table style  */
+
+
+
+/* this is the add employee, table and foods button style */
+.formSubmitButtonStyle {
+    color: white !important;
+    background-color: #CC080b !important;
+    border: 2px solid #CC080B !important;
+    font-size: 14px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    font-weight: bold !important;
+}
+
+.formSubmitButtonStyle:hover {
+    color: white !important;
+    background-color: #CC080b !important;
+    border: 2px solid #CC080B !important;
+}
+
+/* this is the add employee, table and foods button style */

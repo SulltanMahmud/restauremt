@@ -1,13 +1,18 @@
-.appBar-logo-container{
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Quattrocento:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+.appBar-logo-container {
     display: flex !important;
-    align-items: center!important;
+    align-items: center !important;
     margin-bottom: none;
     margin-left: 3%;
 }
-.appBar-logo{
+
+.appBar-logo {
     width: 50px !important;
     height: 50px !important;
 }
+
 .appBarTitle {
     margin-top: 10px;
     margin-left: 0;
@@ -17,6 +22,20 @@
     letter-spacing: 3px;
     text-shadow: #ffffff 2px 0px 0px, #ffffff 1.75517px 0.958851px 0px, #ffffff 1.0806px 1.68294px 0px, #ffffff 0.141474px 1.99499px 0px, #ffffff -0.832294px 1.81859px 0px, #ffffff -1.60229px 1.19694px 0px, #ffffff -1.97998px 0.28224px 0px, #ffffff -1.87291px -0.701566px 0px, #ffffff -1.30729px -1.5136px 0px, #ffffff -0.421592px -1.95506px 0px, #ffffff 0.567324px -1.91785px 0px, #ffffff 1.41734px -1.41108px 0px, #ffffff 1.92034px -0.558831px 0px;
 
+}
+
+.appBarAdmin {
+    color: white !important;
+    margin-left: auto !important;
+    background-color: #8f0709 !important;
+    padding: 19px 36px !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    border: 0px !important;
+    cursor: pointer !important;
+    text-transform: none !important;
+    font-family: 'Josefin Sans', sans-serif !important;
+    font-size: 16px !important;
 }
 
 .toolBarStyle {
@@ -37,60 +56,51 @@
 
 
 }
-.menuIcon{
+
+.menuIcon {
     color: #cc080b !important;
     min-width: 10px !important;
-    
+
 }
-.menuItem{
+
+.menuItem {
     color: #cc080b;
     padding-left: 10px;
 }
-.itemBackground{
+
+.itemBackground {
     background-color: #F7D7D8 !important;
+    border-radius: 5px !important;
 }
 
-.main-container{
+.main-container {
     padding: 0;
 }
 
 .main-body {
-    height: 100vh;
-    background: linear-gradient(0deg,rgba(255,255,255,.6),rgb(255,255,255)),url('../src/assets/img/dash-bg.png');
+    min-height: 100dvh;
+    background: linear-gradient(0deg, rgba(230, 230, 230, 0.9), rgba(230, 230, 230, 0.9)), url('../src/assets/img/dash-bg.png');
     /* background-image: url("../../src/assets/img/dashboard-bg.jpg"); */
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    
-   
 }
 
-.overlay{
-    width: 100vh;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    position: absolute;
-    background: rgba(250, 250, 250, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    transition: 0.6;
-   
-}
 @media (min-width: 1024px) {
     .appBarTitle {
         margin-left: 10px;
         font-size: 22px;
-    
-    }
-}
-@media (min-width: 1280px) {
-    
-    .hamburger-menu {
-        display: none !important;
-    
     }
 }
 
+@media (min-width: 1280px) {
+    .hamburger-menu {
+        display: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .appBarAdmin {
+        display: none !important;
+    }
+}

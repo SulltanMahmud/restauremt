@@ -1,0 +1,18 @@
+
+
+.bodyText {
+    font-size: 1.5rem !important;
+    font-weight: 400;
+    line-height: 2rem;
+    letter-spacing: normal !important;
+    font-family: Roboto, sans-serif !important;
+
+}
+
+.buttonStyle{
+    background-color: white !important;
+    color: #CC080B !important;
+}
+.buttonStyle:hover{
+    background-color: #F7D7D8 !important;
+}
