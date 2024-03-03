@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
+import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText, formControlClasses } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -9,12 +10,16 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import '../styles/CommonStyle.css';
 import UseLoader from './loader/UseLoader';
+import DefaultAdminImage from '../assets/img/defaultImg.png'
 
 
 export default function AddNewEmployee() {
   const navigate = useNavigate();
   const hiddenFileInput = useRef(null);
   const [loader, showLoader, hideLoader] = UseLoader();
+  const { register, handleSubmit, formState: { errors }, setValue, control } = useForm();
+  // const { control, handleDateSubmit, formState: { dateErrors } } = useForm();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     designation: '',
@@ -34,6 +39,8 @@ export default function AddNewEmployee() {
     base64: ''
   });
 
+  console.log(formData.image)
+
   const handleClick = () => {
     hiddenFileInput.current.click();
   };
@@ -48,6 +55,15 @@ export default function AddNewEmployee() {
         setFormData({ ...formData, [name]: value, base64: reader.result });
       };
     }
+    else if (name === 'genderId') {
+      setFormData({ ...formData, [name]: value });
+      setValue('genderId', e.target.value);
+      if (e.target.value) {
+        setErrorMessage("");
+      }
+
+    }
+
     else {
       setFormData({ ...formData, [name]: value });
     }
@@ -57,20 +73,24 @@ export default function AddNewEmployee() {
     setFormData({ ...formData, [field]: date.toISOString() });
   };
 
-  async function handleSubmit(e) {
+  const onSubmit = async () => {
     showLoader();
-    e.preventDefault();
-    try {
-      const response = await axios.post(`${ApiCall.baseUrl}Employee/create`, formData);
-      console.log(response)
 
+    try {
+
+      const formDataWithImage = new FormData();
+      // Append all form data fields
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataWithImage.append(key, value);
+      });
+      
+      const response = await axios.post(`${ApiCall.baseUrl}Employee/create`, formDataWithImage);
       if (response.status === 200) {
         navigate("/admin");
         hideLoader();
       }
-
     } catch (error) {
-      console.log(error)
+
       Swal.fire({
         icon: "error",
         title: "Failed",
@@ -79,17 +99,19 @@ export default function AddNewEmployee() {
     }
   };
 
+
+
   return (
     <>
       <Paper className='mainPaperStyle'>
-        <div className='page-top' style={{ borderBottom: "3px solid  #CC080B" }}>
+        <div className='page-top' style={{ borderBottom: "3px solid  #CC080B", paddingBottom: "10px" }}>
           <div >
             <span style={{ paddingBottom: 50 }} className=' page-title'>Add Employee</span>
           </div>
         </div>
 
         <div className='mainTableContainer' style={{ padding: 40 }}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               {/* First Row */}
               <Grid item xs={8}>
@@ -100,7 +122,11 @@ export default function AddNewEmployee() {
                       label="First Name"
                       name="firstName"
                       value={formData.firstName}
-                      onChange={handleChange}
+                      onInput={handleChange}
+                      error={!!errors.firstName}
+                      helperText={errors.firstName && errors.firstName.message}
+                      {...register('firstName', { required: 'First name is required' })}
+
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -109,7 +135,7 @@ export default function AddNewEmployee() {
                       label="Middle Name"
                       name="middleName"
                       value={formData.middleName}
-                      onChange={handleChange}
+                      onInput={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -118,8 +144,11 @@ export default function AddNewEmployee() {
                       label="Last Name"
                       name="lastName"
                       value={formData.lastName}
-                      onChange={handleChange}
-                      required
+                      onInput={handleChange}
+                      error={!!errors.lastName}
+                      helperText={errors.lastName && errors.lastName.message}
+                      {...register('lastName', { required: 'Last name is required' })}
+
                     />
                   </Grid>
                 </Grid>
@@ -130,8 +159,7 @@ export default function AddNewEmployee() {
                 <div onClick={handleClick} className='image-picker-container'>
                   {
                     formData.base64 ?
-                      <img src={formData.base64} alt="Uploaded" className='image-style' /> :
-                      "Add Profile Image"
+                      <img src={formData.base64} alt="Uploaded" className='image-style' /> : <img src={DefaultAdminImage} alt="Default" className='image-style' />
                   }
                   <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput} />
                 </div>
@@ -145,8 +173,11 @@ export default function AddNewEmployee() {
                   label="Spouse Name"
                   name="spouseName"
                   value={formData.spouseName}
-                  onChange={handleChange}
-                  required
+                  onInput={handleChange}
+                  error={!!errors.spouseName}
+                  helperText={errors.spouseName && errors.spouseName.message}
+                  {...register('spouseName', { required: 'Spouse name is required' })}
+
                 />
               </Grid>
               <Grid item xs={4}>
@@ -155,8 +186,11 @@ export default function AddNewEmployee() {
                   label="Father Name"
                   name="fatherName"
                   value={formData.fatherName}
-                  onChange={handleChange}
-                  required
+                  onInput={handleChange}
+                  error={!!errors.fatherName}
+                  helperText={errors.fatherName && errors.fatherName.message}
+                  {...register('fatherName', { required: 'Father name is required' })}
+
                 />
               </Grid>
               <Grid item xs={4}>
@@ -165,8 +199,11 @@ export default function AddNewEmployee() {
                   label="Mother Name"
                   name="motherName"
                   value={formData.motherName}
-                  onChange={handleChange}
-                  required
+                  onInput={handleChange}
+                  error={!!errors.motherName}
+                  helperText={errors.motherName && errors.motherName.message}
+                  {...register('motherName', { required: 'Mother name is required' })}
+
                 />
               </Grid>
 
@@ -178,8 +215,11 @@ export default function AddNewEmployee() {
                   label="Designation"
                   name="designation"
                   value={formData.designation}
-                  onChange={handleChange}
-                  required
+                  onInput={handleChange}
+                  error={!!errors.designation}
+                  helperText={errors.designation && errors.designation.message}
+                  {...register('designation', { required: 'Designation is required' })}
+
                 />
               </Grid>
               <Grid item xs={4}>
@@ -188,8 +228,11 @@ export default function AddNewEmployee() {
                   label="Email"
                   name="email"
                   value={formData.email}
-                  onChange={handleChange}
-                  required
+                  onInput={handleChange}
+                  error={!!errors.email}
+                  helperText={errors.email && errors.email.message}
+                  {...register('email', { required: 'Email is required' })}
+
                 />
               </Grid>
               <Grid item xs={4}>
@@ -198,50 +241,87 @@ export default function AddNewEmployee() {
                   label="Phone Number"
                   name="phoneNumber"
                   value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
+                  onInput={handleChange}
+                  error={!!errors.phoneNumber}
+                  helperText={errors.phoneNumber && errors.phoneNumber.message}
+                  {...register('phoneNumber', { required: 'Phone Number is required' })}
+
                 />
               </Grid>
               {/* Fourth Row */}
               <Grid item xs={3} >
-                <FormControl fullWidth>
+                <FormControl fullWidth error={!formData.genderId && !!errors.genderId}>
+
                   <InputLabel >Gender</InputLabel>
                   <Select
-                    value={formData.genderId}
-                    onChange={handleChange}
-                    name="genderId"
-                    required
                     label="Gender"
+                    name="genderId"
+                    value={formData.genderId}
+                    {...register('genderId', { required: 'Gender is required' })}
+                    onChange={handleChange}
                   >
                     <MenuItem value={`1`}>Male</MenuItem>
                     <MenuItem value={`2`}>Female</MenuItem>
                     <MenuItem value={`3`}>Other</MenuItem>
                   </Select>
+                  {formData.genderId ? <FormHelperText>{""}</FormHelperText> : <FormHelperText>{errors.genderId?.message}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid item xs={3}>
                 <div>
-                  <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <DatePicker
-                      label="Date of Birth"
-                      value={formData.dateOfBirth}
-                      onChange={(date) => handleDateChange(date, 'dob')}
-                      textField={<TextField fullWidth />}
-                    />
-                  </LocalizationProvider>
+                  <FormControl fullWidth error={!!errors.dob}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Controller
+
+                        name="dob"
+                        control={control}
+                        defaultValue={null}
+                        rules={{ required: 'Date of Birth is required' }}
+                        render={({ field }) => (
+                          <DatePicker
+
+                            {...field}
+                            label="Date of Birth"
+                            onInput={(date) => handleDateChange(date, 'dob')}
+
+                            textField={(params) => <TextField {...params} fullWidth error={!formData.dob && !!errors.dob} />}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                    {errors.dob && <FormHelperText>{errors.dob.message}</FormHelperText>}
+                  </FormControl>
+
                 </div>
+
               </Grid>
               <Grid item xs={3}>
                 <div>
-                  <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <DatePicker
-                      label="Date of Join"
-                      value={formData.joinDate}
-                      onChange={(date) => handleDateChange(date, 'joinDate')}
-                      textField={<TextField fullWidth />}
-                    />
-                  </LocalizationProvider>
+
+                  <FormControl fullWidth error={!!errors.joinDate}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Controller
+
+                        name="joinDate"
+                        control={control}
+                        defaultValue={null}
+                        rules={{ required: 'Date of Join is required' }}
+                        render={({ field }) => (
+                          <DatePicker
+
+                            {...field}
+                            label="Date of Join"
+                            onInput={(date) => handleDateChange(date, 'joinDate')}
+
+                            textField={(params) => <TextField {...params} fullWidth error={!formData.joinDate && !!errors.joinDate} />}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                    {errors.joinDate && <FormHelperText>{errors.joinDate.message}</FormHelperText>}
+                  </FormControl>
                 </div>
+
               </Grid>
               <Grid item xs={3} >
                 <TextField
@@ -249,7 +329,10 @@ export default function AddNewEmployee() {
                   label="NID"
                   name="nid"
                   value={formData.nid}
-                  onChange={handleChange}
+                  onInput={handleChange}
+                  error={!!errors.nid}
+                  helperText={errors.nid && errors.nid.message}
+                  {...register('nid', { required: 'NID is required' })}
                 />
               </Grid>
               {/* Fifth Row */}

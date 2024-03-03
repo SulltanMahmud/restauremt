@@ -21,8 +21,6 @@ import '../styles/CommonStyle.css';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import StarsIcon from '@mui/icons-material/Stars';
 
-
-
 const columns = [
     { id: 'image', label: 'Image', minWidth: 30 },
     { id: 'name', label: 'Name', minWidth: 230 },
@@ -35,8 +33,9 @@ const columns = [
 
 export default function EmployeeList() {
 
-    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [totalData, setTotalData] = useState(0);
+    const [page, setPage] = useState(0);
     const [rows, setRows] = useState([]);
     const [loader, showLoader, hideLoader] = UseLoader();
     const [starColor, setStarColor] = useState(false);
@@ -60,18 +59,24 @@ export default function EmployeeList() {
     };
 
     useEffect(() => {
+
         const fetchData = async () => {
             showLoader();
             try {
-                const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?page=${page + 1}&per_page=${rowsPerPage}`);
+                const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?sort=&page=${page + 1}&per_page=${rowsPerPage}`);
                 setRows(response.data.data);
+                setTotalData(response.data.total);
+
                 hideLoader();
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
+
     }, [rowsPerPage]);
+
+
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -80,6 +85,7 @@ export default function EmployeeList() {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
+       
     };
 
     return (
@@ -124,7 +130,6 @@ export default function EmployeeList() {
                                                     <div>
                                                         <IconButton aria-label="star" onClick={() => setStarColor(!starColor)}>
                                                             {starColor ? <StarsIcon style={{ color: "#F9A825" }} /> : <StarsIcon style={{ color: "#BDBDBD" }} />}
-
                                                         </IconButton>
                                                     </div>
                                                 </TableCell>
@@ -157,7 +162,7 @@ export default function EmployeeList() {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[10, 25, 50]}
+                        rowsPerPageOptions={[10, 25, 50, 100, { value: totalData, label: 'All' }]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
@@ -165,6 +170,11 @@ export default function EmployeeList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
+                        classes={{
+                            input: 'MuiTablePagination-input',
+                            select: 'MuiTablePagination-select',
+                            selectIcon: 'MuiTablePagination-selectIcon',
+                        }}
                     />
                 </div>
             </Paper>

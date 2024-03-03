@@ -140,3 +140,31 @@
 }
 
 /* this is the add employee, table and foods button style */
+
+
+
+/* this is for visible style of any kind of field */
+.visibleStyle{
+    visibility: hidden !important;
+}
+/* this is for visible style of any kind of field */
+
+
+/* Pagination Styles */
+.MuiTablePagination-input,
+.MuiTablePagination-select {
+    font-size: 16px !important;
+    color: #555 !important;
+    margin-right: 15px !important;
+    font-family: 'Josefin Sans', sans-serif !important;
+    border: 1px #555 solid;
+    border-radius: 3px;
+    background: none !important;
+    padding: 2px 0px 2px 8px;
+}
+
+.MuiTablePagination-selectIcon {
+    color: #555;
+    margin-right: 8px;
+}
+/* Pagination Styles */

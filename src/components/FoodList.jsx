@@ -32,6 +32,7 @@ const columns = [
 
 
 export default function FoodList() {
+    const [totalData, setTotalData] = useState(0);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState([]);
@@ -61,6 +62,7 @@ export default function FoodList() {
             try {
                 const response = await axios.get(`${ApiCall.baseUrl}Food/datatable?page=${page + 1}&per_page=${rowsPerPage}`);
                 setRows(response.data.data);
+                setTotalData(response.data.total);
                 hideLoader();
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -151,13 +153,20 @@ export default function FoodList() {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[10, 25, 50]}
+                        rowsPerPageOptions={[10, 25, 50, 100, { value: totalData, label: 'All' }]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage={"Items per page: "}
+                        
+                        classes={{
+                            input: 'MuiTablePagination-input',
+                            select: 'MuiTablePagination-select',
+                            selectIcon: 'MuiTablePagination-selectIcon',
+                        }}
                     />
                 </div>
             </Paper>

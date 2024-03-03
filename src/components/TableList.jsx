@@ -16,6 +16,8 @@ import ApiCall from './apiCollection/ApiCall';
 import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AssignEmployeeToTable from '../components/AssignEmployeeToTable.jsx'
+import { styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
 
 const columns = [
     { id: 'tableNumber', label: 'Table Number', minWidth: '20%' },
@@ -25,8 +27,13 @@ const columns = [
     { id: 'action', label: 'Action', minWidth: '20%' },
 ];
 
+const ListItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.5),
+}));
+
 export default function TableList() {
 
+    const [totalData, setTotalData] = useState(0);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState([]);
@@ -34,6 +41,13 @@ export default function TableList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tableInfo, setTableInfo] = useState([]);
     const [assignedEmployeeList, setAssignedEmployeeList] = useState([]);
+
+    const [chipData, setChipData] = React.useState([]);
+
+    const handleDeleteChip = (chipToDelete) => () => {
+
+        setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+    };
 
     const openModal = (row) => {
         setTableInfo(row);
@@ -60,7 +74,7 @@ export default function TableList() {
     };
 
     const handleDelete = (tableId) => {
-        async function removeTable(tableId){
+        async function removeTable(tableId) {
             try {
                 showLoader();
                 const response = await axios.delete(`${ApiCall.baseUrl}Table/delete/${tableId}`);
@@ -83,6 +97,7 @@ export default function TableList() {
             try {
                 const response = await axios.get(`${ApiCall.baseUrl}Table/datatable?page=${page + 1}&per_page=${rowsPerPage}`);
                 setRows(response.data.data);
+                setTotalData(response.data.total);
                 hideLoader();
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -100,7 +115,7 @@ export default function TableList() {
         setPage(0);
     };
 
-    return(
+    return (
         <>
             <Paper className='mainPaperStyle'>
                 <div className='page-top'>
@@ -143,10 +158,26 @@ export default function TableList() {
                                                     {!row?.isOccupied ? "Available" : "Not Available"}
                                                 </TableCell>
 
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText' sx={{
+                                                    flexWrap: 'wrap',
+                                                    listStyle: 'none',
+                                                    p: 0.5,
+                                                    m: 0,
+                                                }}
+                                                    component="ul">
+
+                                                    {row?.employees.map((employee, index) => (
+                                                        <ListItem key={index}>
+                                                            <Chip
+                                                                label={employee.name}
+                                                                onDelete={() => handleDeleteChip(employee)}
+                                                            />
+                                                        </ListItem>
+                                                    ))}
+
                                                     <div>
                                                         <IconButton aria-label="add-employees" onClick={() => openModal(row)} >
-                                                            <AddCircleOutlineIcon sx={{ color: "#96e399", ":hover":{color: "#4CAF50"} }} />
+                                                            <AddCircleOutlineIcon sx={{ color: "#96e399", ":hover": { color: "#4CAF50" } }} />
                                                         </IconButton>
 
                                                     </div>
@@ -155,7 +186,7 @@ export default function TableList() {
                                                 <TableCell align="left" className='tableBodyText'>
                                                     <div>
                                                         <IconButton aria-label="delete" onClick={() => handleDelete(row?.id)}>
-                                                            <DeleteIcon className='deleteButtonStyle'/>
+                                                            <DeleteIcon className='deleteButtonStyle' />
                                                         </IconButton>
                                                     </div>
                                                 </TableCell>
@@ -166,13 +197,20 @@ export default function TableList() {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[10, 25, 50]}
+                        rowsPerPageOptions={[10, 25, 50, 100, { value: totalData, label: 'All' }]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage={"Items per page: "}
+
+                        classes={{
+                            input: 'MuiTablePagination-input',
+                            select: 'MuiTablePagination-select',
+                            selectIcon: 'MuiTablePagination-selectIcon',
+                        }}
                     />
 
                     {

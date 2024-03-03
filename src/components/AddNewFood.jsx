@@ -6,18 +6,21 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import '../styles/CommonStyle.css';
 import UseLoader from './loader/UseLoader';
+import { DiscountType } from './utils/utils'
+import DefaultAdminImage from '../assets/img/defaultImg.png'
 
 const AddNewFood = () => {
+    const [discountPrice, setSetDiscountPrice] = useState(0);
     const [loader, showLoader, hideLoader] = UseLoader();
     const navigate = useNavigate();
     const hiddenFileInput = useRef(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        price: '',
-        discountType: '',
-        discount: '',
-        discountPrice: '',
+        price: 0,
+        discountType: DiscountType.None,
+        discount: 0,
+        discountPrice: 0,
         image: '',
         base64: ''
     });
@@ -26,8 +29,19 @@ const AddNewFood = () => {
         hiddenFileInput.current.click();
     };
 
+    const calculateDiscountPrice = () => {
+        // Calculate the discount price here
+        const discount = formData.discountType === DiscountType.Percent
+            ? +formData.price * (formData.discount ? 1 : formData.discount / 100)
+            : formData.discountType === DiscountType.Flat ?
+                formData.discount :
+                0;
+        setSetDiscountPrice(formData.price - discount);
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         if (name === 'image') {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -36,18 +50,18 @@ const AddNewFood = () => {
                 setFormData({ ...formData, [name]: value, base64: reader.result });
             };
         }
+        else if (name === 'discountType') {
+            if (value !== DiscountType.None) {
+                calculateDiscountPrice();
+                setFormData({ ...formData, discountType: value, discount: formData.discount, discountPrice: discountPrice });
+                console.log(discountPrice);
+            }
+        }
         else {
             setFormData({ ...formData, [name]: value });
-            // if (name === 'discount' || name === 'price') {
-            //     if (formData.discountType === '2') { // Flat discount
-            //         const discountPrice = parseFloat(formData.price) - parseFloat(value);
-            //         setFormData({ ...formData, discountPrice: isNaN(discountPrice) ? '' : discountPrice.toString() });
-            //     } else if (formData.discountType === '3') { // Percentage discount
-            //         const discountPrice = parseFloat(formData.price) * (1 - parseFloat(value) / 100);
-            //         setFormData({ ...formData, discountPrice: isNaN(discountPrice) ? '' : discountPrice.toString() });
-            //     }
-            // }
+
         }
+
     };
 
     async function handleSubmit(e) {
@@ -55,7 +69,6 @@ const AddNewFood = () => {
         e.preventDefault();
         try {
             const response = await axios.post(`${ApiCall.baseUrl}Food/create`, formData);
-            console.log(response)
 
             if (response.status === 200) {
                 navigate("/admin/food-list");
@@ -80,7 +93,7 @@ const AddNewFood = () => {
                         <span style={{ paddingBottom: 50 }} className=' page-title'>Add Food</span>
                     </div>
                 </div>
-                <div className='mainTableContainer' style={{padding: 40}}>
+                <div className='mainTableContainer' style={{ padding: 40 }}>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
                             {/* First Row */}
@@ -94,6 +107,7 @@ const AddNewFood = () => {
                                             value={formData.name}
                                             onChange={handleChange}
                                             required
+
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -118,8 +132,8 @@ const AddNewFood = () => {
                                 <div onClick={handleClick} className='image-picker-container'>
                                     {
                                         formData.base64 ?
-                                            <img src={formData.base64} alt="Uploaded" className='image-style' /> :
-                                            "Add Profile Image"
+                                            <img src={formData.base64} alt="Uploaded" className='image-style' />
+                                            :<img src={DefaultAdminImage} alt="Default" className='image-style' />
                                     }
                                     <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput} />
                                 </div>
@@ -129,10 +143,12 @@ const AddNewFood = () => {
                             <Grid item xs={3} >
                                 <TextField
                                     fullWidth
+                                   
                                     label="Price"
                                     name="price"
                                     value={formData.price}
                                     onChange={handleChange}
+                                    type='number'
                                 />
                             </Grid>
                             <Grid item xs={3}>
@@ -145,22 +161,22 @@ const AddNewFood = () => {
                                         required
                                         label="Select Discount Type"
                                     >
-                                        <MenuItem value={`1`}>None</MenuItem>
-                                        <MenuItem value={`2`}>Flat</MenuItem>
-                                        <MenuItem value={`3`}>Percentage</MenuItem>
+                                        <MenuItem value={DiscountType.None}>None</MenuItem>
+                                        <MenuItem value={DiscountType.Flat}>Flat</MenuItem>
+                                        <MenuItem value={DiscountType.Percent}>Percentage</MenuItem>
                                     </Select>
                                 </FormControl>
-
                             </Grid>
                             <Grid item xs={3}>
                                 <TextField
                                     fullWidth
-                                    label="Discount in (%)"
+                                    label={formData.discountType === DiscountType.Percent ? "Discount in (%)" : "Discount in (৳)"}
                                     name="discount"
+                                    disabled={formData.discountType === DiscountType.None ? true : false}
                                     value={formData.discount}
                                     onChange={handleChange}
+                                    type='number'
                                 />
-
                             </Grid>
                             <Grid item xs={3} >
                                 <TextField
@@ -168,7 +184,8 @@ const AddNewFood = () => {
                                     label="Discount Price"
                                     name="discountPrice"
                                     value={formData.discountPrice}
-                                    onChange={handleChange}
+                                    disabled={formData.discountType === DiscountType.None ? true : false}
+                                    type='number'
                                 />
                             </Grid>
                             {/* Fifth Row */}
@@ -181,80 +198,7 @@ const AddNewFood = () => {
             </Paper>
             {loader}
         </>
-
     );
 };
 
 export default AddNewFood;
-
-// import React, { useState } from 'react';
-
-// const YourComponent = () => {
-//     const [number, setNumber] = useState('');
-//     const [type, setType] = useState('');
-//     const [value, setValue] = useState('');
-//     const [result, setResult] = useState('');
-
-//     const handleNumberChange = (e) => {
-//         setNumber(e.target.value);
-//     };
-
-//     const handleTypeChange = (e) => {
-//         setType(e.target.value);
-//         setValue('');
-//         setResult('');
-//     };
-
-//     const handleValueChange = (e) => {
-//         setValue(e.target.value);
-//         if (type === 'percentage') {
-//             setResult(number * (e.target.value / 100));
-//         } else if (type === 'flat') {
-//             setResult(number - e.target.value);
-//         }
-//     };
-
-//     return (
-//         <div>
-//             <input
-//                 type="number"
-//                 value={number}
-//                 onChange={handleNumberChange}
-//                 placeholder="Enter number"
-//             />
-//             <select value={type} onChange={handleTypeChange}>
-//                 <option value="">Select type</option>
-//                 <option value="flat">Flat</option>
-//                 <option value="percentage">Percentage</option>
-//             </select>
-//             {type && (
-//                 <>
-//                     <input
-//                         type="number"
-//                         value={value}
-//                         onChange={handleValueChange}
-//                         placeholder={type === 'flat' ? 'Enter flat value' : 'Enter percentage value'}
-//                     />
-//                     {type === 'flat' ? (
-//                         <input
-//                             type="number"
-//                             value={result}
-//                             readOnly
-//                             placeholder="Result"
-//                         />
-//                     ) : (
-//                         <input
-//                             type="number"
-//                             value={result}
-//                             readOnly
-//                             placeholder="Result"
-//                             disabled
-//                         />
-//                     )}
-//                 </>
-//             )}
-//         </div>
-//     );
-// };
-
-// export default YourComponent;

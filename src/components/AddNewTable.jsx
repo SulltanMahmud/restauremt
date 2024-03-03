@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import UseLoader from './loader/UseLoader';
 import '../styles/CommonStyle.css';
+import DefaultAdminImage from '../assets/img/defaultImg.png'
 
 const AddNewTable = () => {
 
@@ -118,8 +119,8 @@ const AddNewTable = () => {
                 <div onClick={handleClick} className='image-picker-container'>
                   {
                     formData.base64 ?
-                      <img src={formData.base64} alt="Uploaded" className='image-style' /> :
-                      "Add Profile Image"
+                      <img src={formData.base64} alt="Uploaded" className='image-style' /> 
+                      :<img src={DefaultAdminImage} alt="Default" className='image-style' />
                   }
                   <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput} />
                 </div>
