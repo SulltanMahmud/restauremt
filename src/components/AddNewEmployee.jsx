@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText, formControlClasses } from '@mui/material';
+import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -12,14 +12,13 @@ import '../styles/CommonStyle.css';
 import UseLoader from './loader/UseLoader';
 import DefaultAdminImage from '../assets/img/defaultImg.png'
 
-
 export default function AddNewEmployee() {
   const navigate = useNavigate();
   const hiddenFileInput = useRef(null);
   const [loader, showLoader, hideLoader] = UseLoader();
   const { register, handleSubmit, formState: { errors }, setValue, control } = useForm();
-  // const { control, handleDateSubmit, formState: { dateErrors } } = useForm();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [focused, setFocused] = useState(false);
+
 
   const [formData, setFormData] = useState({
     designation: '',
@@ -38,6 +37,44 @@ export default function AddNewEmployee() {
     image: '',
     base64: ''
   });
+
+
+  const handleFocus = () => {
+    setFocused(true);
+  };
+
+  const handleBlur = () => {
+    setFocused(false);
+  };
+
+
+  const styles = {
+    textField: {
+      '& .MuiInputBase-input': {
+        color: '#79A33D', // Change default text color
+        
+      },
+      
+    },
+    root: {
+      
+      '& .MuiOutlinedInput-root': {
+        '&.Mui-focused': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'green !important', // Change border color when focused
+          },
+          
+        },
+      },
+      '& .MuiInputLabel-root': {
+        color: focused ? 'green !important' : 'black', // Change label color when focused
+      },
+      '& .MuiInputBase-root': {
+        color: focused ? 'green !important' : 'black', // Change text color when focused
+      },
+    },
+    
+  };
 
   console.log(formData.image)
 
@@ -58,9 +95,7 @@ export default function AddNewEmployee() {
     else if (name === 'genderId') {
       setFormData({ ...formData, [name]: value });
       setValue('genderId', e.target.value);
-      if (e.target.value) {
-        setErrorMessage("");
-      }
+
 
     }
 
@@ -83,7 +118,7 @@ export default function AddNewEmployee() {
       Object.entries(formData).forEach(([key, value]) => {
         formDataWithImage.append(key, value);
       });
-      
+
       const response = await axios.post(`${ApiCall.baseUrl}Employee/create`, formDataWithImage);
       if (response.status === 200) {
         navigate("/admin");
@@ -98,7 +133,6 @@ export default function AddNewEmployee() {
       });
     }
   };
-
 
 
   return (
@@ -122,11 +156,11 @@ export default function AddNewEmployee() {
                       label="First Name"
                       name="firstName"
                       value={formData.firstName}
-                      onInput={handleChange}
                       error={!!errors.firstName}
                       helperText={errors.firstName && errors.firstName.message}
                       {...register('firstName', { required: 'First name is required' })}
-
+                      onInput={handleChange}
+                      // sx={styles.textField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -136,6 +170,9 @@ export default function AddNewEmployee() {
                       name="middleName"
                       value={formData.middleName}
                       onInput={handleChange}
+                      // onFocus={handleFocus}
+                      // onBlur={handleBlur}
+                      // sx={styles.textField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -148,7 +185,9 @@ export default function AddNewEmployee() {
                       error={!!errors.lastName}
                       helperText={errors.lastName && errors.lastName.message}
                       {...register('lastName', { required: 'Last name is required' })}
-
+                      // onFocus={handleFocus}
+                      // onBlur={handleBlur}
+                      // sx={styles.textField}
                     />
                   </Grid>
                 </Grid>
@@ -177,6 +216,9 @@ export default function AddNewEmployee() {
                   error={!!errors.spouseName}
                   helperText={errors.spouseName && errors.spouseName.message}
                   {...register('spouseName', { required: 'Spouse name is required' })}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  // sx={styles.root}
 
                 />
               </Grid>
@@ -190,6 +232,9 @@ export default function AddNewEmployee() {
                   error={!!errors.fatherName}
                   helperText={errors.fatherName && errors.fatherName.message}
                   {...register('fatherName', { required: 'Father name is required' })}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  // sx={styles.root}
 
                 />
               </Grid>
@@ -203,6 +248,9 @@ export default function AddNewEmployee() {
                   error={!!errors.motherName}
                   helperText={errors.motherName && errors.motherName.message}
                   {...register('motherName', { required: 'Mother name is required' })}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  // sx={styles.root}
 
                 />
               </Grid>
@@ -219,6 +267,9 @@ export default function AddNewEmployee() {
                   error={!!errors.designation}
                   helperText={errors.designation && errors.designation.message}
                   {...register('designation', { required: 'Designation is required' })}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  // sx={styles.root}
 
                 />
               </Grid>
@@ -232,6 +283,9 @@ export default function AddNewEmployee() {
                   error={!!errors.email}
                   helperText={errors.email && errors.email.message}
                   {...register('email', { required: 'Email is required' })}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  // sx={styles.root}
 
                 />
               </Grid>
@@ -245,12 +299,15 @@ export default function AddNewEmployee() {
                   error={!!errors.phoneNumber}
                   helperText={errors.phoneNumber && errors.phoneNumber.message}
                   {...register('phoneNumber', { required: 'Phone Number is required' })}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  // sx={styles.root}
 
                 />
               </Grid>
               {/* Fourth Row */}
               <Grid item xs={3} >
-                <FormControl fullWidth error={!formData.genderId && !!errors.genderId}>
+                <FormControl fullWidth error={!formData.genderId && !!errors.genderId} >
 
                   <InputLabel >Gender</InputLabel>
                   <Select
@@ -259,6 +316,11 @@ export default function AddNewEmployee() {
                     value={formData.genderId}
                     {...register('genderId', { required: 'Gender is required' })}
                     onChange={handleChange}
+                    // onFocus={handleFocus}
+                    // onBlur={handleBlur}
+
+
+
                   >
                     <MenuItem value={`1`}>Male</MenuItem>
                     <MenuItem value={`2`}>Female</MenuItem>
@@ -269,7 +331,7 @@ export default function AddNewEmployee() {
               </Grid>
               <Grid item xs={3}>
                 <div>
-                  <FormControl fullWidth error={!!errors.dob}>
+                  <FormControl fullWidth error={!!errors.dob} >
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <Controller
 
@@ -279,9 +341,11 @@ export default function AddNewEmployee() {
                         rules={{ required: 'Date of Birth is required' }}
                         render={({ field }) => (
                           <DatePicker
-
                             {...field}
                             label="Date of Birth"
+                           
+                            // onFocus={handleFocus}
+                            // onBlur={handleBlur}
                             onInput={(date) => handleDateChange(date, 'dob')}
 
                             textField={(params) => <TextField {...params} fullWidth error={!formData.dob && !!errors.dob} />}
@@ -333,6 +397,7 @@ export default function AddNewEmployee() {
                   error={!!errors.nid}
                   helperText={errors.nid && errors.nid.message}
                   {...register('nid', { required: 'NID is required' })}
+                  
                 />
               </Grid>
               {/* Fifth Row */}

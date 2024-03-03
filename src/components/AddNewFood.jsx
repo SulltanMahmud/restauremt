@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Swal from 'sweetalert2';
 import ApiCall from '../components/apiCollection/ApiCall';
@@ -14,10 +15,11 @@ const AddNewFood = () => {
     const [loader, showLoader, hideLoader] = UseLoader();
     const navigate = useNavigate();
     const hiddenFileInput = useRef(null);
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        price: 0,
+        price: '',
         discountType: DiscountType.None,
         discount: 0,
         discountPrice: 0,
@@ -64,9 +66,9 @@ const AddNewFood = () => {
 
     };
 
-    async function handleSubmit(e) {
+    const onSubmit = async () => {
         showLoader();
-        e.preventDefault();
+
         try {
             const response = await axios.post(`${ApiCall.baseUrl}Food/create`, formData);
 
@@ -94,7 +96,7 @@ const AddNewFood = () => {
                     </div>
                 </div>
                 <div className='mainTableContainer' style={{ padding: 40 }}>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
                             {/* First Row */}
                             <Grid item xs={8}>
@@ -105,8 +107,10 @@ const AddNewFood = () => {
                                             label="Food Name"
                                             name="name"
                                             value={formData.name}
-                                            onChange={handleChange}
-                                            required
+                                            onInput={handleChange}
+                                            error={!!errors.name}
+                                            helperText={errors.name && errors.name.message}
+                                            {...register('name', { required: 'Food Name is required' })}
 
                                         />
                                     </Grid>
@@ -117,10 +121,14 @@ const AddNewFood = () => {
                                             label="Description"
                                             name="description"
                                             value={formData.description}
-                                            onChange={handleChange}
+
                                             multiline
                                             rows={5}
-                                            required
+                                            onInput={handleChange}
+                                            error={!!errors.description}
+                                            helperText={errors.name && errors.description.message}
+                                            {...register('description', { required: 'Description is required' })}
+
                                         />
                                     </Grid>
 
@@ -133,7 +141,7 @@ const AddNewFood = () => {
                                     {
                                         formData.base64 ?
                                             <img src={formData.base64} alt="Uploaded" className='image-style' />
-                                            :<img src={DefaultAdminImage} alt="Default" className='image-style' />
+                                            : <img src={DefaultAdminImage} alt="Default" className='image-style' />
                                     }
                                     <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput} />
                                 </div>
@@ -143,12 +151,16 @@ const AddNewFood = () => {
                             <Grid item xs={3} >
                                 <TextField
                                     fullWidth
-                                   
+
                                     label="Price"
                                     name="price"
                                     value={formData.price}
-                                    onChange={handleChange}
+
                                     type='number'
+                                    onInput={handleChange}
+                                    error={!!errors.price}
+                                    helperText={errors.price && errors.price.message}
+                                    {...register('price', { required: 'Price is required' })}
                                 />
                             </Grid>
                             <Grid item xs={3}>

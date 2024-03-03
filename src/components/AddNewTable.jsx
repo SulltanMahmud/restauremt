@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Grid, TextField, TableRow, TableHead, TableCell, Paper, Button, FormControl, InputLabel, Select, MenuItem, Table } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import Swal from 'sweetalert2';
 import ApiCall from '../components/apiCollection/ApiCall';
 import axios from "axios";
@@ -13,6 +14,7 @@ const AddNewTable = () => {
   const [loader, showLoader, hideLoader] = UseLoader();
   const navigate = useNavigate();
   const hiddenFileInput = useRef(null);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const [formData, setFormData] = useState({
     tableNumber: '',
@@ -40,9 +42,9 @@ const AddNewTable = () => {
     }
   };
 
-  async function handleSubmit(e) {
+  const onSubmit = async () => {
     showLoader();
-    e.preventDefault();
+
     try {
       const response = await axios.post(`${ApiCall.baseUrl}Table/create`, formData);
       console.log(response)
@@ -72,8 +74,8 @@ const AddNewTable = () => {
           </div>
         </div>
 
-        <div className='mainTableContainer' style={{padding: 40}}>
-          <form onSubmit={handleSubmit}>
+        <div className='mainTableContainer' style={{ padding: 40 }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
               {/* First Row */}
               <Grid item xs={8}>
@@ -84,19 +86,24 @@ const AddNewTable = () => {
                       label="Table Number"
                       name="tableNumber"
                       value={formData.tableNumber}
-                      onChange={handleChange}
-                      required
+                      onInput={handleChange}
+                      error={!!errors.tableNumber}
+                      helperText={errors.tableNumber && errors.tableNumber.message}
+                      {...register('tableNumber', { required: 'Table Number is required' })}
+
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth error={!formData.numberOfSeats && !!errors.numberOfSeats}>
                       <InputLabel >Number of Seats</InputLabel>
                       <Select
                         value={formData.numberOfSeats}
-                        onChange={handleChange}
+
                         name="numberOfSeats"
-                        required
+
                         label="Number of Seats"
+                        {...register('numberOfSeats', { required: 'Number of Seats is required' })}
+                        onChange={handleChange}
 
                       >
                         <MenuItem value={`2`}>2</MenuItem>
@@ -106,8 +113,12 @@ const AddNewTable = () => {
                         <MenuItem value={`12`}>12</MenuItem>
 
                       </Select>
+                      {formData.numberOfSeats ? <FormHelperText>{""}</FormHelperText> : <FormHelperText>{errors.numberOfSeats?.message}</FormHelperText>}
                     </FormControl>
                   </Grid>
+
+                  
+
                   <Grid item xs={12} sx={{ paddingBottom: '10px' }}>
                     <Button type="submit" fullWidth variant="outlined" className='formSubmitButtonStyle'>Submit</Button>
                   </Grid>
@@ -119,13 +130,13 @@ const AddNewTable = () => {
                 <div onClick={handleClick} className='image-picker-container'>
                   {
                     formData.base64 ?
-                      <img src={formData.base64} alt="Uploaded" className='image-style' /> 
-                      :<img src={DefaultAdminImage} alt="Default" className='image-style' />
+                      <img src={formData.base64} alt="Uploaded" className='image-style' />
+                      : <img src={DefaultAdminImage} alt="Default" className='image-style' />
                   }
                   <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput} />
                 </div>
               </Grid>
-              
+
             </Grid>
           </form>
         </div>

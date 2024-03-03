@@ -168,3 +168,47 @@
     margin-right: 8px;
 }
 /* Pagination Styles */
+
+
+
+/* Text input Field Style  */
+.custom-text-field {
+    position: relative;
+    margin: 20px;
+  }
+  
+  .custom-text-field label {
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    background-color: white;
+    padding: 0 5px;
+    color: #666;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+  }
+  
+  .custom-text-field input {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+  
+  .custom-text-field input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .custom-text-field input:focus + label,
+  .custom-text-field input:not(:placeholder-shown) + label {
+    top: -10px;
+    font-size: 10px;
+    color: #007bff;
+  }
+  
+/* Text input Field Style  */
