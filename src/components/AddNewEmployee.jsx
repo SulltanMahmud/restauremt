@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,9 +16,9 @@ export default function AddNewEmployee() {
   const navigate = useNavigate();
   const hiddenFileInput = useRef(null);
   const [loader, showLoader, hideLoader] = UseLoader();
-  const { register, handleSubmit, formState: { errors }, setValue, control } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue, control,
+    trigger, } = useForm();
   const [focused, setFocused] = useState(false);
-
 
   const [formData, setFormData] = useState({
     designation: '',
@@ -31,52 +31,13 @@ export default function AddNewEmployee() {
     fatherName: '',
     motherName: '',
     spouseName: '',
-    dob: null,
+    dob: '',
     nid: '',
     genderId: '',
     image: '',
     base64: ''
   });
 
-
-  const handleFocus = () => {
-    setFocused(true);
-  };
-
-  const handleBlur = () => {
-    setFocused(false);
-  };
-
-
-  const styles = {
-    textField: {
-      '& .MuiInputBase-input': {
-        color: '#79A33D', // Change default text color
-        
-      },
-      
-    },
-    root: {
-      
-      '& .MuiOutlinedInput-root': {
-        '&.Mui-focused': {
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'green !important', // Change border color when focused
-          },
-          
-        },
-      },
-      '& .MuiInputLabel-root': {
-        color: focused ? 'green !important' : 'black', // Change label color when focused
-      },
-      '& .MuiInputBase-root': {
-        color: focused ? 'green !important' : 'black', // Change text color when focused
-      },
-    },
-    
-  };
-
-  console.log(formData.image)
 
   const handleClick = () => {
     hiddenFileInput.current.click();
@@ -95,8 +56,6 @@ export default function AddNewEmployee() {
     else if (name === 'genderId') {
       setFormData({ ...formData, [name]: value });
       setValue('genderId', e.target.value);
-
-
     }
 
     else {
@@ -106,6 +65,7 @@ export default function AddNewEmployee() {
 
   const handleDateChange = (date, field) => {
     setFormData({ ...formData, [field]: date.toISOString() });
+    console.log(date.toISOString())
   };
 
   const onSubmit = async () => {
@@ -113,13 +73,7 @@ export default function AddNewEmployee() {
 
     try {
 
-      const formDataWithImage = new FormData();
-      // Append all form data fields
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataWithImage.append(key, value);
-      });
-
-      const response = await axios.post(`${ApiCall.baseUrl}Employee/create`, formDataWithImage);
+      const response = await axios.post(`${ApiCall.baseUrl}Employee/create`, formData);
       if (response.status === 200) {
         navigate("/admin");
         hideLoader();
@@ -160,7 +114,6 @@ export default function AddNewEmployee() {
                       helperText={errors.firstName && errors.firstName.message}
                       {...register('firstName', { required: 'First name is required' })}
                       onInput={handleChange}
-                      // sx={styles.textField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -170,9 +123,6 @@ export default function AddNewEmployee() {
                       name="middleName"
                       value={formData.middleName}
                       onInput={handleChange}
-                      // onFocus={handleFocus}
-                      // onBlur={handleBlur}
-                      // sx={styles.textField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -185,9 +135,6 @@ export default function AddNewEmployee() {
                       error={!!errors.lastName}
                       helperText={errors.lastName && errors.lastName.message}
                       {...register('lastName', { required: 'Last name is required' })}
-                      // onFocus={handleFocus}
-                      // onBlur={handleBlur}
-                      // sx={styles.textField}
                     />
                   </Grid>
                 </Grid>
@@ -216,10 +163,6 @@ export default function AddNewEmployee() {
                   error={!!errors.spouseName}
                   helperText={errors.spouseName && errors.spouseName.message}
                   {...register('spouseName', { required: 'Spouse name is required' })}
-                  // onFocus={handleFocus}
-                  // onBlur={handleBlur}
-                  // sx={styles.root}
-
                 />
               </Grid>
               <Grid item xs={4}>
@@ -232,10 +175,6 @@ export default function AddNewEmployee() {
                   error={!!errors.fatherName}
                   helperText={errors.fatherName && errors.fatherName.message}
                   {...register('fatherName', { required: 'Father name is required' })}
-                  // onFocus={handleFocus}
-                  // onBlur={handleBlur}
-                  // sx={styles.root}
-
                 />
               </Grid>
               <Grid item xs={4}>
@@ -248,10 +187,6 @@ export default function AddNewEmployee() {
                   error={!!errors.motherName}
                   helperText={errors.motherName && errors.motherName.message}
                   {...register('motherName', { required: 'Mother name is required' })}
-                  // onFocus={handleFocus}
-                  // onBlur={handleBlur}
-                  // sx={styles.root}
-
                 />
               </Grid>
 
@@ -267,10 +202,6 @@ export default function AddNewEmployee() {
                   error={!!errors.designation}
                   helperText={errors.designation && errors.designation.message}
                   {...register('designation', { required: 'Designation is required' })}
-                  // onFocus={handleFocus}
-                  // onBlur={handleBlur}
-                  // sx={styles.root}
-
                 />
               </Grid>
               <Grid item xs={4}>
@@ -283,10 +214,6 @@ export default function AddNewEmployee() {
                   error={!!errors.email}
                   helperText={errors.email && errors.email.message}
                   {...register('email', { required: 'Email is required' })}
-                  // onFocus={handleFocus}
-                  // onBlur={handleBlur}
-                  // sx={styles.root}
-
                 />
               </Grid>
               <Grid item xs={4}>
@@ -299,10 +226,6 @@ export default function AddNewEmployee() {
                   error={!!errors.phoneNumber}
                   helperText={errors.phoneNumber && errors.phoneNumber.message}
                   {...register('phoneNumber', { required: 'Phone Number is required' })}
-                  // onFocus={handleFocus}
-                  // onBlur={handleBlur}
-                  // sx={styles.root}
-
                 />
               </Grid>
               {/* Fourth Row */}
@@ -316,11 +239,6 @@ export default function AddNewEmployee() {
                     value={formData.genderId}
                     {...register('genderId', { required: 'Gender is required' })}
                     onChange={handleChange}
-                    // onFocus={handleFocus}
-                    // onBlur={handleBlur}
-
-
-
                   >
                     <MenuItem value={`1`}>Male</MenuItem>
                     <MenuItem value={`2`}>Female</MenuItem>
@@ -331,59 +249,29 @@ export default function AddNewEmployee() {
               </Grid>
               <Grid item xs={3}>
                 <div>
-                  <FormControl fullWidth error={!!errors.dob} >
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <Controller
+                  <LocalizationProvider dateAdapter={AdapterDayjs} >
+                    <DatePicker
+                      label="Date of Birth"
+                      value={formData.dateOfBirth}
+                      onChange={(date) => handleDateChange(date, 'dob')}
+                      textField={<TextField fullWidth />}
+                    />
+                  </LocalizationProvider>
 
-                        name="dob"
-                        control={control}
-                        defaultValue={null}
-                        rules={{ required: 'Date of Birth is required' }}
-                        render={({ field }) => (
-                          <DatePicker
-                            {...field}
-                            label="Date of Birth"
-                           
-                            // onFocus={handleFocus}
-                            // onBlur={handleBlur}
-                            onInput={(date) => handleDateChange(date, 'dob')}
-
-                            textField={(params) => <TextField {...params} fullWidth error={!formData.dob && !!errors.dob} />}
-                          />
-                        )}
-                      />
-                    </LocalizationProvider>
-                    {errors.dob && <FormHelperText>{errors.dob.message}</FormHelperText>}
-                  </FormControl>
 
                 </div>
 
               </Grid>
               <Grid item xs={3}>
                 <div>
-
-                  <FormControl fullWidth error={!!errors.joinDate}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <Controller
-
-                        name="joinDate"
-                        control={control}
-                        defaultValue={null}
-                        rules={{ required: 'Date of Join is required' }}
-                        render={({ field }) => (
-                          <DatePicker
-
-                            {...field}
-                            label="Date of Join"
-                            onInput={(date) => handleDateChange(date, 'joinDate')}
-
-                            textField={(params) => <TextField {...params} fullWidth error={!formData.joinDate && !!errors.joinDate} />}
-                          />
-                        )}
-                      />
-                    </LocalizationProvider>
-                    {errors.joinDate && <FormHelperText>{errors.joinDate.message}</FormHelperText>}
-                  </FormControl>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} >
+                    <DatePicker
+                      label="Date of Join"
+                      value={formData.joinDate}
+                      onChange={(date) => handleDateChange(date, 'joinDate')}
+                      textField={<TextField fullWidth />}
+                    />
+                  </LocalizationProvider>
                 </div>
 
               </Grid>
@@ -397,7 +285,7 @@ export default function AddNewEmployee() {
                   error={!!errors.nid}
                   helperText={errors.nid && errors.nid.message}
                   {...register('nid', { required: 'NID is required' })}
-                  
+
                 />
               </Grid>
               {/* Fifth Row */}

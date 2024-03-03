@@ -34,7 +34,7 @@ const AddNewFood = () => {
     const calculateDiscountPrice = () => {
         // Calculate the discount price here
         const discount = formData.discountType === DiscountType.Percent
-            ? +formData.price * (formData.discount ? 1 : formData.discount / 100)
+            ? (1*formData.price) * (formData.discount ? 1 : formData.discount / 100)
             : formData.discountType === DiscountType.Flat ?
                 formData.discount :
                 0;

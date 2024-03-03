@@ -40,13 +40,22 @@ export default function TableList() {
     const [loader, showLoader, hideLoader] = UseLoader();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tableInfo, setTableInfo] = useState([]);
-    const [assignedEmployeeList, setAssignedEmployeeList] = useState([]);
 
-    const [chipData, setChipData] = React.useState([]);
+    const [assignedEmployees, setAssignedEmployees] = useState([]);
 
-    const handleDeleteChip = (chipToDelete) => () => {
-
-        setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+    const handleDeleteChip = (tableId) => async () => {
+        try {
+            showLoader();
+            const response = await axios.delete(`${ApiCall.baseUrl}EmployeeTable/delete/${tableId}`);
+    
+            if (response.status === 204) {
+                const updatedEmployees = assignedEmployees.filter(emp => emp.id !== employee.id);
+                setAssignedEmployees(updatedEmployees);
+            }
+            hideLoader();
+        } catch (error) {
+            console.error('Error deleting employee:', error);
+        }
     };
 
     const openModal = (row) => {
@@ -57,8 +66,9 @@ export default function TableList() {
             showLoader();
             try {
                 const response = await axios.get(`${ApiCall.baseUrl}Employee/non-assigned-employees/${row.id}`);
-                const employeeNames = response.data.map(employee => employee.name);
-                setAssignedEmployeeList(employeeNames);
+
+                setAssignedEmployees(response.data);
+               
                 hideLoader();
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -104,7 +114,7 @@ export default function TableList() {
             }
         };
         fetchData();
-    }, [rowsPerPage]);
+    }, [isModalOpen, rowsPerPage]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -161,16 +171,16 @@ export default function TableList() {
                                                 <TableCell align="left" className='tableBodyText' sx={{
                                                     flexWrap: 'wrap',
                                                     listStyle: 'none',
-                                                    p: 0.5,
-                                                    m: 0,
+                                                    padding: 0.5,
+                                                    margin: 0,
                                                 }}
-                                                    component="ul">
+                                                    >
 
                                                     {row?.employees.map((employee, index) => (
                                                         <ListItem key={index}>
                                                             <Chip
                                                                 label={employee.name}
-                                                                onDelete={() => handleDeleteChip(employee)}
+                                                                onDelete={() => handleDeleteChip(employee.employeeTableId)}
                                                             />
                                                         </ListItem>
                                                     ))}
@@ -214,7 +224,7 @@ export default function TableList() {
                     />
 
                     {
-                        isModalOpen && <AssignEmployeeToTable open={isModalOpen} handleClose={closeModal} tableInfo={tableInfo} EmployeeNames={assignedEmployeeList} />
+                        isModalOpen && <AssignEmployeeToTable open={isModalOpen} handleClose={closeModal} tableInfo={tableInfo} Employees ={assignedEmployees}  />
                     }
                 </div>
             </Paper>
