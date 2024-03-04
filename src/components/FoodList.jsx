@@ -69,7 +69,7 @@ export default function FoodList() {
             }
         };
         fetchData();
-    }, [rowsPerPage]);
+    }, [page, rowsPerPage]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -111,7 +111,6 @@ export default function FoodList() {
                             <TableBody>
                                 {(
                                     rows
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, rowIndex) => (
                                             <TableRow key={rowIndex} >
 
@@ -155,7 +154,7 @@ export default function FoodList() {
                     <TablePagination
                         rowsPerPageOptions={[10, 25, 50, 100, { value: totalData, label: 'All' }]}
                         component="div"
-                        count={rows.length}
+                        count={totalData}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

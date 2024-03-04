@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import UseLoader from './loader/UseLoader';
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ApiCall from './apiCollection/ApiCall';
@@ -18,6 +18,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AssignEmployeeToTable from '../components/AssignEmployeeToTable.jsx'
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
+import Swal from 'sweetalert2';
 
 const columns = [
     { id: 'tableNumber', label: 'Table Number', minWidth: '20%' },
@@ -40,22 +41,37 @@ export default function TableList() {
     const [loader, showLoader, hideLoader] = UseLoader();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tableInfo, setTableInfo] = useState([]);
-
     const [assignedEmployees, setAssignedEmployees] = useState([]);
 
-    const handleDeleteChip = (tableId) => async () => {
-        try {
-            showLoader();
-            const response = await axios.delete(`${ApiCall.baseUrl}EmployeeTable/delete/${tableId}`);
-    
-            if (response.status === 204) {
-                const updatedEmployees = assignedEmployees.filter(emp => emp.id !== employee.id);
-                setAssignedEmployees(updatedEmployees);
+    const handleDeleteChip = async (tableId) => {
+        Swal.fire({
+            icon: "info",
+            iconColor: '#FF6A00',
+            title: "Remove Employee",
+            text: "Do you want to remove this employee?",
+            showCancelButton: true,
+            cancelButtonText: "No",
+            confirmButtonColor: "#655CC9",
+            confirmButtonText: "Yes",
+            
+            preConfirm: async () => {
+                try {
+                    showLoader();
+                    const response = await axios.delete(`${ApiCall.baseUrl}EmployeeTable/delete/${tableId}`);
+        
+                    if (response.status === 204) {
+                        const updatedEmployees = assignedEmployees.filter(emp => emp.tableId !== tableId);
+                        setAssignedEmployees(updatedEmployees);
+                        hideLoader();
+                    }
+        
+                } catch (error) {
+                    console.error('Error deleting employee:', error);
+                }
+                hideLoader();
             }
-            hideLoader();
-        } catch (error) {
-            console.error('Error deleting employee:', error);
-        }
+        });
+        
     };
 
     const openModal = (row) => {
@@ -66,9 +82,7 @@ export default function TableList() {
             showLoader();
             try {
                 const response = await axios.get(`${ApiCall.baseUrl}Employee/non-assigned-employees/${row.id}`);
-
                 setAssignedEmployees(response.data);
-               
                 hideLoader();
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -92,6 +106,8 @@ export default function TableList() {
                 if (response.status === 204) {
                     const updateRows = rows.filter(row => row?.id !== tableId)
                     setRows(updateRows);
+                    navigate("/admin/table-list");
+                    hideLoader();
                 }
                 hideLoader();
             } catch (error) {
@@ -114,7 +130,7 @@ export default function TableList() {
             }
         };
         fetchData();
-    }, [isModalOpen, rowsPerPage]);
+    }, [isModalOpen, page, rowsPerPage, assignedEmployees]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -154,7 +170,6 @@ export default function TableList() {
                             <TableBody>
                                 {(
                                     rows
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, rowIndex) => (
                                             <TableRow key={rowIndex} >
 
@@ -174,13 +189,13 @@ export default function TableList() {
                                                     padding: 0.5,
                                                     margin: 0,
                                                 }}
-                                                    >
-
+                                                >
                                                     {row?.employees.map((employee, index) => (
                                                         <ListItem key={index}>
                                                             <Chip
                                                                 label={employee.name}
                                                                 onDelete={() => handleDeleteChip(employee.employeeTableId)}
+                                                                sx={{fontSize: "16px"}}
                                                             />
                                                         </ListItem>
                                                     ))}
@@ -206,25 +221,24 @@ export default function TableList() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
                     <TablePagination
                         rowsPerPageOptions={[10, 25, 50, 100, { value: totalData, label: 'All' }]}
                         component="div"
-                        count={rows.length}
+                        count={totalData}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
-
                         classes={{
                             input: 'MuiTablePagination-input',
                             select: 'MuiTablePagination-select',
                             selectIcon: 'MuiTablePagination-selectIcon',
                         }}
                     />
-
                     {
-                        isModalOpen && <AssignEmployeeToTable open={isModalOpen} handleClose={closeModal} tableInfo={tableInfo} Employees ={assignedEmployees}  />
+                        isModalOpen && <AssignEmployeeToTable open={isModalOpen} handleClose={closeModal} tableInfo={tableInfo} Employees={assignedEmployees} />
                     }
                 </div>
             </Paper>

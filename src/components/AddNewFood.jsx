@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Swal from 'sweetalert2';
@@ -11,7 +11,7 @@ import { DiscountType } from './utils/utils'
 import DefaultAdminImage from '../assets/img/defaultImg.png'
 
 const AddNewFood = () => {
-    const [discountPrice, setSetDiscountPrice] = useState(0);
+    const [discountPrice, setDiscountPrice] = useState(0);
     const [loader, showLoader, hideLoader] = UseLoader();
     const navigate = useNavigate();
     const hiddenFileInput = useRef(null);
@@ -19,7 +19,7 @@ const AddNewFood = () => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        price: '',
+        price: 0,
         discountType: DiscountType.None,
         discount: 0,
         discountPrice: 0,
@@ -34,16 +34,16 @@ const AddNewFood = () => {
     const calculateDiscountPrice = () => {
         // Calculate the discount price here
         const discount = formData.discountType === DiscountType.Percent
-            ? (1*formData.price) * (formData.discount ? 1 : formData.discount / 100)
-            : formData.discountType === DiscountType.Flat ?
-                formData.discount :
-                0;
-        setSetDiscountPrice(formData.price - discount);
+            ? formData.price - ((formData.price * formData.discount) /100)
+            : (formData.discountType === DiscountType.Flat
+                ? formData.price - formData.discount
+                : 0
+            );
+        setDiscountPrice(discount);
     };
 
-    const handleChange = (e) => {
+    const imageChange = (e) => {
         const { name, value } = e.target;
-
         if (name === 'image') {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -52,18 +52,18 @@ const AddNewFood = () => {
                 setFormData({ ...formData, [name]: value, base64: reader.result });
             };
         }
-        else if (name === 'discountType') {
-            if (value !== DiscountType.None) {
-                calculateDiscountPrice();
-                setFormData({ ...formData, discountType: value, discount: formData.discount, discountPrice: discountPrice });
-                console.log(discountPrice);
-            }
-        }
-        else {
-            setFormData({ ...formData, [name]: value });
+    }
 
-        }
+    const discountTypeChange = (e) => {
+        const { name, value } = e.target;
+        calculateDiscountPrice();
+        setFormData({ ...formData, discountType: value, discount: formData.discount, discountPrice: discountPrice });
+    }
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log('discountType', name, value)
+        setFormData({ ...formData, [name]: value });
     };
 
     const onSubmit = async () => {
@@ -86,7 +86,9 @@ const AddNewFood = () => {
             });
         }
     };
-
+    useEffect(() => {
+        calculateDiscountPrice();
+    }, [formData])
     return (
         <>
             <Paper className='mainPaperStyle'>
@@ -143,7 +145,7 @@ const AddNewFood = () => {
                                             <img src={formData.base64} alt="Uploaded" className='image-style' />
                                             : <img src={DefaultAdminImage} alt="Default" className='image-style' />
                                     }
-                                    <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={handleChange} ref={hiddenFileInput} />
+                                    <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={imageChange} ref={hiddenFileInput} />
                                 </div>
                             </Grid>
 
@@ -168,7 +170,7 @@ const AddNewFood = () => {
                                     <InputLabel >Select Discount Type</InputLabel>
                                     <Select
                                         value={formData.discountType}
-                                        onChange={handleChange}
+                                        onChange={discountTypeChange}
                                         name="discountType"
                                         required
                                         label="Select Discount Type"
@@ -190,12 +192,12 @@ const AddNewFood = () => {
                                     type='number'
                                 />
                             </Grid>
-                            <Grid item xs={3} >
+                            <Grid item xs={3}>
                                 <TextField
                                     fullWidth
                                     label="Discount Price"
                                     name="discountPrice"
-                                    value={formData.discountPrice}
+                                    value={discountPrice}
                                     disabled={formData.discountType === DiscountType.None ? true : false}
                                     type='number'
                                 />

@@ -66,6 +66,7 @@ export default function EmployeeList() {
                 const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?sort=&page=${page + 1}&per_page=${rowsPerPage}`);
                 setRows(response.data.data);
                 setTotalData(response.data.total);
+                console.log('page',page)
 
                 hideLoader();
             } catch (error) {
@@ -74,17 +75,21 @@ export default function EmployeeList() {
         };
         fetchData();
 
-    }, [rowsPerPage]);
+    }, [page, rowsPerPage]);
 
 
 
     const handleChangePage = (event, newPage) => {
+        console.log('event', event);
         setPage(newPage);
+        console.log('page', newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
+        // console.log('row change event',event);
         setRowsPerPage(+event.target.value);
         setPage(0);
+        console.log('set page', page)
        
     };
 
@@ -117,7 +122,6 @@ export default function EmployeeList() {
                             <TableBody>
                                 {(
                                     rows
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, rowIndex) => (
                                             <TableRow key={rowIndex}>
                                                 <TableCell align="left" className='tableBodyText'>
@@ -164,12 +168,13 @@ export default function EmployeeList() {
                     <TablePagination
                         rowsPerPageOptions={[10, 25, 50, 100, { value: totalData, label: 'All' }]}
                         component="div"
-                        count={rows.length}
+                        count={totalData}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
+                        
                         classes={{
                             input: 'MuiTablePagination-input',
                             select: 'MuiTablePagination-select',

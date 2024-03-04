@@ -33,6 +33,7 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
     const [personName, setPersonName] = useState([]);
     const [assignEmployeeData, setAssignEmployeeData] = useState([]);
     const [loader, showLoader, hideLoader] = UseLoader();
+    console.log(tableInfo);
 
     const handleChange = (event) => {
         const {
@@ -116,7 +117,7 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
                             <div style={{ height: "190px", width: "322px", padding: "12px" }}>
                                 <Box >
                                     <Typography variant="h6" gutterBottom className='bodyText'>
-                                        Table ID: {tableInfo?.id}
+                                        Table ID: {tableInfo?.tableNumber}
                                     </Typography>
                                     <Typography variant="h6" gutterBottom className='bodyText'>
                                         Number of Seats: {tableInfo?.numberOfSeats}
