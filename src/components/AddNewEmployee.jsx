@@ -65,7 +65,6 @@ export default function AddNewEmployee() {
 
   const handleDateChange = (date, field) => {
     setFormData({ ...formData, [field]: date.toISOString() });
-    console.log(date.toISOString())
   };
 
   const onSubmit = async () => {

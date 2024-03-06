@@ -62,7 +62,6 @@ const AddNewFood = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log('discountType', name, value)
         setFormData({ ...formData, [name]: value });
     };
 

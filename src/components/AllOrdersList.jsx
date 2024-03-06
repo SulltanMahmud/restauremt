@@ -4,10 +4,24 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import IconButton from '@mui/material/IconButton';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
+import { Card, CardContent, Typography, Container, List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
+import '../styles/CommonStyle.css';
+import '../styles/AllOrderListStyle.css';
+import { Link } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DefaultAdminImage from '../assets/img/defaultImg.png'
+import UseLoader from './loader/UseLoader';
+import ApiCall from './apiCollection/ApiCall';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+// import Scrollbar from 'react-scrollbars-custom';
+
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 170 },
@@ -35,101 +49,117 @@ const columns = [
     },
 ];
 
+
 function createData(name, code, population, size) {
     const density = population / size;
     return { name, code, population, size, density };
 }
 
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-];
 
 export default function AllOrdersList() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rows, setRows] = useState([]);
+    const [loader, showLoader, hideLoader] = UseLoader();
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    console.log(rows);
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    useEffect(() => {
+
+        const fetchData = async () => {
+            showLoader();
+            try {
+                const response = await axios.get(`${ApiCall.baseUrl}Order/datatable`);
+                setRows(response.data.data);
+
+
+                hideLoader();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+
+    }, []);
 
     return (
-        <Paper sx={{ width: '100%' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ fontSize: 20, fontWeight: 'bold' }} align="left" colSpan={2}>
-                                All Orders
-                            </TableCell>
+        <>
+            <Paper className='mainPaperStyle' >
+                <div className='page-top'>
+                    <div>
+                        <span className='under-line page-title'>All Orders</span>
+                    </div>
+                    <div>
+                        {/* Dropdown Here */}
+                    </div>
+                </div>
+                <div className="mainOrderCardContainer" style={{ display: "flex", backgroundColor: 'none !important' }}>
 
-                            <TableCell align="right" colSpan={6}>
-                                <Button variant="outlined">Filter Order by Status</Button>
-                            </TableCell>
+                    {(
+                        rows.map((row, rowIndex) => (
+                            <Grid key={rowIndex} sx={{ width: "33%", background: "white", marginRight: "30px", padding: "20px", borderRadius: "10px", boxShadow: "#0000004d 0 4px 12px" }}>
+                                <div style={{ display: "flex", justifyContent: 'space-between' }}>
+                                    <Grid item xs={6}>
+                                        <Grid>
+                                            <Typography className='isoDateStyle'>{row?.orderNumber}</Typography>
+                                            <Typography className='DateTextStyle'>{row?.orderTime}</Typography>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <IconButton aria-label="delete" className='btnCustomStyle'>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Grid>
+                                </div>
+
+                                <Grid item xs={12} sx={{ height: "200px", overflowY: "scroll", borderBottom: "1px solid black", scrollbarWidth: "thin" }}>
+                                    {(
+                                        row.orderItems.map((item, itemIndex) => (
+                                            <div className='customListItem' key={itemIndex} >
+                                                <ListItemAvatar sx={{ width: "50px" }}>
+                                                    <Avatar src={!item.food?.image ? DefaultAdminImage : `${ApiCall.getFoodImage}${item?.food?.image}`} alt='Image' />
+                                                </ListItemAvatar>
+                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                    <div style={{ width: "180px" }}>
+                                                        <Typography className='foodNameTextStyle'>{item?.food?.name}</Typography>
+                                                        <Typography className='foodPriceTextStyle'>{item?.totalPrice}৳</Typography>
+                                                    </div>
+                                                    <Typography className='foodQtyTextStyle'>Qty: {item?.quantity}</Typography>
+
+                                                </div>
+
+                                            </div>
+                                        ))
+                                    )}
+                                </Grid>
+                                <div className='itemInfoStyle'>
+                                    <Grid item xs={6}>
+                                        <Typography className='foodQtyTextStyle'>Total Item: <span style={{ fontWeight: 'bold' }}>{row?.orderItems.length}</span></Typography>
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <Typography className='foodQtyTextStyle'>Table: <span style={{ fontWeight: 'bold' }}>{row?.table.tableNumber}</span></Typography>
+                                    </Grid>
+                                </div>
+                                <div className='itemTotalInfoStyle' >
+                                    <Grid item xs={6}>
+                                        <Typography className='foodTotalPrice'>Total: <span style={{ fontWeight: 'bold', color: "#4caf50" }}>{row?.amount}</span></Typography>
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <span className='foodStatusStyle'>{row?.orderStatus}</span>
+                                        <IconButton aria-label="edit">
+                                            <EditNoteIcon className='editButtonStyle' />
+                                        </IconButton>
+                                    </Grid>
+                                </div>
+
+                            </Grid>
+                        ))
+                    )}
 
 
-                        </TableRow>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ top: 57, minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </Paper>
+
+                </div>
+
+            </Paper>
+            {loader}
+        </>
     );
 }

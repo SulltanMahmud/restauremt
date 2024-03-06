@@ -47,7 +47,7 @@ const AddNewTable = () => {
 
     try {
       const response = await axios.post(`${ApiCall.baseUrl}Table/create`, formData);
-      console.log(response)
+      
 
       if (response.status === 200) {
         navigate("/admin/table-list");

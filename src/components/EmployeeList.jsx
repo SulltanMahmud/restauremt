@@ -66,7 +66,6 @@ export default function EmployeeList() {
                 const response = await axios.get(`${ApiCall.baseUrl}Employee/datatable?sort=&page=${page + 1}&per_page=${rowsPerPage}`);
                 setRows(response.data.data);
                 setTotalData(response.data.total);
-                console.log('page',page)
 
                 hideLoader();
             } catch (error) {
@@ -80,17 +79,13 @@ export default function EmployeeList() {
 
 
     const handleChangePage = (event, newPage) => {
-        console.log('event', event);
         setPage(newPage);
-        console.log('page', newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
-        // console.log('row change event',event);
         setRowsPerPage(+event.target.value);
         setPage(0);
-        console.log('set page', page)
-       
+
     };
 
     return (
@@ -121,46 +116,45 @@ export default function EmployeeList() {
 
                             <TableBody>
                                 {(
-                                    rows
-                                        .map((row, rowIndex) => (
-                                            <TableRow key={rowIndex}>
-                                                <TableCell align="left" className='tableBodyText'>
-                                                    <ListItemAvatar>
-                                                        <Avatar alt="Admin Image" src={!row?.user?.image ? DefaultAdminImage : `${ApiCall.getImage}${row?.user?.image}`} />
-                                                    </ListItemAvatar>
-                                                </TableCell>
-                                                <TableCell align="left" className='tableBodyText' sx={{ display: 'flex', justifyContent: "space-between", alignItems: 'center' }} >
-                                                    <div>{row?.user?.fullName}</div>
-                                                    <div>
-                                                        <IconButton aria-label="star" onClick={() => setStarColor(!starColor)}>
-                                                            {starColor ? <StarsIcon style={{ color: "#F9A825" }} /> : <StarsIcon style={{ color: "#BDBDBD" }} />}
-                                                        </IconButton>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
-                                                    {row?.user?.email}
-                                                </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
-                                                    {row?.user?.phoneNumber}
-                                                </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
-                                                    {row?.joinDate}
-                                                </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
-                                                    {row?.designation}
-                                                </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
-                                                    <div>
-                                                        <IconButton aria-label="edit">
-                                                            <EditNoteIcon className='editButtonStyle' />
-                                                        </IconButton>
-                                                        <IconButton aria-label="delete" onClick={() => handleDelete(row?.id)}>
-                                                            <DeleteIcon className='deleteButtonStyle' />
-                                                        </IconButton>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
+                                    rows.map((row, rowIndex) => (
+                                        <TableRow key={rowIndex}>
+                                            <TableCell align="left" className='tableBodyText'>
+                                                <ListItemAvatar>
+                                                    <Avatar alt="Admin Image" src={!row?.user?.image ? DefaultAdminImage : `${ApiCall.getImage}${row?.user?.image}`} />
+                                                </ListItemAvatar>
+                                            </TableCell>
+                                            <TableCell align="left" className='tableBodyText' sx={{ display: 'flex', justifyContent: "space-between", alignItems: 'center' }} >
+                                                <div>{row?.user?.fullName}</div>
+                                                <div>
+                                                    <IconButton aria-label="star" onClick={() => setStarColor(!starColor)}>
+                                                        {starColor ? <StarsIcon style={{ color: "#F9A825" }} /> : <StarsIcon style={{ color: "#BDBDBD" }} />}
+                                                    </IconButton>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell align="left" className='tableBodyText'>
+                                                {row?.user?.email}
+                                            </TableCell>
+                                            <TableCell align="left" className='tableBodyText'>
+                                                {row?.user?.phoneNumber}
+                                            </TableCell>
+                                            <TableCell align="left" className='tableBodyText'>
+                                                {row?.joinDate}
+                                            </TableCell>
+                                            <TableCell align="left" className='tableBodyText'>
+                                                {row?.designation}
+                                            </TableCell>
+                                            <TableCell align="left" className='tableBodyText'>
+                                                <div>
+                                                    <IconButton aria-label="edit">
+                                                        <EditNoteIcon className='editButtonStyle' />
+                                                    </IconButton>
+                                                    <IconButton aria-label="delete" onClick={() => handleDelete(row?.id)}>
+                                                        <DeleteIcon className='deleteButtonStyle' />
+                                                    </IconButton>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
                                 )}
                             </TableBody>
                         </Table>
@@ -174,7 +168,7 @@ export default function EmployeeList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
-                        
+
                         classes={{
                             input: 'MuiTablePagination-input',
                             select: 'MuiTablePagination-select',

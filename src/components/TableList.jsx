@@ -13,7 +13,7 @@ import { Button, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ApiCall from './apiCollection/ApiCall';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AssignEmployeeToTable from '../components/AssignEmployeeToTable.jsx'
 import { styled } from '@mui/material/styles';
@@ -42,6 +42,7 @@ export default function TableList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tableInfo, setTableInfo] = useState([]);
     const [assignedEmployees, setAssignedEmployees] = useState([]);
+    const navigate = useNavigate();
 
     const handleDeleteChip = async (tableId) => {
         Swal.fire({
@@ -106,6 +107,7 @@ export default function TableList() {
                 if (response.status === 204) {
                     const updateRows = rows.filter(row => row?.id !== tableId)
                     setRows(updateRows);
+                    
                     navigate("/admin/table-list");
                     hideLoader();
                 }
@@ -113,6 +115,7 @@ export default function TableList() {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+            hideLoader();
         }
         removeTable(tableId);
     };

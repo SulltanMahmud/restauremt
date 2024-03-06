@@ -8,6 +8,7 @@
     overflow: hidden !important;
     background-color: transparent !important;
     box-shadow: none !important;
+    
 }
 
 /* This is our main paper style */
@@ -83,6 +84,17 @@
     margin-top: 20px;
     margin-bottom: 40px;
 }
+
+.mainOrderCardContainer {
+    
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+
 
 .tableContainerStyle {
     max-height: 80%;

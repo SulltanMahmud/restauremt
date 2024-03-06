@@ -16,6 +16,7 @@ import DefaultAdminImage from '../assets/img/defaultImg.png'
 import '../styles/AssignEmployeeToTable.css';
 import UseLoader from './loader/UseLoader';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,7 +34,6 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
     const [personName, setPersonName] = useState([]);
     const [assignEmployeeData, setAssignEmployeeData] = useState([]);
     const [loader, showLoader, hideLoader] = UseLoader();
-    console.log(tableInfo);
 
     const handleChange = (event) => {
         const {
@@ -58,9 +58,10 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
 
         try {
             const response = await axios.post(`${ApiCall.baseUrl}EmployeeTable/create-range`, assignEmployeeData);
-            console.log(response)
+            
 
             if (response.status === 204) {
+                const navigate = useNavigate();
                 navigate("/admin/table-list");
                 hideLoader();
             }
