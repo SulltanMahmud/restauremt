@@ -1,5 +1,4 @@
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -27,10 +26,15 @@ import UseLoader from "../components/loader/UseLoader.jsx";
 import { useState, useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CartComponent from "../components/CartComponent.jsx";
-// import useCart from "../hooks/useCart.jsx";
-// import useCart from "../hooks/useCart.jsx";
+
 
 const drawerWidth = 255.5;
+
+const primaryPropsStyle = {
+  fontFamily: "'Josefin Sans', sans-serif !important",
+  fontSize: "13px",
+  fontWeight: "600 !important",
+};
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -77,14 +81,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function Dashboard() {
-  //   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [loader, showLoader, hideLoader] = UseLoader();
   const [activeItem, setActiveItem] = useState(null);
-  // const cart = useCart();
-
   const isScreenSmall = useMediaQuery("(max-width:1280px)");
-
   useEffect(() => {
     setOpen(!isScreenSmall);
   }, [isScreenSmall]);
@@ -111,7 +111,7 @@ export default function Dashboard() {
       <div>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
-          <AppBar position="fixed" open={open}>
+          <AppBar position="fixed" open={open} style={{ zIndex: 9999999 }}>
             <Toolbar sx={{ background: "#CC080B" }}>
               <div className="appBar-logo-container">
                 <img
@@ -124,9 +124,9 @@ export default function Dashboard() {
 
               <Button className="appBarAdmin">Admin</Button>
 
-
-              <div className="relative"><CartComponent/></div>
-
+              <Button>
+                <div className="relative"><CartComponent></CartComponent></div>
+              </Button>
 
               <IconButton
                 color="inherit"
@@ -149,6 +149,7 @@ export default function Dashboard() {
                 width: drawerWidth,
                 boxSizing: "border-box",
               },
+              zIndex: 99999999
             }}
             variant="persistent"
             anchor="left"
@@ -159,9 +160,7 @@ export default function Dashboard() {
             </DrawerHeader>
             <Divider />
 
-            <Box
-              sx={{ display: "flex", flexDirection: "column", height: "100%" }}
-            >
+            <Box className="drawerListBoxStyle">
               <List>
                 <Box sx={{ padding: "0px 8px" }}>
                   <Link to={""}>
@@ -171,26 +170,14 @@ export default function Dashboard() {
                       className={activeItem === 1 ? "itemBackground" : ""}
                       onClick={() => handleListItemClick(1)}
                     >
-                      <ListItemButton
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "#FDF5F5",
-                            borderRadius: "5px !important",
-                          },
-                          padding: "8px !important",
-                        }}
-                      >
+                      <ListItemButton className="listItemButtonStyle">
                         <ListItemIcon className="menuIcon">
                           <PeopleIcon />
                         </ListItemIcon>
                         <ListItemText
                           className="menuItem"
                           primary="Employees"
-                          primaryTypographyProps={{
-                            fontFamily: "'Josefin Sans', sans-serif !important",
-                            fontSize: "13px",
-                            fontWeight: "600 !important",
-                          }}
+                          primaryTypographyProps={primaryPropsStyle}
                         />
                       </ListItemButton>
                     </ListItem>
@@ -202,26 +189,14 @@ export default function Dashboard() {
                       className={activeItem === 2 ? "itemBackground" : ""}
                       onClick={() => handleListItemClick(2)}
                     >
-                      <ListItemButton
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "#FDF5F5",
-                            borderRadius: "5px !important",
-                          },
-                          padding: "8px !important",
-                        }}
-                      >
+                      <ListItemButton className="listItemButtonStyle">
                         <ListItemIcon className="menuIcon">
                           <TableBarIcon />
                         </ListItemIcon>
                         <ListItemText
                           className="menuItem"
                           primary="Tables"
-                          primaryTypographyProps={{
-                            fontFamily: "'Josefin Sans', sans-serif !important",
-                            fontSize: "13px",
-                            fontWeight: "600 !important",
-                          }}
+                          primaryTypographyProps={primaryPropsStyle}
                         />
                       </ListItemButton>
                     </ListItem>
@@ -233,26 +208,14 @@ export default function Dashboard() {
                       className={activeItem === 3 ? "itemBackground" : ""}
                       onClick={() => handleListItemClick(3)}
                     >
-                      <ListItemButton
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "#FDF5F5",
-                            borderRadius: "5px !important",
-                          },
-                          padding: "8px !important",
-                        }}
-                      >
+                      <ListItemButton className="listItemButtonStyle">
                         <ListItemIcon className="menuIcon">
                           <FastfoodIcon />
                         </ListItemIcon>
                         <ListItemText
                           className="menuItem"
                           primary="Foods"
-                          primaryTypographyProps={{
-                            fontFamily: "'Josefin Sans', sans-serif !important",
-                            fontSize: "13px",
-                            fontWeight: "600 !important",
-                          }}
+                          primaryTypographyProps={primaryPropsStyle}
                         />
                       </ListItemButton>
                     </ListItem>
@@ -264,26 +227,14 @@ export default function Dashboard() {
                       className={activeItem === 4 ? "itemBackground" : ""}
                       onClick={() => handleListItemClick(4)}
                     >
-                      <ListItemButton
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "#FDF5F5",
-                            borderRadius: "5px !important",
-                          },
-                          padding: "8px !important",
-                        }}
-                      >
+                      <ListItemButton className="listItemButtonStyle">
                         <ListItemIcon className="menuIcon">
                           <LocalMallIcon />
                         </ListItemIcon>
                         <ListItemText
                           className="menuItem"
                           primary="New Oder"
-                          primaryTypographyProps={{
-                            fontFamily: "'Josefin Sans', sans-serif !important",
-                            fontSize: "13px",
-                            fontWeight: "600 !important",
-                          }}
+                          primaryTypographyProps={primaryPropsStyle}
                         />
                       </ListItemButton>
                     </ListItem>
@@ -295,26 +246,14 @@ export default function Dashboard() {
                       className={activeItem === 5 ? "itemBackground" : ""}
                       onClick={() => handleListItemClick(5)}
                     >
-                      <ListItemButton
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "#FDF5F5",
-                            borderRadius: "5px !important",
-                          },
-                          padding: "8px !important",
-                        }}
-                      >
+                      <ListItemButton className="listItemButtonStyle">
                         <ListItemIcon className="menuIcon">
                           <FormatListBulletedIcon />
                         </ListItemIcon>
                         <ListItemText
                           className="menuItem"
                           primary="Orders"
-                          primaryTypographyProps={{
-                            fontFamily: "'Josefin Sans', sans-serif !important",
-                            fontSize: "13px",
-                            fontWeight: "600 !important",
-                          }}
+                          primaryTypographyProps={primaryPropsStyle}
                         />
                       </ListItemButton>
                     </ListItem>
@@ -335,21 +274,7 @@ export default function Dashboard() {
                           startIcon={<ExitToAppIcon />}
                           fullWidth
                           variant="outlined"
-                          sx={{
-                            color: "#CC080B",
-                            border: "2px solid #CC080B",
-                            borderRadius: "30px",
-                            fontSize: "14px !imporatant",
-
-                            "&:hover": {
-                              border: "2px solid #CC080B",
-                              color: "white",
-                              backgroundColor: "#CC080B",
-                            },
-                            textTransform: "none !important",
-                            fontFamily: "'Josefin Sans', sans-serif !important",
-                            padding: "8px 0px !important",
-                          }}
+                          className="btnLogoutStyle"
                         >
                           Logout
                         </Button>

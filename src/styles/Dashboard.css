@@ -49,12 +49,23 @@
     line-height: 2.25rem;
     color: black;
     -webkit-text-stroke: 1.2px black;
-
-    /* align-items: center; */
     text-align: center;
     justify-content: center;
+}
 
+.drawerListBoxStyle {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
 
+.listItemButtonStyle {
+    padding: 8px !important;
+}
+
+.listItemButtonStyle:hover {
+    background-color: #FDF5F5 !important;
+    border-radius: 5px !important;
 }
 
 .menuIcon {
@@ -84,6 +95,23 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+}
+
+.btnLogoutStyle {
+    color: #CC080B !important;
+    border: 2px solid #CC080B !important;
+    border-radius: 30px !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+    font-family: 'Josefin Sans', sans-serif !important;
+    padding: 8px 0px !important;
+}
+
+.btnLogoutStyle:hover {
+    border: 2px solid #CC080B !important;
+    color: white !important;
+    background-color: #CC080B !important;
+
 }
 
 @media (min-width: 1024px) {
