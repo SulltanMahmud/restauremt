@@ -85,14 +85,6 @@
     margin-bottom: 40px;
 }
 
-.mainOrderCardContainer {
-    
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
-    margin-bottom: 40px;
-}
 
 
 
@@ -224,3 +216,57 @@
   }
   
 /* Text input Field Style  */
+
+
+
+/* Responsive */
+@media (max-width: 1280px) {
+    .textWidth{
+        min-width: 120px !important;
+    }
+    .imgWidth{
+        min-width: 30px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    
+    .mainTableContainer {
+        background-color: white;
+        width: 99vw;
+        overflow: auto;
+        
+    }
+    .page-top {
+        max-width: 99%;
+        background: whitesmoke;
+        margin: 25px 20px 10px 20px!important;
+    }
+    .page-title {
+        font-size: 22px !important;
+        
+    }
+
+    .topButtonStyle {
+        
+        margin-top: 10px !important;
+        font-size: 12px !important;
+        
+    }
+    
+    .mainPaperStyle {
+        
+        background-color: whitesmoke !important;
+        
+    }
+    .ellipsText {
+        
+        max-width: 50px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    
+    
+}

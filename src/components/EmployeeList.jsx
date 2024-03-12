@@ -90,6 +90,7 @@ export default function EmployeeList() {
 
     return (
         <>
+
             <Paper className='mainPaperStyle'>
                 <div className='page-top'>
                     <div>
@@ -101,13 +102,14 @@ export default function EmployeeList() {
                         </Link>
                     </div>
                 </div>
+
                 <div className='mainTableContainer'>
                     <TableContainer className='tableContainerStyle'>
                         <Table stickyHeader aria-label="sticky table">
-                            <TableHead >
-                                <TableRow>
+                            <TableHead className='textWidth' >
+                                <TableRow >
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} className='tableHeaderText' style={{ minWidth: column.minWidth }}>
+                                        <TableCell key={column.id} className={column.id === "image" ? 'tableHeaderText ellipsText imgWidth' : 'tableHeaderText ellipsText textWidth'} style={{ minWidth: column.minWidth }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
@@ -123,24 +125,24 @@ export default function EmployeeList() {
                                                     <Avatar alt="Admin Image" src={!row?.user?.image ? DefaultAdminImage : `${ApiCall.getImage}${row?.user?.image}`} />
                                                 </ListItemAvatar>
                                             </TableCell>
-                                            <TableCell align="left" className='tableBodyText' sx={{ display: 'flex', justifyContent: "space-between", alignItems: 'center' }} >
-                                                <div>{row?.user?.fullName}</div>
+                                            <TableCell align="left" className='tableBodyText ' sx={{ display: 'flex', justifyContent: "space-between", alignItems: 'center' }} >
+                                                <div className='ellipsText'>{row?.user?.fullName}</div>
                                                 <div>
                                                     <IconButton aria-label="star" onClick={() => setStarColor(!starColor)}>
                                                         {starColor ? <StarsIcon style={{ color: "#F9A825" }} /> : <StarsIcon style={{ color: "#BDBDBD" }} />}
                                                     </IconButton>
                                                 </div>
                                             </TableCell>
-                                            <TableCell align="left" className='tableBodyText'>
+                                            <TableCell align="left" className='tableBodyText ellipsText'>
                                                 {row?.user?.email}
                                             </TableCell>
-                                            <TableCell align="left" className='tableBodyText'>
+                                            <TableCell align="left" className='tableBodyText ellipsText'>
                                                 {row?.user?.phoneNumber}
                                             </TableCell>
-                                            <TableCell align="left" className='tableBodyText'>
+                                            <TableCell align="left" className='tableBodyText ellipsText'>
                                                 {row?.joinDate}
                                             </TableCell>
-                                            <TableCell align="left" className='tableBodyText'>
+                                            <TableCell align="left" className='tableBodyText ellipsText'>
                                                 {row?.designation}
                                             </TableCell>
                                             <TableCell align="left" className='tableBodyText'>

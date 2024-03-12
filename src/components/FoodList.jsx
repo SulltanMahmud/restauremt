@@ -101,7 +101,7 @@ export default function FoodList() {
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} className='tableHeaderText' style={{ minWidth: column.minWidth}}>
+                                        <TableCell key={column.id} className={column.id === "image" ? 'tableHeaderText ellipsText imgWidth' : 'tableHeaderText ellipsText textWidth'} style={{ minWidth: column.minWidth}}>
                                             {column.label}
                                         </TableCell>
                                     ))}
@@ -114,24 +114,24 @@ export default function FoodList() {
                                         .map((row, rowIndex) => (
                                             <TableRow key={rowIndex} >
 
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText'> 
                                                     <ListItemAvatar>
                                                         <Avatar alt="Admin Image" src={!row?.image ? DefaultAdminImage : `${ApiCall.getFoodImage}${row?.image}`} />
                                                     </ListItemAvatar>
                                                 </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText ellipsText'>
                                                     {row?.name}
                                                 </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText ellipsText'>
                                                     {row?.price}
                                                 </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText ellipsText'>
                                                     {row?.discountType}
                                                 </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText ellipsText'>
                                                     {row?.discount}
                                                 </TableCell>
-                                                <TableCell align="left" className='tableBodyText'>
+                                                <TableCell align="left" className='tableBodyText ellipsText'>
                                                     {row?.discountPrice}
                                                 </TableCell>
 

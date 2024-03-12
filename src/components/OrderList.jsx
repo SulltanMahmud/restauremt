@@ -109,7 +109,7 @@ const OrderList = () => {
         </div>
         <div className="mainOrderTableContainer">
           <Grid container spacing={2}>
-            <Grid item xs={3} className="relative" >
+            <Grid item xs={12} md={3} lg={3} xl={3} className="relative" >
               <div className="sectionTableHeader">
                 SELECT A TABLE ({table.length})
               </div>
@@ -130,7 +130,7 @@ const OrderList = () => {
 
             </Grid>
             {checkedCard ? (
-              <Grid item xs={9}>
+              <Grid item xs={12} md={9} lg={9} xl={9}>
                 <Container className="relative">
                   <Card className="foodMainCardStyle">
                     <div className="sectionFoodHeader">
@@ -237,7 +237,7 @@ const OrderList = () => {
                 </Container>
               </Grid>
             ) : (
-              <Grid item xs={9}>
+              <Grid item xs={12} md={9} lg={9} xl={9}>
                 <div className="relative h">
                   <Container className="notificationStyle">
                     <NewReleasesIcon sx={{ fontSize: 70, color: "#b71c1c" }} />

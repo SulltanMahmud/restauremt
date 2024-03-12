@@ -101,7 +101,7 @@ export default function AddNewEmployee() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               {/* First Row */}
-              <Grid item xs={8}>
+              <Grid item xs={12} md={8} lg={8} xl={8}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -140,7 +140,7 @@ export default function AddNewEmployee() {
               </Grid>
 
               {/* Image Picker */}
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <div onClick={handleClick} className='image-picker-container'>
                   {
                     formData.base64 ?
@@ -152,7 +152,7 @@ export default function AddNewEmployee() {
 
               {/* Second Row */}
 
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <TextField
                   fullWidth
                   label="Spouse Name"
@@ -164,7 +164,7 @@ export default function AddNewEmployee() {
                   {...register('spouseName', { required: 'Spouse name is required' })}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <TextField
                   fullWidth
                   label="Father Name"
@@ -176,7 +176,7 @@ export default function AddNewEmployee() {
                   {...register('fatherName', { required: 'Father name is required' })}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <TextField
                   fullWidth
                   label="Mother Name"
@@ -191,7 +191,7 @@ export default function AddNewEmployee() {
 
               {/* Third Row */}
 
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <TextField
                   fullWidth
                   label="Designation"
@@ -203,7 +203,7 @@ export default function AddNewEmployee() {
                   {...register('designation', { required: 'Designation is required' })}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <TextField
                   fullWidth
                   label="Email"
@@ -215,7 +215,7 @@ export default function AddNewEmployee() {
                   {...register('email', { required: 'Email is required' })}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4} lg={4} xl={4}>
                 <TextField
                   fullWidth
                   label="Phone Number"
@@ -228,7 +228,7 @@ export default function AddNewEmployee() {
                 />
               </Grid>
               {/* Fourth Row */}
-              <Grid item xs={3} >
+              <Grid item xs={12} md={3} lg={3} xl={3} >
                 <FormControl fullWidth error={!formData.genderId && !!errors.genderId} >
 
                   <InputLabel >Gender</InputLabel>
@@ -246,8 +246,8 @@ export default function AddNewEmployee() {
                   {formData.genderId ? <FormHelperText>{""}</FormHelperText> : <FormHelperText>{errors.genderId?.message}</FormHelperText>}
                 </FormControl>
               </Grid>
-              <Grid item xs={3}>
-                <div>
+              <Grid item xs={6} md={3} lg={3} xl={3}>
+                <div >
                   <LocalizationProvider dateAdapter={AdapterDayjs} >
                     <DatePicker
                       label="Date of Birth"
@@ -261,7 +261,7 @@ export default function AddNewEmployee() {
                 </div>
 
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={6} md={3} lg={3} xl={3}>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs} >
                     <DatePicker
@@ -274,7 +274,7 @@ export default function AddNewEmployee() {
                 </div>
 
               </Grid>
-              <Grid item xs={3} >
+              <Grid item xs={12} md={3} lg={3} xl={3} >
                 <TextField
                   fullWidth
                   label="NID"

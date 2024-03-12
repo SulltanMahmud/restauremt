@@ -163,7 +163,7 @@ export default function TableList() {
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} className='tableHeaderText' style={{ minWidth: column.minWidth }}>
+                                        <TableCell key={column.id} className='tableHeaderText ellipsText textWidth' style={{ minWidth: column.minWidth }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
@@ -199,6 +199,7 @@ export default function TableList() {
                                                                 label={employee.name}
                                                                 onDelete={() => handleDeleteChip(employee.employeeTableId)}
                                                                 sx={{fontSize: "16px"}}
+                                                                className='ellipsText textWidth'
                                                             />
                                                         </ListItem>
                                                     ))}

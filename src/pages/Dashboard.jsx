@@ -109,10 +109,10 @@ export default function Dashboard() {
   return (
     <>
       <div>
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", overflow:"auto" }}>
           <CssBaseline />
-          <AppBar position="fixed" open={open} style={{ zIndex: 9999999 }}>
-            <Toolbar sx={{ background: "#CC080B" }}>
+          <AppBar position="fixed" open={open} style={{ zIndex: 9999999}}>
+            <Toolbar className="toolBarStyle">
               <div className="appBar-logo-container">
                 <img
                   src="../src/assets/logo.png"
@@ -121,19 +121,19 @@ export default function Dashboard() {
                 />
                 <p className="appBarTitle">BSS RESTAURANT</p>
               </div>
-
+              
+              
               <Button className="appBarAdmin">Admin</Button>
 
-              <Button>
-                <div className="relative"><CartComponent></CartComponent></div>
-              </Button>
+
+              <div className="relative customCartStyle"><CartComponent></CartComponent></div>
+
 
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 onClick={handleDrawerOpenClose}
                 edge="start"
-                sx={{ mr: 2 }}
                 className="hamburger-menu"
               >
                 <MenuIcon />
@@ -149,7 +149,9 @@ export default function Dashboard() {
                 width: drawerWidth,
                 boxSizing: "border-box",
               },
-              zIndex: 99999999
+              zIndex: 99999999, 
+              position: "sticky",
+              top: 0
             }}
             variant="persistent"
             anchor="left"

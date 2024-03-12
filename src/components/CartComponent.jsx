@@ -16,6 +16,9 @@ const CartComponent = () => {
   const handleRemoveItem = (id) => {
     dispatch(removeItem(id));
   };
+  console.log(quantity)
+
+  console.log(cartItems);
   const handleDecreaseQuantity = (itemId) => {
     setQuantity((prevQuantity) => ({
       ...prevQuantity,

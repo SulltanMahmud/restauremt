@@ -193,6 +193,25 @@
         width: 93%;
 
     }
+  
+    
+
+    
+    
+}
+@media (max-width: 600px) {
+
+    .tableCardStyle {
+        /* height: 75vh; */
+        
+        flex-direction: row;
+        
+        overflow-x: auto !important;
+    }
+    
+
+    
+    
 }
 
 /* Selct a table or select foods Style */

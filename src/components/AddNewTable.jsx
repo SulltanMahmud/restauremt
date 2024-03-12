@@ -74,11 +74,11 @@ const AddNewTable = () => {
           </div>
         </div>
 
-        <div className='mainTableContainer' style={{ padding: 40 }}>
+        <div className='mainTableContainer' style={{ padding: 40 }} >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
               {/* First Row */}
-              <Grid item xs={8}>
+              <Grid order={{ xs: 3, sm: 3 }} item xs={12} md={8} lg={8} xl={8}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -119,14 +119,14 @@ const AddNewTable = () => {
 
                   
 
-                  <Grid item xs={12} sx={{ paddingBottom: '10px' }}>
+                  <Grid  item xs={12} sx={{ paddingBottom: '10px' }}>
                     <Button type="submit" fullWidth variant="outlined" className='formSubmitButtonStyle'>Submit</Button>
                   </Grid>
                 </Grid>
               </Grid>
 
               {/* Image Picker */}
-              <Grid item xs={4}>
+              <Grid order={{ xs: 2, sm: 3 }} item xs={12} md={4} lg={4} xl={4}>
                 <div onClick={handleClick} className='image-picker-container'>
                   {
                     formData.base64 ?

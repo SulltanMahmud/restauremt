@@ -1,3 +1,13 @@
+.mainOrderCardContainer {
+
+    max-width: 90% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 20px !important;
+    margin-bottom: 40px !important;
+}
+
+
 .isoDateStyle {
     font-size: 1.17em !important;
     font-weight: bold !important;
@@ -40,11 +50,12 @@
     font-family: 'Josefin Sans', sans-serif !important;
     font-size: 16px !important;
     font-weight: 500 !important;
-    line-height: 1.6  !important;
+    line-height: 1.6 !important;
     display: flex !important;
     align-items: end !important;
     margin-right: 20px !important;
     margin-top: auto !important;
+    margin-left: auto !important;
 }
 
 /* this is for my custom List Item Style */
@@ -97,3 +108,12 @@
 }
 
 /* This is for delete button Style */
+
+
+/* Media query for screens smaller than 600px */
+@media (max-width: 600px) {
+    .mainOrderCardContainer>.MuiGrid-item {
+        width: calc(100% - 20px);
+        margin-right: 0;
+    }
+}
