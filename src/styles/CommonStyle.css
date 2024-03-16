@@ -85,6 +85,10 @@
     margin-bottom: 40px;
 }
 
+.customPadding{
+    padding: 40px;
+}
+
 
 
 
@@ -124,6 +128,9 @@
 
 /* this is the data table style  */
 
+.inputOutline {
+    outline-color: #79A33D !important; /* Change the color to your desired color */
+  }
 
 
 /* this is the add employee, table and foods button style */
@@ -265,6 +272,10 @@
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+    }
+
+    .customPadding{
+        padding: 10px;
     }
 
     

@@ -96,11 +96,11 @@ const AddNewFood = () => {
                         <span style={{ paddingBottom: 50 }} className=' page-title'>Add Food</span>
                     </div>
                 </div>
-                <div className='mainTableContainer' style={{ padding: 40 }}>
+                <div className='mainTableContainer customPadding'>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
                             {/* First Row */}
-                            <Grid item xs={8}>
+                            <Grid item xs={12} sm={8}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <TextField
@@ -137,7 +137,7 @@ const AddNewFood = () => {
                             </Grid>
 
                             {/* Image Picker */}
-                            <Grid item xs={4}>
+                            <Grid item xs={12} sm={4}>
                                 <div onClick={handleClick} className='image-picker-container'>
                                     {
                                         formData.base64 ?
@@ -149,7 +149,7 @@ const AddNewFood = () => {
                             </Grid>
 
                             {/* Fourth Row */}
-                            <Grid item xs={3} >
+                            <Grid item xs={12} sm={3}>
                                 <TextField
                                     fullWidth
 
@@ -159,12 +159,13 @@ const AddNewFood = () => {
 
                                     type='number'
                                     onInput={handleChange}
+                                    
                                     error={!!errors.price}
                                     helperText={errors.price && errors.price.message}
                                     {...register('price', { required: 'Price is required' })}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={12} sm={3}>
                                 <FormControl fullWidth>
                                     <InputLabel >Select Discount Type</InputLabel>
                                     <Select
@@ -180,7 +181,7 @@ const AddNewFood = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={12} sm={3}>
                                 <TextField
                                     fullWidth
                                     label={formData.discountType === DiscountType.Percent ? "Discount in (%)" : "Discount in (৳)"}
@@ -191,7 +192,7 @@ const AddNewFood = () => {
                                     type='number'
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={12} sm={3}>
                                 <TextField
                                     fullWidth
                                     label="Discount Price"

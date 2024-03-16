@@ -22,18 +22,18 @@
     margin-bottom: 40px;
 }
 
-.tableCardStyle {
-    /* height: 75vh; */
-    padding: 10px;
+.tableCardContainer {
+    max-height: 70vh;
+    overflow-y: scroll;
     scrollbar-width: thin;
+}
+
+.tableCardStyle {
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding-top: 50px;
-    z-index: 100;
-    overflow-y: auto !important;
-    scrollbar-color: white !important;
-    scrollbar-width: thin !important;
 }
 
 /* This is for notification Style */
@@ -67,7 +67,7 @@
 }
 
 .foodMainCardStyle {
-    height: 75vh !important;
+    height: 70vh !important;
     width: auto !important;
     overflow-y: auto !important;
     padding: 10px !important;
@@ -85,7 +85,7 @@
 .foodImage {
     border-radius: 50%;
     height: 170px !important;
-    width: 190px !important;
+    width: 170px !important;
     margin-top: 20px;
 }
 
@@ -142,7 +142,6 @@
 }
 
 
-
 /* Selct a table or select foods Style */
 .sectionTableHeader {
     position: absolute;
@@ -155,9 +154,8 @@
     z-index: 100;
     text-align: center;
     border: none;
-    margin-top: 20px;
-
-
+    padding-top: 20px;
+    height: 45px;
 }
 
 .sectionFoodHeader {
@@ -172,8 +170,6 @@
     border: none;
     padding-top: 20px;
     padding-bottom: 5px;
-
-
 }
 
 /* Selct a table or select foods Style */
@@ -193,25 +189,21 @@
         width: 93%;
 
     }
-  
-    
-
-    
-    
 }
+
 @media (max-width: 600px) {
 
     .tableCardStyle {
-        /* height: 75vh; */
-        
         flex-direction: row;
-        
-        overflow-x: auto !important;
+        padding: 10px;
+        display: flex;
+        gap: 10px;
+        padding-top: 50px;
     }
-    
 
-    
-    
+    .tableCardContainer {
+        overflow-x: auto;
+    }
 }
 
 /* Selct a table or select foods Style */

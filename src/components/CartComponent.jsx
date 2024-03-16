@@ -2,47 +2,65 @@ import useCart from "../hooks/useCart";
 import { Button, Drawer, Typography } from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCart } from "../hooks/cartSlice";
+import ApiCall from "../components/apiCollection/ApiCall";
+import axios from "axios";
+import {
+  clearCart,
+  decreaseQuantity,
+  increaseQuantity,
+  selectCart,
+} from "../hooks/cartSlice";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { removeItem } from "../hooks/cartSlice";
-import { useState } from "react";
+import Swal from "sweetalert2";
 
 const CartComponent = () => {
-  const cartItems = useSelector(selectCart);
+  const cartItemsWithTable = useSelector(selectCart);
   const { open, handleToggle, classes } = useCart();
-  const [quantity, setQuantity] = useState({});
   const dispatch = useDispatch();
+  const cartItems = cartItemsWithTable.items;
   const handleRemoveItem = (id) => {
     dispatch(removeItem(id));
   };
-  console.log(quantity)
-
-  console.log(cartItems);
   const handleDecreaseQuantity = (itemId) => {
-    setQuantity((prevQuantity) => ({
-      ...prevQuantity,
-      [itemId]: Math.max((prevQuantity[itemId] || 1) - 1, 0),
-    }));
-    if (quantity[itemId] === 0) {
-      handleRemoveItem(itemId);
-    }
+    dispatch(decreaseQuantity(itemId));
   };
 
   const handleIncreaseQuantity = (itemId) => {
-    setQuantity((prevQuantity) => ({
-      ...prevQuantity,
-      [itemId]: (prevQuantity[itemId] || 0) + 1,
-    }));
+    dispatch(increaseQuantity(itemId));
   };
 
   const handleConfirmOrder = () => {
-    //  todo add toast
-    alert("Order confirmed");
-    dispatch(removeItem());
-    setQuantity({});
-    handleToggle();
+    const order = {
+      amount: cartItems.reduce(
+        (acc, item) => acc + item.price * (item.quantity || 1),
+        0
+      ),
+      items: [
+        ...cartItems.map((item) => ({
+          foodId: item.id,
+          foodPackageId: null,
+          quantity: item.quantity,
+          totalPrice: item.price * (item.quantity || 1),
+          unitPrice: item.price,
+        })),
+      ],
+      orderNumber: new Date().toISOString(),
+      phoneNumber: "",
+      tableId: cartItemsWithTable.tableId,
+    };
+    axios.post(ApiCall.orderFood, order).then((res) => {
+      console.log(res);
+      Swal.fire({
+        icon: "success",
+        title: "Order Confirmed",
+        text: "Your order has been confirmed",
+      });
+      dispatch(clearCart());
+    });
   };
+
   return (
     <div>
       <div className="relative">
@@ -88,7 +106,7 @@ const CartComponent = () => {
                           -
                         </button>
                         <span className="text-2xl h-4 btn bg-transparent border-l-0 border-r-0 hover:bg-transparent rounded-none px-4">
-                          {quantity[item.id] || 1}
+                          {item.quantity}
                         </span>
                         <button
                           className="text-2xl h-4 btn bg-transparent rounded-none  px-3"
@@ -105,11 +123,7 @@ const CartComponent = () => {
                       onClick={() => handleRemoveItem(item.id)}
                     />
                     <p className="text-gray-500">
-                      Price: ৳{
-                        quantity[item.id] === 0
-                          ? item.price
-                          : item.price * (quantity[item.id] || 1)
-                      }
+                      Price: ৳{item.price * item.quantity || item.price}
                     </p>
                   </div>
                 </div>
@@ -124,7 +138,7 @@ const CartComponent = () => {
               <h3 className="text-xl font-bold">Subtotal: </h3>
               <h3 className="text-xl font-bold">
                 {cartItems.reduce(
-                  (acc, item) => acc + item.price * (quantity[item.id] || 1),
+                  (acc, item) => acc + item.price * (item.quantity || 1),
                   0
                 )}
                 ৳

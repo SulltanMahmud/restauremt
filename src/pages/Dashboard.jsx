@@ -26,6 +26,8 @@ import UseLoader from "../components/loader/UseLoader.jsx";
 import { useState, useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CartComponent from "../components/CartComponent.jsx";
+import CustomDrawer from "../components/CustomDrawer.jsx";
+import { Modal } from '@mui/material';
 
 
 const drawerWidth = 255.5;
@@ -85,6 +87,14 @@ export default function Dashboard() {
   const [loader, showLoader, hideLoader] = UseLoader();
   const [activeItem, setActiveItem] = useState(null);
   const isScreenSmall = useMediaQuery("(max-width:1280px)");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalToggle = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+  const handleMenuItemClick = () => {
+    setIsModalOpen(false); // Close the modal when a menu item is clicked
+  };
   useEffect(() => {
     setOpen(!isScreenSmall);
   }, [isScreenSmall]);
@@ -109,9 +119,10 @@ export default function Dashboard() {
   return (
     <>
       <div>
-        <Box sx={{ display: "flex", overflow:"auto" }}>
+        <Box sx={{ display: "flex", overflow: "auto" }}>
+
           <CssBaseline />
-          <AppBar position="fixed" open={open} style={{ zIndex: 9999999}}>
+          <AppBar position="fixed" open={open} style={{ zIndex: 9999999 }}>
             <Toolbar className="toolBarStyle">
               <div className="appBar-logo-container">
                 <img
@@ -121,8 +132,8 @@ export default function Dashboard() {
                 />
                 <p className="appBarTitle">BSS RESTAURANT</p>
               </div>
-              
-              
+
+
               <Button className="appBarAdmin">Admin</Button>
 
 
@@ -132,7 +143,7 @@ export default function Dashboard() {
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onClick={handleDrawerOpenClose}
+                onClick={handleModalToggle}
                 edge="start"
                 className="hamburger-menu"
               >
@@ -149,7 +160,7 @@ export default function Dashboard() {
                 width: drawerWidth,
                 boxSizing: "border-box",
               },
-              zIndex: 99999999, 
+              zIndex: 99999999,
               position: "sticky",
               top: 0
             }}
@@ -288,14 +299,21 @@ export default function Dashboard() {
             </Box>
           </Drawer>
 
+
+
           <Main className="main-body" open={open} style={{ padding: 0 }}>
             <DrawerHeader />
+            {/* <Modal sx={{ zIndex: "10000000000" }} open={isModalOpen} onClose={handleModalToggle}>
 
+              <CustomDrawer />
+
+            </Modal> */}
             <Outlet />
           </Main>
         </Box>
         {loader}
       </div>
+
     </>
   );
 }

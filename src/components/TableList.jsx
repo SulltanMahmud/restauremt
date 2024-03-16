@@ -157,7 +157,7 @@ export default function TableList() {
                         </Link>
                     </div>
                 </div>
-                <div className='mainTableContainer'>
+                <div className='mainTableContainer '>
                     <TableContainer className='tableContainerStyle'>
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Card, CardContent, Typography, Grid, Container } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
@@ -9,7 +10,7 @@ import useTable from "../hooks/useTable.jsx";
 import CheckCard from "./Card.jsx";
 import Button from "@mui/material/Button";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
-import { addItem, clearCart, selectCart } from "../hooks/cartSlice";
+import {  addItem, clearCart, selectCart,setTableId } from "../hooks/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const OrderList = () => {
@@ -22,21 +23,23 @@ const OrderList = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCart);
 
+
+
   const handleCheckChange = (id) => {
     setCheckedCard(id === checkedCard ? null : id);
     dispatch(clearCart());
   };
-
   useEffect(() => {
     if (checkedCard) {
       dispatch(clearCart());
     }
   }, [checkedCard]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${ApiCall.baseUrl}food/datatable?page=1&per_page=10`);
+        const response = await axios.get(
+          `${ApiCall.baseUrl}food/datatable?page=1&per_page=10`
+        );
         setMenuData(response.data.data);
         setLastPage(response.data.next_page_url);
       } catch (error) {
@@ -45,6 +48,8 @@ const OrderList = () => {
     };
     fetchData();
   }, []);
+
+  console.log(menuData);
 
   useEffect(() => {
     const options = {
@@ -85,7 +90,7 @@ const OrderList = () => {
 
   const handleAddToCard = (newData) => {
     if (cartItems) {
-      const isItemAlreadyInCart = cartItems.some(
+      const isItemAlreadyInCart = cartItems.items.some(
         (item) => item.id === newData.id
       );
       if (isItemAlreadyInCart) {
@@ -95,8 +100,22 @@ const OrderList = () => {
     } else {
       console.log("Cart is empty");
     }
-    dispatch(addItem(newData));
+    const data ={
+      id: newData.id,
+      name: newData.name,
+      price: newData.price,
+      discountPrice: newData.discountPrice,
+      image: newData.image,
+      description: newData.description,
+      quantity: 1,
+    }
+    console.log(data)
+    dispatch(addItem(data));
   };
+  dispatch(setTableId(checkedCard));
+
+
+  console.log(cartItems)
 
   return (
     <>
@@ -105,32 +124,36 @@ const OrderList = () => {
           <div>
             <span className="under-line page-title">Order Food</span>
           </div>
-          <div>{/* Search container here */}</div>
+          {/* <div>Search container here</div> */}
         </div>
         <div className="mainOrderTableContainer">
           <Grid container spacing={2}>
-            <Grid item xs={12} md={3} lg={3} xl={3} className="relative" >
+            <Grid item xs={12} sm={3} className="relative">
               <div className="sectionTableHeader">
                 SELECT A TABLE ({table.length})
               </div>
-              <div>
+              <div className="tableCardContainer">
                 <Card className="tableCardStyle">
-                  {table.map((menuItem, index) => (
-                    <CheckCard
-                      key={index}
-                      menuItem={menuItem}
-                      menuImage={menuItem.image}
-                      checked={menuItem.id === checkedCard}
-                      onChange={handleCheckChange}
-                    />
-                  ))}
+                  {table.map(
+                    (
+                      menuItem,
+                      index // Render only visible cards
+                    ) => (
+                      <CheckCard
+                        key={index}
+                        menuItem={menuItem}
+                        menuImage={menuItem.image}
+                        checked={menuItem.id === checkedCard}
+                        onChange={handleCheckChange}
+                      />
+                    )
+                  )}
                 </Card>
-
               </div>
-
             </Grid>
             {checkedCard ? (
-              <Grid item xs={12} md={9} lg={9} xl={9}>
+              <Grid item xs={12} sm={9}>
+                
                 <Container className="relative">
                   <Card className="foodMainCardStyle">
                     <div className="sectionFoodHeader">
@@ -139,18 +162,19 @@ const OrderList = () => {
                     <div className="mt-12 ">
                       {menuData.map((menuItem) => (
                         <Card
+                        
                           key={menuItem.id}
                           className="foodCardStyle"
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = "red";
+                            e.currentTarget.style.borderColor = "#CC080B";
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.borderColor = "transparent";
                           }}
                         >
-                          <CardContent>
-                            <Grid container spacing={2}>
-                              <Grid item xs={3}>
+                          <CardContent >
+                            <Grid  container spacing={2}>
+                              <Grid item xs={12} sm={3}>
                                 <img
                                   src={`https://restaurantapi.bssoln.com/images/food/${menuItem?.image}`}
                                   alt="Image"
@@ -159,10 +183,14 @@ const OrderList = () => {
                               </Grid>
                               <Grid
                                 item
-                                xs={9}
+                                xs={12} sm={9}
                                 className="foodDetailsGrid"
                               >
-                                <Typography variant="h6" component="h2" className="foodNameTypography">
+                                <Typography
+                                  variant="h6"
+                                  component="h2"
+                                  className="foodNameTypography"
+                                >
                                   {menuItem.name}
                                 </Typography>
                                 <Typography className="foodDetailsTypography">
@@ -170,22 +198,31 @@ const OrderList = () => {
                                 </Typography>
                                 {menuItem.discountPrice ? (
                                   <div>
-                                    <Typography variant="h6" component="h2" className="foodPriceTypography">
+                                    <Typography
+                                      variant="h6"
+                                      component="h2"
+                                      className="foodPriceTypography"
+                                    >
                                       Price: {menuItem.price}
                                     </Typography>
                                     <div className="flex justify-between">
-                                      <Typography className="foodDiscountPriceTypography">
+                                      <Typography
+                                        className="foodDiscountPriceTypography"
+                                      >
                                         Discounted Price:{" "}
                                         <span style={{ fontWeight: "800" }}>
                                           {menuItem.discountPrice}৳
                                         </span>
                                       </Typography>
+                                      
                                       <Button
                                         variant="contained"
                                         style={{
-                                          backgroundColor: cartItems?.some((item) => item.id === menuItem.id)
-                                            ? "green"
-                                            : "red",
+                                          backgroundColor: cartItems?.items.some(
+                                            (item) => item.id === menuItem.id
+                                          )
+                                            ? "#080000"
+                                            : "#CC080B",
                                           color: "white",
                                           fontWeight: "bold",
                                         }}
@@ -202,18 +239,21 @@ const OrderList = () => {
                                     <Typography
                                       variant="h6"
                                       component="h2"
-                                      style={{ color: "black", fontWeight: "bold" }}
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "bolder",
+                                      }}
                                     >
                                       Price: {menuItem.price}৳
                                     </Typography>
                                     <Button
                                       variant="contained"
                                       style={{
-                                        backgroundColor: cartItems?.some(
+                                        backgroundColor: cartItems?.items.some(
                                           (item) => item.id === menuItem.id
                                         )
-                                          ? "green"
-                                          : "red",
+                                          ? "#080000"
+                                          : "#CC080B",
                                         color: "white",
                                         fontWeight: "bold",
                                       }}
@@ -237,18 +277,20 @@ const OrderList = () => {
                 </Container>
               </Grid>
             ) : (
-              <Grid item xs={12} md={9} lg={9} xl={9}>
+              <Grid item xs={12} sm={9}>
                 <div className="relative h">
-                  <Container className="notificationStyle">
+                  <Container
+                   className="notificationStyle"
+                  >
                     <NewReleasesIcon sx={{ fontSize: 70, color: "#b71c1c" }} />
-                    <Typography className="notificationTextStyle">
+                    <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
                       At First Select A Table!
                     </Typography>
                   </Container>
                   <Container sx={{ opacity: "0.5" }}>
                     <Card
                       style={{
-                        height: "75vh",
+                        height: "70vh",
                         width: "auto",
                         padding: "10px",
                         opacity: 0.5,

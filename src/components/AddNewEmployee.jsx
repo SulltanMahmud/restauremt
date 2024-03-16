@@ -97,11 +97,11 @@ export default function AddNewEmployee() {
           </div>
         </div>
 
-        <div className='mainTableContainer' style={{ padding: 40 }}>
+        <div className='mainTableContainer customPadding' >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               {/* First Row */}
-              <Grid item xs={12} md={8} lg={8} xl={8}>
+              <Grid item xs={12} sm={8}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -113,6 +113,7 @@ export default function AddNewEmployee() {
                       helperText={errors.firstName && errors.firstName.message}
                       {...register('firstName', { required: 'First name is required' })}
                       onInput={handleChange}
+                      
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -140,7 +141,7 @@ export default function AddNewEmployee() {
               </Grid>
 
               {/* Image Picker */}
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <div onClick={handleClick} className='image-picker-container'>
                   {
                     formData.base64 ?
@@ -152,7 +153,7 @@ export default function AddNewEmployee() {
 
               {/* Second Row */}
 
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   label="Spouse Name"
@@ -164,7 +165,7 @@ export default function AddNewEmployee() {
                   {...register('spouseName', { required: 'Spouse name is required' })}
                 />
               </Grid>
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   label="Father Name"
@@ -176,7 +177,7 @@ export default function AddNewEmployee() {
                   {...register('fatherName', { required: 'Father name is required' })}
                 />
               </Grid>
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   label="Mother Name"
@@ -191,7 +192,7 @@ export default function AddNewEmployee() {
 
               {/* Third Row */}
 
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   label="Designation"
@@ -203,7 +204,7 @@ export default function AddNewEmployee() {
                   {...register('designation', { required: 'Designation is required' })}
                 />
               </Grid>
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   label="Email"
@@ -215,7 +216,7 @@ export default function AddNewEmployee() {
                   {...register('email', { required: 'Email is required' })}
                 />
               </Grid>
-              <Grid item xs={12} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   label="Phone Number"
@@ -228,7 +229,7 @@ export default function AddNewEmployee() {
                 />
               </Grid>
               {/* Fourth Row */}
-              <Grid item xs={12} md={3} lg={3} xl={3} >
+              <Grid item xs={12} sm={3}>
                 <FormControl fullWidth error={!formData.genderId && !!errors.genderId} >
 
                   <InputLabel >Gender</InputLabel>
@@ -246,34 +247,52 @@ export default function AddNewEmployee() {
                   {formData.genderId ? <FormHelperText>{""}</FormHelperText> : <FormHelperText>{errors.genderId?.message}</FormHelperText>}
                 </FormControl>
               </Grid>
-              <Grid item xs={6} md={3} lg={3} xl={3}>
-                <div >
-                  <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <DatePicker
-                      label="Date of Birth"
-                      value={formData.dateOfBirth}
-                      onChange={(date) => handleDateChange(date, 'dob')}
-                      textField={<TextField fullWidth />}
-                    />
-                  </LocalizationProvider>
-
-
-                </div>
-
+              
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="dob"
+                  label="Date of Birth"
+                  type="date"
+                  value={formData.dateOfBirth}
+                  onChange={(date) => handleDateChange(date, 'dob')}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  error={!!errors.dateOfBirth}
+                  helperText={errors.dateOfBirth && errors.dateOfBirth.message}
+                  {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+                  InputProps={{
+                    style: {
+                      color: errors.dateOfBirth ? '#D42F2F' : 'inherit', 
+                    },
+                  }}
+                />
               </Grid>
-              <Grid item xs={6} md={3} lg={3} xl={3}>
-                <div>
-                  <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <DatePicker
-                      label="Date of Join"
-                      value={formData.joinDate}
-                      onChange={(date) => handleDateChange(date, 'joinDate')}
-                      textField={<TextField fullWidth />}
-                    />
-                  </LocalizationProvider>
-                </div>
-
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="joinDate"
+                  label="Date of Join"
+                  type="date"
+                  value={formData.joinDate}
+                  onChange={(date) => handleDateChange(date, 'joinDate')}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                    
+                  }}
+                  InputProps={{
+                    style: {
+                      color: errors.joinDate ? '#D42F2F' : 'inherit', 
+                    },
+                    className: 'inputOutline'
+                  }}
+                  error={!!errors.joinDate}
+                  helperText={errors.joinDate && errors.joinDate.message}
+                  {...register('joinDate', { required: 'Date of Join is required' })}
+                />
               </Grid>
+              
               <Grid item xs={12} md={3} lg={3} xl={3} >
                 <TextField
                   fullWidth
