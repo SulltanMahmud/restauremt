@@ -3,18 +3,15 @@
 
 /* This is our main paper style */
 .mainOrderPaperStyle {
-    width: 100% !important;
+    margin-left: 256.5px;
     overflow: hidden !important;
     background-color: transparent !important;
     box-shadow: none !important;
-    /* height: 80% !important; */
-
 }
 
 /* This is our main paper style */
 
 .mainOrderTableContainer {
-
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
@@ -56,11 +53,9 @@
     border: 2px dashed #CC080B !important;
     font-size: 28px !important;
     font-weight: 700 !important;
-
 }
 
 .notificationTextStyle {
-
     font-family: 'Josefin Sans', sans-serif !important;
     font-size: 28px !important;
     font-weight: 700 !important;
@@ -78,7 +73,6 @@
 .foodCardStyle {
     margin-bottom: 10px;
     cursor: pointer;
-    /* transition: border-color 0.3s ease; */
     border: 1px solid transparent;
 }
 
@@ -179,22 +173,19 @@
 /* responsive Style */
 /* Selct a table or select foods Style */
 @media (min-width: 1024px) {
-
     .sectionTableHeader {
         width: 94%;
-
     }
 
     .sectionFoodHeader {
         width: 93%;
-
     }
 }
 
 @media (max-width: 600px) {
-
     .tableCardStyle {
         flex-direction: row;
+        min-width: 800px;
         padding: 10px;
         display: flex;
         gap: 10px;
@@ -202,8 +193,13 @@
     }
 
     .tableCardContainer {
-        overflow-x: auto;
+        max-width: 100vw;
+        max-height: auto;
+        overflow-x: scroll ;
+        overflow-y: hidden;
     }
+
+    
 }
 
 /* Selct a table or select foods Style */

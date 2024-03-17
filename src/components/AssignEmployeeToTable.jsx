@@ -45,20 +45,16 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
 
         const selectedEmployees = Employees.filter(employee => value.includes(employee.name));
         const modifiedEmployees = selectedEmployees.map(({ name, ...rest }) => ({
-            ...rest,
-            tableId: tableInfo.id,
+            ...rest, tableId: tableInfo.id,
         }));
 
         setAssignEmployeeData(modifiedEmployees)
     };
 
     const handleAssign = async () => {
-        // Handle assign action here
         showLoader();
-
         try {
             const response = await axios.post(`${ApiCall.baseUrl}EmployeeTable/create-range`, assignEmployeeData);
-            
 
             if (response.status === 204) {
                 const navigate = useNavigate();
@@ -68,16 +64,16 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
             handleClose();
 
         } catch (error) {
-            console.log(error)
-            Swal.fire({
-                icon: "error",
-                title: "Failed",
-                text: "",
-            });
+            setTimeout(() => {
+                hideLoader();
+                Swal.fire({
+                    icon: "error",
+                    title: "Request Failed",
+                    text: "",
+                });
+            }, 3000);
         }
-
     };
-
 
     return (
         <>
@@ -88,19 +84,9 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
                 aria-describedby="modal-description"
             >
                 <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: 700,
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        borderRadius: 1
-
-                    }}
+                    className="mainContainer"
                 >
-                    <div style={{ padding: "8px 16px !important" }}>
+                    <div className='titleContainer'>
                         <Typography className='bodyText' sx={{
                             textAlign: 'center', paddingTop: "20px !important"
                         }} id="modal-title" variant="h6" component="h2" gutterBottom>
@@ -109,32 +95,32 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
 
                     </div>
 
-                    <Box sx={{ padding: "16px 24px 10px  !important" }}>
-                        <div style={{ display: 'flex', alignItems: 'center', padding: "16px !important" }}>
-                            <div style={{ height: "190px", width: "322px", padding: "12px" }}>
+                    <Box className='bodyContainerBox'>
+                        <div className='bodyContainer'>
+                            <div className='imageContainer'>
                                 <img src={!tableInfo?.image ? DefaultAdminImage : `${ApiCall.getTableImage}${tableInfo?.image}`} alt="Table" style={{ width: 200, }} />
                             </div>
 
-                            <div style={{ height: "190px", width: "322px", padding: "12px" }}>
+                            <div className='infoContainer'>
                                 <Box >
                                     <Typography variant="h6" gutterBottom className='bodyText'>
                                         Table ID: {tableInfo?.tableNumber}
                                     </Typography>
-                                    <Typography variant="h6" gutterBottom className='bodyText'>
+                                    <Typography variant="h6" gutterBottom className='bodyText' style={{paddingBottom: "10px"}}>
                                         Number of Seats: {tableInfo?.numberOfSeats}
                                     </Typography>
 
-                                    <FormControl sx={{ width: 300 }}>
-                                        <InputLabel id="demo-multiple-checkbox-label">Select Employee</InputLabel>
+                                    <FormControl className='inputFieldStyle'>
+                                        <InputLabel id="checkboxLabel">Select Employee</InputLabel>
                                         <Select
-                                            labelId="demo-multiple-checkbox-label"
-                                            id="demo-multiple-checkbox"
+                                            labelId="checkboxLabel"
+                                            id="multipleCheckbox"
                                             multiple
                                             value={personName}
                                             onChange={handleChange}
                                             input={<OutlinedInput label="Select Employee" />}
                                             renderValue={(selected) => (
-                                                <div style={{ maxHeight: '70px', overflowY: 'auto', scrollbarWidth: 'none' }}>
+                                                <div className='inputTextContainer'>
                                                     {selected.map((name) => (
                                                         <div key={name}>{name}</div>
                                                     ))}
@@ -158,7 +144,7 @@ const ModalComponent = ({ open, handleClose, tableInfo, Employees }) => {
                         </div>
 
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: "16px 40px" }}>
+                    <Box className="buttonContainer">
                         <Button onClick={handleAssign} variant="contained" className='buttonStyle'>
                             Assign
                         </Button>

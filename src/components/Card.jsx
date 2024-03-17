@@ -19,6 +19,7 @@ const CheckCard = ({ menuItem, checked, onChange }) => {
         ":hover": {
           backgroundColor: "#b71c1c",
         },
+        width: "200px"
       }}
     >
       <CardContent
@@ -28,6 +29,7 @@ const CheckCard = ({ menuItem, checked, onChange }) => {
           alignContent: "center",
           alignItems: "center",
           gap: "16px",
+         
         }}
       >
         <img

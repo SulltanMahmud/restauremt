@@ -170,6 +170,7 @@ export default function EmployeeList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
+                        
 
                         classes={{
                             input: 'MuiTablePagination-input',

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Grid, TextField, Paper, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Swal from 'sweetalert2';
@@ -8,10 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/CommonStyle.css';
 import UseLoader from './loader/UseLoader';
 import { DiscountType } from './utils/utils'
-import DefaultAdminImage from '../assets/img/defaultImg.png'
+import DefaultAdminImage from '../assets/img/defaultImg.png';
+import { useMediaQuery } from '@mui/material';
 
 const AddNewFood = () => {
-    const [discountPrice, setDiscountPrice] = useState(0);
+    const isMobile = useMediaQuery('(max-width:600px)');
     const [loader, showLoader, hideLoader] = UseLoader();
     const navigate = useNavigate();
     const hiddenFileInput = useRef(null);
@@ -26,22 +27,10 @@ const AddNewFood = () => {
         image: '',
         base64: ''
     });
-
+    console.log(formData)
     const handleClick = () => {
         hiddenFileInput.current.click();
     };
-
-    const calculateDiscountPrice = () => {
-        // Calculate the discount price here
-        const discount = formData.discountType === DiscountType.Percent
-            ? formData.price - ((formData.price * formData.discount) /100)
-            : (formData.discountType === DiscountType.Flat
-                ? formData.price - formData.discount
-                : 0
-            );
-        setDiscountPrice(discount);
-    };
-
     const imageChange = (e) => {
         const { name, value } = e.target;
         if (name === 'image') {
@@ -53,16 +42,31 @@ const AddNewFood = () => {
             };
         }
     }
-
-    const discountTypeChange = (e) => {
-        const { name, value } = e.target;
-        calculateDiscountPrice();
-        setFormData({ ...formData, discountType: value, discount: formData.discount, discountPrice: discountPrice });
-    }
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        if (name === 'discountType' || name === 'discount') {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value,
+                discountPrice: calculateDiscountPrice(prevState.price, name === 'discountType' ? value : prevState.discountType, name === 'discount' ? value : prevState.discount)
+            }));
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
+    };
+    
+
+    const calculateDiscountPrice = (price, discountType, discount) => {
+        if (discountType === DiscountType.Percent) {
+            return price - (price * discount) / 100;
+        } else if (discountType === DiscountType.Flat) {
+            return price - discount;
+        } else {
+            return price;
+        }
     };
 
     const onSubmit = async () => {
@@ -85,9 +89,7 @@ const AddNewFood = () => {
             });
         }
     };
-    useEffect(() => {
-        calculateDiscountPrice();
-    }, [formData])
+
     return (
         <>
             <Paper className='mainPaperStyle'>
@@ -100,6 +102,22 @@ const AddNewFood = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
                             {/* First Row */}
+                            {isMobile && (
+                                <Grid item xs={12}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={4}>
+                                            <div onClick={handleClick} className='image-picker-container'>
+                                                {
+                                                    formData.base64 ?
+                                                        <img src={formData.base64} alt="Uploaded" className='image-style' />
+                                                        : <img src={DefaultAdminImage} alt="Default" className='image-style' />
+                                                }
+                                                <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={imageChange} ref={hiddenFileInput} />
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            )}
                             <Grid item xs={12} sm={8}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
@@ -137,7 +155,7 @@ const AddNewFood = () => {
                             </Grid>
 
                             {/* Image Picker */}
-                            <Grid item xs={12} sm={4}>
+                            {!isMobile && (<Grid item xs={12} sm={4}>
                                 <div onClick={handleClick} className='image-picker-container'>
                                     {
                                         formData.base64 ?
@@ -146,7 +164,8 @@ const AddNewFood = () => {
                                     }
                                     <input style={{ display: 'none' }} type="file" accept="image/*" name="image" onChange={imageChange} ref={hiddenFileInput} />
                                 </div>
-                            </Grid>
+                            </Grid>)}
+
 
                             {/* Fourth Row */}
                             <Grid item xs={12} sm={3}>
@@ -159,7 +178,7 @@ const AddNewFood = () => {
 
                                     type='number'
                                     onInput={handleChange}
-                                    
+
                                     error={!!errors.price}
                                     helperText={errors.price && errors.price.message}
                                     {...register('price', { required: 'Price is required' })}
@@ -170,7 +189,7 @@ const AddNewFood = () => {
                                     <InputLabel >Select Discount Type</InputLabel>
                                     <Select
                                         value={formData.discountType}
-                                        onChange={discountTypeChange}
+                                        onChange={handleChange}
                                         name="discountType"
                                         required
                                         label="Select Discount Type"
@@ -187,8 +206,8 @@ const AddNewFood = () => {
                                     label={formData.discountType === DiscountType.Percent ? "Discount in (%)" : "Discount in (৳)"}
                                     name="discount"
                                     disabled={formData.discountType === DiscountType.None ? true : false}
-                                    value={formData.discount}
-                                    onChange={handleChange}
+                                    value={(formData.discountType === DiscountType.None ) ? 0: formData.discount }
+                                    onInput={handleChange}
                                     type='number'
                                 />
                             </Grid>
@@ -197,9 +216,10 @@ const AddNewFood = () => {
                                     fullWidth
                                     label="Discount Price"
                                     name="discountPrice"
-                                    value={discountPrice}
+                                    value={formData.discountPrice}
                                     disabled={formData.discountType === DiscountType.None ? true : false}
                                     type='number'
+
                                 />
                             </Grid>
                             {/* Fifth Row */}

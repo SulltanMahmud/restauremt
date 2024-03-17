@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import UseLoader from './loader/UseLoader';
-import { Button, Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ApiCall from './apiCollection/ApiCall';

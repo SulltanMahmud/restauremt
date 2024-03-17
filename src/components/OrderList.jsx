@@ -128,7 +128,7 @@ const OrderList = () => {
         </div>
         <div className="mainOrderTableContainer">
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={3} className="relative">
+            <Grid item xs={12} sm={3} className="relative table">
               <div className="sectionTableHeader">
                 SELECT A TABLE ({table.length})
               </div>

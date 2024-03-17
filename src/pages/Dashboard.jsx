@@ -26,8 +26,6 @@ import UseLoader from "../components/loader/UseLoader.jsx";
 import { useState, useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CartComponent from "../components/CartComponent.jsx";
-import CustomDrawer from "../components/CustomDrawer.jsx";
-import { Modal } from '@mui/material';
 
 
 const drawerWidth = 255.5;
@@ -80,6 +78,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
+  position: "sticky"
 }));
 
 export default function Dashboard() {
@@ -87,25 +86,23 @@ export default function Dashboard() {
   const [loader, showLoader, hideLoader] = UseLoader();
   const [activeItem, setActiveItem] = useState(null);
   const isScreenSmall = useMediaQuery("(max-width:1280px)");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen);
+    setOpen(!open);
   };
-  const handleMenuItemClick = () => {
-    setIsModalOpen(false); // Close the modal when a menu item is clicked
-  };
+
   useEffect(() => {
     setOpen(!isScreenSmall);
   }, [isScreenSmall]);
 
   const handleListItemClick = (index) => {
     setActiveItem(index);
+    if (isScreenSmall) {
+      handleModalToggle();
+    }
   };
 
-  const handleDrawerOpenClose = () => {
-    open ? setOpen(false) : setOpen(true);
-  };
 
   const logout = () => {
     showLoader();
@@ -120,9 +117,8 @@ export default function Dashboard() {
     <>
       <div>
         <Box sx={{ display: "flex", overflow: "auto" }}>
-
           <CssBaseline />
-          <AppBar position="fixed" open={open} style={{ zIndex: 9999999 }}>
+          <AppBar position="fixed" style={{ zIndex: 9999999, paddingLeft: isScreenSmall ? "0px" : drawerWidth }} >
             <Toolbar className="toolBarStyle">
               <div className="appBar-logo-container">
                 <img
@@ -133,12 +129,11 @@ export default function Dashboard() {
                 <p className="appBarTitle">BSS RESTAURANT</p>
               </div>
 
-
               <Button className="appBarAdmin">Admin</Button>
 
-
-              <div className="relative customCartStyle"><CartComponent></CartComponent></div>
-
+              <div className="relative customCartStyle">
+                <CartComponent></CartComponent>
+              </div>
 
               <IconButton
                 color="inherit"
@@ -154,19 +149,19 @@ export default function Dashboard() {
 
           <Drawer
             sx={{
-              width: drawerWidth,
-              flexShrink: 0,
               "& .MuiDrawer-paper": {
                 width: drawerWidth,
                 boxSizing: "border-box",
               },
               zIndex: 99999999,
               position: "sticky",
-              top: 0
+              top: 0,
             }}
             variant="persistent"
             anchor="left"
             open={open}
+
+
           >
             <DrawerHeader>
               <LoggedinUserInfo />
@@ -181,7 +176,7 @@ export default function Dashboard() {
                       disablePadding
                       sx={{ "&:hover": { background: "none !imporatant" } }}
                       className={activeItem === 1 ? "itemBackground" : ""}
-                      onClick={() => handleListItemClick(1)}
+                      onClick={() =>  handleListItemClick(1)}
                     >
                       <ListItemButton className="listItemButtonStyle">
                         <ListItemIcon className="menuIcon">
@@ -299,21 +294,13 @@ export default function Dashboard() {
             </Box>
           </Drawer>
 
-
-
-          <Main className="main-body" open={open} style={{ padding: 0 }}>
+          <Main className="main-body" style={{ padding: 0, paddingLeft: isScreenSmall ? "0px" : drawerWidth }}>
             <DrawerHeader />
-            {/* <Modal sx={{ zIndex: "10000000000" }} open={isModalOpen} onClose={handleModalToggle}>
-
-              <CustomDrawer />
-
-            </Modal> */}
             <Outlet />
           </Main>
         </Box>
         {loader}
       </div>
-
     </>
   );
 }
