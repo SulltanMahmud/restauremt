@@ -57,7 +57,7 @@ const AddNewFood = () => {
             }));
         }
     };
-    
+
 
     const calculateDiscountPrice = (price, discountType, discount) => {
         if (discountType === DiscountType.Percent) {
@@ -81,12 +81,14 @@ const AddNewFood = () => {
             }
 
         } catch (error) {
-            console.log(error)
-            Swal.fire({
-                icon: "error",
-                title: "Failed",
-                text: "",
-            });
+            setTimeout(() => {
+                hideLoader();
+                Swal.fire({
+                    icon: "error",
+                    title: "Request Failed",
+                    text: "",
+                });
+            }, 3000);
         }
     };
 
@@ -206,7 +208,7 @@ const AddNewFood = () => {
                                     label={formData.discountType === DiscountType.Percent ? "Discount in (%)" : "Discount in (৳)"}
                                     name="discount"
                                     disabled={formData.discountType === DiscountType.None ? true : false}
-                                    value={(formData.discountType === DiscountType.None ) ? 0: formData.discount }
+                                    value={(formData.discountType === DiscountType.None) ? 0 : formData.discount}
                                     onInput={handleChange}
                                     type='number'
                                 />

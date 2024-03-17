@@ -47,7 +47,7 @@ const AddNewTable = () => {
 
     try {
       const response = await axios.post(`${ApiCall.baseUrl}Table/create`, formData);
-      
+
 
       if (response.status === 200) {
         navigate("/admin/table-list");
@@ -55,12 +55,14 @@ const AddNewTable = () => {
       }
 
     } catch (error) {
-      console.log(error)
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: "",
-      });
+      setTimeout(() => {
+        hideLoader();
+        Swal.fire({
+          icon: "error",
+          title: "Request Failed",
+          text: "",
+        });
+      }, 3000);
     }
   };
 
@@ -117,9 +119,9 @@ const AddNewTable = () => {
                     </FormControl>
                   </Grid>
 
-                  
 
-                  <Grid  item xs={12} sx={{ paddingBottom: '10px' }}>
+
+                  <Grid item xs={12} sx={{ paddingBottom: '10px' }}>
                     <Button type="submit" fullWidth variant="outlined" className='formSubmitButtonStyle'>Submit</Button>
                   </Grid>
                 </Grid>

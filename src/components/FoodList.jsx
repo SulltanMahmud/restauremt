@@ -18,6 +18,7 @@ import ApiCall from './apiCollection/ApiCall';
 import DefaultAdminImage from '../assets/img/defaultImg.png'
 import { Link } from 'react-router-dom';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import Swal from 'sweetalert2';
 
 
 const columns = [
@@ -50,7 +51,14 @@ export default function FoodList() {
                 }
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                    });
+                }, 3000);
             }
         }
         removeFood(foodId);
@@ -65,7 +73,14 @@ export default function FoodList() {
                 setTotalData(response.data.total);
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                    });
+                }, 3000);
             }
         };
         fetchData();
@@ -101,7 +116,7 @@ export default function FoodList() {
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} className={column.id === "image" ? 'tableHeaderText ellipsText imgWidth' : 'tableHeaderText ellipsText textWidth'} style={{ minWidth: column.minWidth}}>
+                                        <TableCell key={column.id} className={column.id === "image" ? 'tableHeaderText ellipsText imgWidth' : 'tableHeaderText ellipsText textWidth'} style={{ minWidth: column.minWidth }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
@@ -114,7 +129,7 @@ export default function FoodList() {
                                         .map((row, rowIndex) => (
                                             <TableRow key={rowIndex} >
 
-                                                <TableCell align="left" className='tableBodyText'> 
+                                                <TableCell align="left" className='tableBodyText'>
                                                     <ListItemAvatar>
                                                         <Avatar alt="Admin Image" src={!row?.image ? DefaultAdminImage : `${ApiCall.getFoodImage}${row?.image}`} />
                                                     </ListItemAvatar>
@@ -138,7 +153,7 @@ export default function FoodList() {
                                                 <TableCell align="left" className='tableBodyText'>
                                                     <div>
                                                         <IconButton aria-label="edit">
-                                                            <EditNoteIcon className='editButtonStyle'/>
+                                                            <EditNoteIcon className='editButtonStyle' />
                                                         </IconButton>
                                                         <IconButton aria-label="delete" onClick={() => handleDelete(row?.id)}>
                                                             <DeleteIcon className='deleteButtonStyle' />
@@ -160,7 +175,7 @@ export default function FoodList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
-                        
+
                         classes={{
                             input: 'MuiTablePagination-input',
                             select: 'MuiTablePagination-select',

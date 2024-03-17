@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Card, CardContent, Typography, Grid, Container } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
@@ -12,6 +11,8 @@ import Button from "@mui/material/Button";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import {  addItem, clearCart, selectCart,setTableId } from "../hooks/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from 'sweetalert2';
+import DefaultAdminImage from '../assets/img/defaultImg.png'
 
 const OrderList = () => {
   const [menuData, setMenuData] = useState([]);
@@ -43,13 +44,20 @@ const OrderList = () => {
         setMenuData(response.data.data);
         setLastPage(response.data.next_page_url);
       } catch (error) {
-        console.error("Error fetching initial menu data:", error);
+        setTimeout(() => {
+          hideLoader();
+          Swal.fire({
+              icon: "error",
+              title: "Request Failed",
+              text: "",
+          });
+      }, 3000);
       }
     };
     fetchData();
   }, []);
 
-  console.log(menuData);
+
 
   useEffect(() => {
     const options = {
@@ -82,7 +90,14 @@ const OrderList = () => {
       setMenuData((prevData) => [...prevData, ...response.data.data]);
       setLastPage(response.data.next_page_url);
     } catch (error) {
-      console.error("Error fetching menu data:", error);
+      setTimeout(() => {
+        // hideLoader();
+        Swal.fire({
+            icon: "error",
+            title: "Request Failed",
+            text: "",
+        });
+    }, 3000);
     } finally {
       setLoading(false);
     }
@@ -94,11 +109,11 @@ const OrderList = () => {
         (item) => item.id === newData.id
       );
       if (isItemAlreadyInCart) {
-        console.log("Item with id " + newData.id + " is already in the cart.");
+        
         return;
       }
     } else {
-      console.log("Cart is empty");
+      
     }
     const data ={
       id: newData.id,
@@ -109,13 +124,10 @@ const OrderList = () => {
       description: newData.description,
       quantity: 1,
     }
-    console.log(data)
+
     dispatch(addItem(data));
   };
   dispatch(setTableId(checkedCard));
-
-
-  console.log(cartItems)
 
   return (
     <>
@@ -128,7 +140,7 @@ const OrderList = () => {
         </div>
         <div className="mainOrderTableContainer">
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={3} className="relative table">
+            <Grid item xs={12} sm={3} className="relative">
               <div className="sectionTableHeader">
                 SELECT A TABLE ({table.length})
               </div>
@@ -154,7 +166,7 @@ const OrderList = () => {
             {checkedCard ? (
               <Grid item xs={12} sm={9}>
                 
-                <Container className="relative">
+                <Container className="relative" style={{padding:"0"}}>
                   <Card className="foodMainCardStyle">
                     <div className="sectionFoodHeader">
                       SELECT FOODS ({menuData.length})
@@ -176,7 +188,7 @@ const OrderList = () => {
                             <Grid  container spacing={2}>
                               <Grid item xs={12} sm={3}>
                                 <img
-                                  src={`https://restaurantapi.bssoln.com/images/food/${menuItem?.image}`}
+                                  src={!menuItem?.image ? DefaultAdminImage : `${ApiCall.getFoodImage}${menuItem?.image}`}
                                   alt="Image"
                                   className="foodImage"
                                 />
@@ -205,7 +217,7 @@ const OrderList = () => {
                                     >
                                       Price: {menuItem.price}
                                     </Typography>
-                                    <div className="flex justify-between">
+                                    <div className="foodCardFooter">
                                       <Typography
                                         className="foodDiscountPriceTypography"
                                       >
@@ -235,14 +247,11 @@ const OrderList = () => {
                                     </div>
                                   </div>
                                 ) : (
-                                  <div className="flex items-center justify-between">
+                                  <div className="foodCardFooter">
                                     <Typography
                                       variant="h6"
                                       component="h2"
-                                      style={{
-                                        color: "black",
-                                        fontWeight: "bolder",
-                                      }}
+                                      className="foodPriceTypo"
                                     >
                                       Price: {menuItem.price}৳
                                     </Typography>
@@ -287,26 +296,13 @@ const OrderList = () => {
                       At First Select A Table!
                     </Typography>
                   </Container>
-                  <Container sx={{ opacity: "0.5" }}>
-                    <Card
-                      style={{
-                        height: "70vh",
-                        width: "auto",
-                        padding: "10px",
-                        opacity: 0.5,
-                        pointerEvents: "none",
-                      }}
-                    >
+                  <Container sx={{ opacity: "0.5", padding:"0" }}>
+                    <Card className="initialfoodMainCardStyle">
                       <div className=" mt-12 ">
                         {menuData.map((menuItem) => (
                           <Card
                             key={menuItem.id}
-                            style={{
-                              marginBottom: "10px",
-                              cursor: "pointer",
-                              transition: "border-color 0.3s ease",
-                              border: "1px solid transparent",
-                            }}
+                            className="foodCardStyle"
                             onMouseEnter={(e) => {
                               e.currentTarget.style.borderColor = "red";
                             }}
@@ -316,56 +312,42 @@ const OrderList = () => {
                           >
                             <CardContent>
                               <Grid container spacing={2}>
-                                <Grid item xs={3}>
+                                <Grid item xs={12} sm={3}>
                                   <img
-                                    src={`https://restaurantapi.bssoln.com/images/food/${menuItem?.image}`}
+                                    src={!menuItem?.image ? DefaultAdminImage : `${ApiCall.getFoodImage}${menuItem?.image}`}
                                     alt="Image"
-                                    className="rounded-full hover:animate-spin-slow w-[190px] h-[190px]"
+                                    className="foodImage"
                                   />
                                 </Grid>
                                 <Grid
                                   item
-                                  xs={9}
-                                  sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    margin: "auto 0px",
-                                    gap: "10px",
-                                  }}
+                                  xs={12} sm={9}
+                                  className="foodDetailsGrid"
                                 >
                                   <Typography
                                     variant="h6"
                                     component="h2"
-                                    sx={{
-                                      color: "black",
-                                      fontWeight: "bolder",
-                                    }}
+                                    className="foodNameTypography"
                                   >
                                     {menuItem.name}
                                   </Typography>
-                                  <Typography color="text.primary">
+                                  <Typography className="foodDetailsTypography">
                                     {menuItem.description}
                                   </Typography>
                                   <div>
                                     <Typography
                                       variant="h6"
                                       component="h2"
-                                      style={{
-                                        textDecoration: "2px line-through",
-                                        color: "red",
-                                        fontWeight: "bolder",
-                                      }}
+                                      className="foodPriceTypography"
                                     >
                                       Price: {menuItem.price}
                                     </Typography>
-                                    <div className="flex justify-between">
+                                    <div className="foodCardFooter">
                                       <Typography
-                                        style={{
-                                          color: "green",
-                                        }}
+                                        className="foodDiscountPriceTypography"
                                       >
                                         Discounted Price:{" "}
-                                        <span className="font-extrabold">
+                                        <span style={{ fontWeight: "800" }}>
                                           {menuItem.discountPrice}৳
                                         </span>
                                       </Typography>

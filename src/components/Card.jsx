@@ -3,6 +3,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
+import DefaultAdminImage from '../assets/img/defaultImg.png'
+import ApiCall from './apiCollection/ApiCall';
 
 const CheckCard = ({ menuItem, checked, onChange }) => {
   const handleCheckboxChange = () => {
@@ -19,7 +21,6 @@ const CheckCard = ({ menuItem, checked, onChange }) => {
         ":hover": {
           backgroundColor: "#b71c1c",
         },
-        width: "200px"
       }}
     >
       <CardContent
@@ -29,12 +30,12 @@ const CheckCard = ({ menuItem, checked, onChange }) => {
           alignContent: "center",
           alignItems: "center",
           gap: "16px",
-         
         }}
       >
         <img
           className="h-[140px] w-[140px] rounded-full"
-          src={`https://restaurantapi.bssoln.com/images/table/${menuItem?.image}`}
+          src={!menuItem?.image ? DefaultAdminImage : `${ApiCall.getTableImage}${menuItem?.image}`}
+          
           alt="Image"
         />
         <Typography variant="h5" component="div">

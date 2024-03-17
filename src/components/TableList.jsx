@@ -67,7 +67,14 @@ export default function TableList() {
                     }
         
                 } catch (error) {
-                    console.error('Error deleting employee:', error);
+                    setTimeout(() => {
+                        hideLoader();
+                        Swal.fire({
+                            icon: "error",
+                            title: "Request Failed",
+                            text: "",
+                        });
+                    }, 3000);
                 }
                 hideLoader();
             }
@@ -86,7 +93,15 @@ export default function TableList() {
                 setAssignedEmployees(response.data);
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                        
+                    });
+                }, 3000);
             }
         };
         fetchData();
@@ -113,9 +128,16 @@ export default function TableList() {
                 }
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                    });
+                }, 3000);
             }
-            hideLoader();
+           
         }
         removeTable(tableId);
     };
@@ -129,7 +151,14 @@ export default function TableList() {
                 setTotalData(response.data.total);
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                    });
+                }, 3000);
             }
         };
         fetchData();

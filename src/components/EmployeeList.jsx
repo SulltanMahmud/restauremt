@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom';
 import '../styles/CommonStyle.css';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import StarsIcon from '@mui/icons-material/Stars';
+import Swal from 'sweetalert2';
 
 const columns = [
     { id: 'image', label: 'Image', minWidth: 30 },
@@ -52,7 +53,14 @@ export default function EmployeeList() {
                 }
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                    });
+                }, 3000);
             }
         }
         removeEmployee(employeeId);
@@ -69,7 +77,14 @@ export default function EmployeeList() {
 
                 hideLoader();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setTimeout(() => {
+                    hideLoader();
+                    Swal.fire({
+                        icon: "error",
+                        title: "Request Failed",
+                        text: "",
+                    });
+                }, 3000);
             }
         };
         fetchData();
@@ -170,7 +185,7 @@ export default function EmployeeList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage={"Items per page: "}
-                        
+
 
                         classes={{
                             input: 'MuiTablePagination-input',

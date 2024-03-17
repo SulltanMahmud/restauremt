@@ -4,12 +4,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { useDispatch, useSelector } from "react-redux";
 import ApiCall from "../components/apiCollection/ApiCall";
 import axios from "axios";
-import {
-  clearCart,
-  decreaseQuantity,
-  increaseQuantity,
-  selectCart,
-} from "../hooks/cartSlice";
+import {clearCart, decreaseQuantity, increaseQuantity,selectCart} from "../hooks/cartSlice";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { removeItem } from "../hooks/cartSlice";
@@ -20,9 +15,11 @@ const CartComponent = () => {
   const { open, handleToggle, classes } = useCart();
   const dispatch = useDispatch();
   const cartItems = cartItemsWithTable.items;
+
   const handleRemoveItem = (id) => {
     dispatch(removeItem(id));
   };
+  
   const handleDecreaseQuantity = (itemId) => {
     dispatch(decreaseQuantity(itemId));
   };
