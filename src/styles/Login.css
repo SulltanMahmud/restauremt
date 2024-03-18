@@ -6,7 +6,7 @@
 }
 
 .main-container {
-    background-image: linear-gradient(0deg, rgba(255, 255, 255, .6), rgb(255, 255, 255)), url('../src/assets/img/dash-bg.png');
+    background-image: linear-gradient(0deg, rgba(255, 255, 255, .6), rgb(255, 255, 255)), url('../assets/img/dash-bg.png');
     background-size: cover;
     background-repeat: "no-repeat";
     background-position: "center";

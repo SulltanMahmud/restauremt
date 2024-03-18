@@ -30,6 +30,12 @@ const routes = createBrowserRouter([
         element: <AlreadyLoggedInRoute><Login/></AlreadyLoggedInRoute>
     },
     {
+        path: "/logout",
+        loader: () => {
+            return redirect("/login")
+        },
+    },
+    {
         path: "/admin",
         element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
         children: [

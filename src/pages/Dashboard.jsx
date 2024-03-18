@@ -26,6 +26,7 @@ import UseLoader from "../components/loader/UseLoader.jsx";
 import { useState, useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CartComponent from "../components/CartComponent.jsx";
+import LogoImg from '../assets/logo.png';
 
 
 const drawerWidth = 255.5;
@@ -110,7 +111,7 @@ export default function Dashboard() {
     localStorage.removeItem("user");
     const navigate = useNavigate();
     hideLoader();
-    navigate("/login");
+    navigate("/logout");
   };
 
   return (
@@ -122,7 +123,7 @@ export default function Dashboard() {
             <Toolbar className="toolBarStyle">
               <div className="appBar-logo-container">
                 <img
-                  src="../src/assets/logo.png"
+                  src={LogoImg}
                   alt="icon"
                   className="appBar-logo"
                 />

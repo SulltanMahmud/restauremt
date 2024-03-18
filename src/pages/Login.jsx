@@ -8,7 +8,8 @@ import UseLoader from '../components/loader/UseLoader.jsx';
 import '../styles/Login.css';
 import { IconButton, InputAdornment, TextField, Button } from '@mui/material';
 import { useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import LogoImg from '../assets/logo.png';
 
 
 export default function Login() {
@@ -74,7 +75,7 @@ export default function Login() {
                         <div className='login-form'>
                             <div className='logo-container'>
                                 <img
-                                    src="../src/assets/logo.png"
+                                    src={LogoImg}
                                     alt="icon"
                                     className='logo'
                                 />

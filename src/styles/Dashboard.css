@@ -101,7 +101,7 @@
 
 .main-body {
     min-height: 100dvh;
-    background: linear-gradient(0deg, rgba(230, 230, 230, 0.9), rgba(230, 230, 230, 0.9)), url('../src/assets/img/dash-bg.png');
+    background: linear-gradient(0deg, rgba(230, 230, 230, 0.9), rgba(230, 230, 230, 0.9)), url('../assets/img/dash-bg.png');
     /* background-image: url("../../src/assets/img/dashboard-bg.jpg"); */
     background-repeat: no-repeat;
     background-size: cover;
